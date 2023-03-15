@@ -25,6 +25,15 @@ class User extends Authenticatable
         'role',
     ];
 
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
