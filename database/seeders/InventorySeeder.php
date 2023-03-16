@@ -17,16 +17,22 @@ class InventorySeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        for($i = 1; $i <= rand(5000,6000); $i++){
-            $name = $faker->sentence;
-            $slug = Str::random(60);
+        for($i = 1; $i <= rand(10, 20); $i++){
+            $name = $faker->realText(20, 3);
+            // $slug = Str::random(60);
+            $slug = Str::slug($name, '-');
             $check_slug = DB::table('inventories')->where('slug', $slug)->get();
+            $x = 1;
+            $nslug = $slug;
             while(count($check_slug) > 0){
-                $slug = Str::random(60);
-                $check_slug = DB::table('inventories')->where('slug', $slug)->get();
+                // $slug = Str::random(60);
+                $nslug = $slug.'-'.$x;
+                $check_slug = DB::table('inventories')->where('slug', $nslug)->get();
+                $x++;
             }
+            $slug = $nslug;
             Inventory::create([
-                'item_code' => $faker->name,
+                'item_code' => null,
                 'name' => $name,
                 'category_id' => rand(1,10),
                 'quantity' => rand(10,100),
