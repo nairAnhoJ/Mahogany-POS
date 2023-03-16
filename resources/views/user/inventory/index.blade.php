@@ -1,6 +1,24 @@
 <x-app-layout>
+    <style>
+
+            #inventoryDiv{
+                max-height: calc(100vh - 290px);
+            }
+
+            @media (min-width: 768px) {
+                #inventoryDiv{
+                    max-height: calc(100vh - 270px);
+                }
+            }
+
+        @media (min-width: 1024px) {
+            #inventoryDiv{
+                max-height: calc(100vh - 218px);
+            }
+        }
+    </style>
+
     <div class="p-3 lg:ml-64">
-        
         <header class="bg-white shadow-md rounded-lg">
             <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 grid grid-cols-2">
                 <div>
@@ -28,7 +46,7 @@
             </div>
         </header>
     
-        <div class="py-3">
+        <div class="pt-3">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                 <div class="mb-3">
                     <div class="md:grid md:grid-cols-2">
@@ -50,302 +68,263 @@
                     </div>
                 </div>
 
-                {{-- TABLE --}}
-                    <div class="hidden md:block">
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Item Name
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            Color
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Category
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            Price
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-white border-b">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Apple MacBook Pro 17"
-                                        </th>
-                                        <td class="px-6 py-4 text-center">
-                                            Silver
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            Laptop
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            $ 2,999.00
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b bg-gray-50">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Microsoft Surface Pro
-                                        </th>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            White
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            Laptop PC qwfsdgas dfdgasdg
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            $ 1,999.00
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-white border-b">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Magic Mouse 2
-                                        </th>
-                                        <td class="px-6 py-4 text-center">
-                                            Black
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            Accessories
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            $ 99.00
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b bg-gray-50">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Google Pixel Phone
-                                        </th>
-                                        <td class="px-6 py-4 text-center">
-                                            Gray
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            Phone
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            $ 799.00
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Apple Watch 5
-                                        </th>
-                                        <td class="px-6 py-4 text-center">
-                                            Red
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            Wearables
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            $ 999.00
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div id="inventoryDiv" class="overflow-auto border rounded-2xl">
+                    {{-- TABLE --}}
+                        <div class="hidden md:block">
+                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                                Item Name
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                Category
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                Quantity
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                Price
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($inventories as $inventory)
+                                            <tr class="bg-white border-b">
+                                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                    {{ $inventory->name }}
+                                                </th>
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    {{ $inventory->category_id }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    {{ $inventory->quantity }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    {{ $inventory->price }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                {{-- TABLE END --}}
+                    {{-- TABLE END --}}
 
-                {{-- INVENTORY LIST SMALL DEVICE --}}
-                    <div class="md:hidden">
-                        <div id="accordion-collapse" data-accordion="collapse">
-                            <h2 id="accordion-collapse-heading-1">
-                                <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
-                                    <span>Apple MacBook Pro 17"</span>
-                                    <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </h2>
-                            <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
-                                <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Color</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Silver
+                    {{-- INVENTORY LIST SMALL DEVICE --}}
+                        <div class="md:hidden">
+                            <div id="accordion-collapse" data-accordion="collapse">
+                                @php
+                                    $x = 1;
+                                    foreach ($inventories as $inventory) {
+                                        if($x == 1){
+                                            echo '
+                                                <h2 id="accordion-collapse-heading-'.$x.'">
+                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                        <span>'.$inventory->name.'</span>
+                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
+                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Category</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->category_id.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Quantity</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->quantity.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Price</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                ₱ '.number_format($inventory->price, 2, '.', ',').'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Action</div>
+                                                            <div class="col-span-2">
+                                                                <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ';
+                                        }else if($x == $inventories->count()){
+                                            echo '
+                                                <h2 id="accordion-collapse-heading-'.$x.'">
+                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                        <span>'.$inventory->name.'</span>
+                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
+                                                    <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
+                                                        <div class="grid grid-cols-3 content-center">
+                                                            <div class="text-xs leading-5">Category</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->category_id.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Quantity</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->quantity.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Price</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                ₱ '.number_format($inventory->price, 2, '.', ',').'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div>Action</div>
+                                                            <div class="col-span-2">
+                                                                <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ';
+                                        }else{
+                                            echo '
+                                                <h2 id="accordion-collapse-heading-'.$x.'">
+                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                        <span>'.$inventory->name.'</span>
+                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
+                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                                        <div class="grid grid-cols-3 content-center">
+                                                            <div class="text-xs leading-5">Category</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->category_id.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Quantity</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->quantity.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Price</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                ₱ '.number_format($inventory->price, 2, '.', ',').'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Action</div>
+                                                            <div class="col-span-2">
+                                                                <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ';
+                                        }
+                                        $x++;
+                                    }
+                                @endphp
+
+                                @foreach ($inventories as $inventory)
+                                    
+                                @endforeach
+
+
+                                {{-- <h2 id="accordion-collapse-heading-3">
+                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-3" aria-expanded="false" aria-controls="accordion-collapse-body-3">
+                                        <span>Magic Mouse 2</span>
+                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    </button>
+                                </h2>
+                                <div id="accordion-collapse-body-3" class="hidden" aria-labelledby="accordion-collapse-heading-3">
+                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                        <div class="grid grid-cols-3 content-center">
+                                            <div class="text-xs leading-5">Color</div>
+                                            <div class="col-span-2 font-semibold text-sm">
+                                                Black
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Category</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Laptop
+                                        <div class="grid grid-cols-3">
+                                            <div class="text-xs leading-5">Category</div>
+                                            <div class="col-span-2 font-semibold text-sm">
+                                                Accessories
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Price</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            $2,999.00
+                                        <div class="grid grid-cols-3">
+                                            <div class="text-xs leading-5">Price</div>
+                                            <div class="col-span-2 font-semibold text-sm">
+                                                $99.00
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Action</div>
-                                        <div class="col-span-2">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                        <div class="grid grid-cols-3">
+                                            <div class="text-xs leading-5">Action</div>
+                                            <div class="col-span-2">
+                                                <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <h2 id="accordion-collapse-heading-2">
-                                <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-2" aria-expanded="false" aria-controls="accordion-collapse-body-2">
-                                    <span>Microsoft Surface Pro</span>
-                                    <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </h2>
-                            <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
-                                <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                    <div class="grid grid-cols-3 content-center">
-                                        <div class="text-xs leading-5">Color</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            White
+                                <h2 id="accordion-collapse-heading-4">
+                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-4" aria-expanded="false" aria-controls="accordion-collapse-body-4">
+                                        <span>Google Pixel Phone</span>
+                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    </button>
+                                </h2>
+                                <div id="accordion-collapse-body-4" class="hidden" aria-labelledby="accordion-collapse-heading-4">
+                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                        <div class="grid grid-cols-3 content-center">
+                                            <div class="text-xs leading-5">Color</div>
+                                            <div class="col-span-2 font-semibold text-sm">
+                                                Gray
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-3">
+                                            <div class="text-xs leading-5">Category</div>
+                                            <div class="col-span-2 font-semibold text-sm">
+                                                Phone
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-3">
+                                            <div class="text-xs leading-5">Price</div>
+                                            <div class="col-span-2 font-semibold text-sm">
+                                                $799.00
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-3">
+                                            <div class="text-xs leading-5">Action</div>
+                                            <div class="col-span-2">
+                                                <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Category</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Laptop PC
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Price</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            $1,999.00
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Action</div>
-                                        <div class="col-span-2">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                </div> --}}
 
-                            <h2 id="accordion-collapse-heading-3">
-                                <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-3" aria-expanded="false" aria-controls="accordion-collapse-body-3">
-                                    <span>Magic Mouse 2</span>
-                                    <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </h2>
-                            <div id="accordion-collapse-body-3" class="hidden" aria-labelledby="accordion-collapse-heading-3">
-                                <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                    <div class="grid grid-cols-3 content-center">
-                                        <div class="text-xs leading-5">Color</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Black
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Category</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Accessories
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Price</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            $99.00
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Action</div>
-                                        <div class="col-span-2">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
-
-                            <h2 id="accordion-collapse-heading-4">
-                                <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-4" aria-expanded="false" aria-controls="accordion-collapse-body-4">
-                                    <span>Google Pixel Phone</span>
-                                    <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </h2>
-                            <div id="accordion-collapse-body-4" class="hidden" aria-labelledby="accordion-collapse-heading-4">
-                                <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                    <div class="grid grid-cols-3 content-center">
-                                        <div class="text-xs leading-5">Color</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Gray
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Category</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Phone
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Price</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            $799.00
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Action</div>
-                                        <div class="col-span-2">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h2 id="accordion-collapse-heading-5">
-                                <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-5" aria-expanded="false" aria-controls="accordion-collapse-body-5">
-                                    <span>Apple Watch 5</span>
-                                    <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </h2>
-                            <div id="accordion-collapse-body-5" class="hidden" aria-labelledby="accordion-collapse-heading-5">
-                                <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
-                                    <div class="grid grid-cols-3 content-center">
-                                        <div class="text-xs leading-5">Color</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Red
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Category</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            Wearables
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div class="text-xs leading-5">Price</div>
-                                        <div class="col-span-2 font-semibold text-sm">
-                                            $999.00
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-3">
-                                        <div>Action</div>
-                                        <div class="col-span-2">
-                                            <a href="#" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a href="#" class="text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                         </div>
-                    </div>
-                {{-- INVENTORY LIST SMALL DEVICE END --}}
+                    {{-- INVENTORY LIST SMALL DEVICE END --}}
+                </div>
 
                 {{-- PAGINATION --}}
                 <div class="grid md:grid-cols-2 mt-3 px-3">
