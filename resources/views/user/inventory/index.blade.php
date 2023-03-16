@@ -331,8 +331,8 @@
                     @php
                         $prev = $page - 1;
                         $next = $page + 1;
-                        $from = ($prev * 20) + 1;
-                        $to = $page * 20;
+                        $from = ($prev * 100) + 1;
+                        $to = $page * 100;
                         if($to > $invCount){
                             $to = $invCount;
                         }
