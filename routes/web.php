@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
     // INVENTORY
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
 });
 
 require __DIR__.'/auth.php';

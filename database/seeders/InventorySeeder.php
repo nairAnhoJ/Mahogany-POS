@@ -17,7 +17,7 @@ class InventorySeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        for($i = 1; $i <= 10; $i++){
+        for($i = 1; $i <= rand(100,200); $i++){
             $name = $faker->sentence;
             $slug = Str::random(60);
             $check_slug = DB::table('inventories')->where('slug', $slug)->get();

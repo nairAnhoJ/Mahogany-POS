@@ -1,19 +1,19 @@
 <x-app-layout>
     <style>
 
-            #inventoryDiv{
-                max-height: calc(100vh - 290px);
-            }
+        #inventoryMobile{
+            max-height: calc(100vh - 295px);
+        }
 
-            @media (min-width: 768px) {
-                #inventoryDiv{
-                    max-height: calc(100vh - 270px);
-                }
+        @media (min-width: 768px) {
+            #inventoryTable{
+                max-height: calc(100vh - 275px);
             }
+        }
 
         @media (min-width: 1024px) {
-            #inventoryDiv{
-                max-height: calc(100vh - 218px);
+            #inventoryTable{
+                max-height: calc(100vh - 225px);
             }
         }
     </style>
@@ -68,10 +68,10 @@
                     </div>
                 </div>
 
-                <div id="inventoryDiv" class="overflow-auto border rounded-2xl">
+                <div>
                     {{-- TABLE --}}
                         <div class="hidden md:block">
-                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <div id="inventoryTable" class="overflow-auto w-full shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr>
@@ -119,7 +119,7 @@
                     {{-- TABLE END --}}
 
                     {{-- INVENTORY LIST SMALL DEVICE --}}
-                        <div class="md:hidden">
+                        <div id="inventoryMobile" class="overflow-auto md:hidden">
                             <div id="accordion-collapse" data-accordion="collapse">
                                 @php
                                     $x = 1;
@@ -328,10 +328,18 @@
 
                 {{-- PAGINATION --}}
                 <div class="grid md:grid-cols-2 mt-3 px-3">
-
+                    @php
+                        $prev = $page - 1;
+                        $next = $page + 1;
+                        $from = ($prev * 20) + 1;
+                        $to = $page * 20;
+                        if($to > $invCount){
+                            $to = $invCount;
+                        }
+                    @endphp
                     <div class="justify-self-center md:justify-self-start self-center">
                         <span class="text-sm text-gray-700">
-                            Showing <span class="font-semibold text-gray-900">1</span> to <span class="font-semibold text-gray-900">10</span> of <span class="font-semibold text-gray-900">100</span> Entries
+                            Showing <span class="font-semibold text-gray-900">{{ $from }}</span> to <span class="font-semibold text-gray-900">{{ $to }}</span> of <span class="font-semibold text-gray-900">{{ $invCount }}</span> Items
                         </span>
                     </div>
 
@@ -339,16 +347,16 @@
                         <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
                             <ul class="inline-flex items-center -space-x-px">
                                 <li>
-                                    <a href="#" class="block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                    <a href="{{ url('/inventory/'.$prev) }}" class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
                                         <i class="uil uil-angle-left-b"></i>
                                         <span class="sr-only">Previous</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">1</p>
+                                    <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">{{ $page }}</p>
                                 </li>
                                 <li>
-                                    <a href="#" class="block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                    <a href="{{ url('/inventory/'.$next) }}" class="{{ ($to == $invCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                                         <i class="uil uil-angle-right-b"></i>
                                         <span class="sr-only">Next</span>
                                     </a>
@@ -363,4 +371,10 @@
             </div>
         </div>
      </div>
+
+     <script>
+        $(document).ready(function() {
+            
+        });
+     </script>
 </x-app-layout>

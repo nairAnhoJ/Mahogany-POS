@@ -16,12 +16,38 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+
+        <style>
+            /* width */
+            ::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+            }
+          
+            /* Track */
+            ::-webkit-scrollbar-track {
+                box-shadow: inset 0 0 2px grey; 
+                border-radius: 10px;
+            }
+            
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: #4B5563; 
+                border-radius: 10px;
+            }
+          
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: rgb(95, 95, 110); 
+            }
+        </style>
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-
             <!-- Page Content -->
             {{ $slot }}
         </div>
