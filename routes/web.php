@@ -35,6 +35,12 @@ Route::middleware('auth')->group(function () {
     // INVENTORY
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
+    Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
+    Route::get('/inventory/add', [InventoryController::class, 'add'])->name('inventory.add');
+    Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/inventory/edit/{slug}', [InventoryController::class, 'edit'])->name('inventory.edit');
+    Route::post('/inventory/update', [InventoryController::class, 'update'])->name('inventory.update');
+    Route::post('/inventory/delete', [InventoryController::class, 'delete'])->name('inventory.delete');
 });
 
 require __DIR__.'/auth.php';
