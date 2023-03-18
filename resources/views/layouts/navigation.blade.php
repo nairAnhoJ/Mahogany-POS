@@ -1,10 +1,37 @@
-<nav x-data="{ open: false }" class="bg-white shadow-md">
-    <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center h-12 p-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-        <span class="sr-only">Open sidebar</span>
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-        </svg>
-    </button>
+<nav x-data="{ open: false }" class="absolute bg-white shadow-md w-full">
+    <div class="lg:hidden flex flex-row {{ (url()->current() == url('/inventory')) ? 'justify-between' : ''; }} ">
+        <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center h-12 p-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+            <span class="sr-only">Open sidebar</span>
+            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+            </svg>
+        </button>
+    
+        <div class="self-center">
+            <h2 class="font-semibold text-base text-gray-600 leading-tight ml-3">
+                @yield('page_title')
+            </h2>
+        </div>
+
+
+        @if (url()->current() == url('/inventory'))
+            <div class="self-center float-right md:hidden ml-auto">
+                <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
+                    <i class="uil uil-ellipsis-v text-black"></i>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
+                    <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
+                            <li>
+                                <a href="{{ route('inventory.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
      
      <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
 

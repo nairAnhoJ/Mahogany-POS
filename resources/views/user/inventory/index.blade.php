@@ -1,29 +1,30 @@
 <x-app-layout>
     <style>
-
         #inventoryMobile{
-            max-height: calc(100vh - 295px);
+            max-height: calc(100vh - 285px);
         }
 
         @media (min-width: 768px) {
             #inventoryTable{
-                max-height: calc(100vh - 275px);
+                max-height: calc(100vh - 265px);
             }
         }
 
         @media (min-width: 1024px) {
             #inventoryTable{
-                max-height: calc(100vh - 225px);
+                max-height: calc(100vh - 180px);
             }
         }
     </style>
 
-    <div class="p-3 lg:ml-64">
-        <header class="bg-white shadow-md rounded-lg">
+    @section('page_title', 'INVENTORY')
+
+    <div class="p-3 lg:ml-64 h-screen pt-14 lg:pt-3">
+        {{-- <header class="bg-white shadow-md rounded-lg">
             <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 grid grid-cols-2">
                 <div>
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Inventory
+                        INVENTORY
                     </h2>
                 </div>
                 <div class="justify-self-end md:hidden">
@@ -35,21 +36,21 @@
                         <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
                             <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
                                 <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
+                                    <a href="{{ route('inventory.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+        </header> --}}
     
-        <div class="pt-3">
+        <div class="py-3">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                 <div class="mb-3">
                     <div class="md:grid md:grid-cols-2">
-                        <div>
-                            <button type="button" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</button>
+                        <div class=" w-24">
+                            <a href="{{ route('inventory.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</a>
                         </div>
                         <div class="justify-self-end w-full xl:w-4/5">
                             <form method="GET" action="" id="searchForm" class="w-full">
@@ -257,6 +258,8 @@
                             $to = $page * 100;
                             if($to > $invCount){
                                 $to = $invCount;
+                            }if($invCount == 0){
+                                $from = 0;
                             }
                         @endphp
                         <div class="justify-self-center md:justify-self-start self-center">
@@ -312,7 +315,6 @@
                     event.preventDefault();
                 }
             });
-
 
             $('#clearButton').click(function(){
                 $('#searchInput').val('');
