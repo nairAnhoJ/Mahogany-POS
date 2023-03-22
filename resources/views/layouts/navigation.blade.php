@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }" class="absolute bg-white shadow-md w-full">
-    <div class="lg:hidden flex flex-row {{ (url()->current() == url('/inventory')) ? 'justify-between' : ''; }} ">
+    <div class="lg:hidden flex flex-row {{ (url()->current() == url('/inventory')) ? 'justify-between md:justify-start' : ''; }} ">
         <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center h-12 p-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +14,7 @@
         </div>
 
 
-        @if (url()->current() == url('/inventory'))
+        @if (url()->current() != url('/inventory/add') && url()->current() != url('/inventory/edit') && Str::contains(url()->current(), url('/inventory')))
             <div class="self-center float-right md:hidden ml-auto">
                 <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
                     <i class="uil uil-ellipsis-v text-black"></i>
@@ -34,10 +34,10 @@
     </div>
      
      <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
-
-        <div class="h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-200">
+        <div class="navDiv h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-200">
             <div>
                 <a href="#" class="flex items-center mb-3">
+                    {{-- <img src="{{ asset('storage/images/logo/logo.png') }}" alt="" class="h-10"> --}}
                     <x-application-logo class="h-10 fill-current text-gray-500 mr-3"/>
                 </a>
             </div>
@@ -57,25 +57,31 @@
 
                 <li>
                     <a href="{{ route('inventory.index') }}" class="{{ (Str::contains(url()->current(), url('/inventory'))) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
-                        <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        <i class="uil uil-box w-6 text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
                         <span class="flex-1 ml-3 whitespace-nowrap">Inventory</span>
                     </a>
                 </li>
                 <li>
                     <button type="button" class="{{ (Str::contains(url()->current(), url('/system-management'))) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                        <i class="uil uil-setting text-2xl text-gray-500"></i>
+                        <i class="uil uil-setting text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
                         <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>System Management</span>
                         <i class="uil uil-angle-down text-2xl text-gray-500"></i>
                     </button>
                     <ul id="dropdown-example" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="#" class="flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg  ml-7 pl-11 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200">Users</a>
+                            <a href="{{ route('user.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/user'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Users
+                            </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-7 pl-11 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200">Table List</a>
+                            <a href="{{ route('table.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/table'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Table List
+                            </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-7 pl-11 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200">Settings</a>
+                            <a href="#" class="flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200">
+                                Settings
+                            </a>
                         </li>
                     </ul>
                 </li>

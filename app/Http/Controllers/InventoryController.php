@@ -51,6 +51,7 @@ class InventoryController extends Controller
         $category_id = $request->category_id;
         $quantity = $request->quantity;
         $price = $request->price;
+        $image = $request->image;
 
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('inventories')->where('slug', $slug)->get();
@@ -63,6 +64,11 @@ class InventoryController extends Controller
         }
         $slug = $nslug;
 
+        $imagePath = null;
+        if($image != null){
+            $imagePath = $request->file('image')->storeAs('images/items/'.$slug. '.' . $request->file('image')->getClientOriginalExtension(), 'public');
+        }
+
         $request->validate([
             'name' => 'required',
             'quantity' => 'required'
@@ -74,21 +80,80 @@ class InventoryController extends Controller
         $item->category_id = $category_id;
         $item->quantity = $quantity;
         $item->price = $price;
+        if($image != null){
+            $item->image = $imagePath;
+        }
         $item->slug = $slug;
         $item->save();
 
-        return redirect()->route('inventory.index');
+        return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Added');
     }
 
-    public function edit(){
-        
+    public function edit($slug){
+        $item = DB::table('inventories')->where('slug', $slug)->first();
+        // dd($item);
+        return view('user.inventory.edit', compact('item'));
     }
 
-    public function update(){
-        
+    public function update(Request $request){
+        $oldSlug = $request->slug;
+        $item_code = $request->item_code;
+        $name = $request->name;
+        $category_id = $request->category_id;
+        $quantity = $request->quantity;
+        $price = $request->price;
+        $image = $request->image;
+
+        $slug = Str::slug($name, '-');
+        $check_slug = DB::table('inventories')->where('slug', $slug)->get();
+        $x = 1;
+        $nslug = $slug;
+        while(count($check_slug) > 0){
+            $nslug = $slug.'-'.$x;
+            $check_slug = DB::table('inventories')->where('slug', $nslug)->get();
+            $x++;
+        }
+        $slug = $nslug;
+
+        $imagePath = null;
+        if($image != null){
+            $imagePath = $request->file('image')->storeAs('public/images/items/'.$slug. '.' . $request->file('image')->getClientOriginalExtension());
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'quantity' => 'required'
+        ]);
+
+        if($image != null){
+            DB::table('inventories')->where('slug', $oldSlug)
+                ->update([
+                    'item_code' => $item_code,
+                    'name' => $name,
+                    'category_id' => $category_id,
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'image' => $imagePath,
+                    'slug' => $slug,
+                ]);
+        }else{
+            DB::table('inventories')->where('slug', $oldSlug)
+                ->update([
+                    'item_code' => $item_code,
+                    'name' => $name,
+                    'category_id' => $category_id,
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'slug' => $slug,
+                ]);
+        }
+
+        return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Updated');
     }
 
-    public function delete(){
-        
+    public function delete($slug){
+        DB::table('inventories')->where('slug', $slug)->delete();
+
+        return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Deleted');
     }
 }
