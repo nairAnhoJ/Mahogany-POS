@@ -2,7 +2,7 @@
 
     @section('page_title', 'USER - EDIT')
 
-    <div class="p-3 lg:ml-64 max-h-screen pt-14 lg:pt-3 overflow-y-auto">
+    <div class="p-3 lg:ml-64 max-h-screen lg:pt-3 overflow-y-auto">
         
         {{-- <header class="bg-white shadow-md rounded-lg">
             <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
@@ -12,7 +12,7 @@
             </div>
         </header> --}}
     
-        <div class="">
+        <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
                 <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data" class="grid">
                     @csrf
@@ -44,7 +44,21 @@
 
      <script>
         $(document).ready(function() {
+            $('#navButton').click(function(){
+                    $('#topNav').addClass('absolute');
+                    $('#topNav').removeClass('sticky');
+                    $('#contentDiv').addClass('pt-14');
+                });
 
+            $(document).mouseup(function(e) {
+                var container = $(".navDiv");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    $('#topNav').removeClass('absolute');
+                    $('#topNav').addClass('sticky');
+                $('#contentDiv').removeClass('pt-14');
+                }
+            });
         });      
      </script>
 </x-app-layout>

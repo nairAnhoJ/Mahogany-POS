@@ -1,6 +1,6 @@
-<nav x-data="{ open: false }" class="absolute bg-white shadow-md w-full">
+<nav x-data="{ open: false }" id="topNav" class="sticky top-0 z-50 bg-white shadow-md w-full">
     <div class="lg:hidden flex flex-row {{ (url()->current() == url('/inventory')) ? 'justify-between md:justify-start' : ''; }} ">
-        <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center h-12 p-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+        <button id="navButton" data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center h-12 p-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -34,13 +34,13 @@
         {{-- INVENTORY ADD END --}}
 
         {{-- USER ADD --}}
-            @if (url()->current() != url('/system-management/user/add') && url()->current() != url('/system-management/user/edit') && Str::contains(url()->current(), url('/system-management/user')))
+            @if (url()->current() != url('/system-management/user/add') && !Str::contains(url()->current(), url('/system-management/user/edit/')) && Str::contains(url()->current(), url('/system-management/user')))
                 <div class="self-center float-right md:hidden ml-auto">
                     <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
                         <i class="uil uil-ellipsis-v text-black"></i>
                     </button>
                     <!-- Dropdown menu -->
-                    <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
+                    <div id="dropdownInventoryMenu" class="z-50 hidden divide-y divide-gray-100 px-3">
                         <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
                             <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
                                 <li>
@@ -54,7 +54,7 @@
         {{-- USER ADD END --}}
 
         {{-- TABLE ADD --}}
-            @if (url()->current() != url('/system-management/table/add') && url()->current() != url('/system-management/table/edit') && Str::contains(url()->current(), url('/system-management/table')))
+            @if (url()->current() != url('/system-management/table/add') && !Str::contains(url()->current(), url('/system-management/table/edit')) && Str::contains(url()->current(), url('/system-management/table')))
                 <div class="self-center float-right md:hidden ml-auto">
                     <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
                         <i class="uil uil-ellipsis-v text-black"></i>
@@ -74,7 +74,7 @@
         {{-- TABLE ADD END --}}
 
         {{-- CATEGORY ADD --}}
-            @if (url()->current() != url('/system-management/category/add') && url()->current() != url('/system-management/category/edit') && Str::contains(url()->current(), url('/system-management/category')))
+            @if (url()->current() != url('/system-management/category/add') && !Str::contains(url()->current(), url('/system-management/category/edit')) && Str::contains(url()->current(), url('/system-management/category')))
                 <div class="self-center float-right md:hidden ml-auto">
                     <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
                         <i class="uil uil-ellipsis-v text-black"></i>
@@ -97,7 +97,7 @@
 
     </div>
      
-     <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
+     <aside style="z-index: 200;" id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 z-50 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
         <div class="navDiv h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-200">
             <div>
                 <a href="#" class="flex items-center mb-3">
@@ -167,6 +167,7 @@
             </ul>
         </div>
      </aside>
+
      
 
 

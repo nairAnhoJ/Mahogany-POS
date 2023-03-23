@@ -70,8 +70,8 @@
         @endif
     {{-- NOTIFICATION END --}}
 
-    <div class="contentDiv p-3 lg:ml-64 h-screen pt-14 lg:pt-3">
-        <div class="py-3">
+    <div class="p-3 lg:ml-64 lg:pt-3">
+        <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                 {{-- CONTROLS --}}
                     <div class="mb-3">
@@ -149,7 +149,7 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/table/edit/'.$table->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a href="'.url('/system-management/table/edit/'.$table->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
                                                                 <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$table->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                             </div>
                                                         </div>
@@ -290,6 +290,24 @@
             });
             $('.navDiv').click(function(){
                 $('.notif').addClass('hidden');
+            });
+
+            $('#navButton').click(function(){
+                    $('#topNav').addClass('absolute');
+                    $('#topNav').removeClass('sticky');
+                    $('#topNav').removeClass('z-50');
+                    $('#contentDiv').addClass('pt-14');
+                });
+
+            $(document).mouseup(function(e) {
+                var container = $(".navDiv");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    $('#topNav').removeClass('absolute');
+                    $('#topNav').addClass('sticky');
+                    $('#topNav').addClass('z-50');
+                $('#contentDiv').removeClass('pt-14');
+                }
             });
         });
      </script>

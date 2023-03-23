@@ -70,8 +70,8 @@
         @endif
     {{-- NOTIFICATION END --}}
 
-    <div class="contentDiv p-3 lg:ml-64 h-screen pt-14 lg:pt-3">
-        <div class="py-3">
+    <div class="p-3 lg:ml-64 lg:pt-3">
+        <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                 {{-- CONTROLS --}}
                     <div class="mb-3">
@@ -362,6 +362,24 @@
             });
             $('.navDiv').click(function(){
                 $('.notif').addClass('hidden');
+            });
+            
+            $('#navButton').click(function(){
+                    $('#topNav').addClass('absolute');
+                    $('#topNav').removeClass('sticky');
+                    $('#topNav').removeClass('z-50');
+                    $('#contentDiv').addClass('pt-14');
+                });
+
+            $(document).mouseup(function(e) {
+                var container = $(".navDiv");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    $('#topNav').removeClass('absolute');
+                    $('#topNav').addClass('sticky');
+                    $('#topNav').addClass('z-50');
+                $('#contentDiv').removeClass('pt-14');
+                }
             });
         });
      </script>

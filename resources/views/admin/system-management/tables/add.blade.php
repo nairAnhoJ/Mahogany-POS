@@ -2,17 +2,8 @@
 
     @section('page_title', 'TABLE - ADD')
 
-    <div class="p-3 lg:ml-64 max-h-screen pt-14 lg:pt-3 overflow-y-auto">
-        
-        {{-- <header class="bg-white shadow-md rounded-lg">
-            <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    INVENTORY - ADD
-                </h2>
-            </div>
-        </header> --}}
-    
-        <div class="">
+    <div class="p-3 lg:ml-64 lg:pt-3">
+        <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
                 <form action="{{ route('table.store') }}" method="POST" enctype="multipart/form-data" class="grid">
                     @csrf
@@ -31,7 +22,23 @@
 
      <script>
         $(document).ready(function() {
-            
+            $('#navButton').click(function(){
+                    $('#topNav').addClass('absolute');
+                    $('#topNav').removeClass('sticky');
+                    $('#topNav').removeClass('z-50');
+                    $('#contentDiv').addClass('pt-14');
+                });
+
+            $(document).mouseup(function(e) {
+                var container = $(".navDiv");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    $('#topNav').removeClass('absolute');
+                    $('#topNav').addClass('sticky');
+                    $('#topNav').addClass('z-50');
+                $('#contentDiv').removeClass('pt-14');
+                }
+            });
         });      
      </script>
 </x-app-layout>

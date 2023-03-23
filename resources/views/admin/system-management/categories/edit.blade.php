@@ -2,9 +2,8 @@
 
     @section('page_title', 'ITEM CATEGORY - EDIT')
 
-    <div class="p-3 lg:ml-64 max-h-screen pt-14 lg:pt-3 overflow-y-auto">
-    
-        <div class="">
+    <div class="p-3 lg:ml-64 lg:pt-3">
+        <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
                 <form action="{{ route('category.update') }}" method="POST" enctype="multipart/form-data" class="grid">
                     @csrf
@@ -24,7 +23,24 @@
 
      <script>
         $(document).ready(function() {
+            
+            $('#navButton').click(function(){
+                    $('#topNav').addClass('absolute');
+                    $('#topNav').removeClass('sticky');
+                    $('#topNav').removeClass('z-50');
+                    $('#contentDiv').addClass('pt-14');
+                });
 
+            $(document).mouseup(function(e) {
+                var container = $(".navDiv");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    $('#topNav').removeClass('absolute');
+                    $('#topNav').addClass('sticky');
+                    $('#topNav').addClass('z-50');
+                $('#contentDiv').removeClass('pt-14');
+                }
+            });
         });      
      </script>
 </x-app-layout>

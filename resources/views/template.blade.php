@@ -17,4 +17,24 @@
             </div>
         </div>
      </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#navButton').click(function(){
+                    $('#topNav').addClass('absolute');
+                    $('#topNav').removeClass('sticky');
+                    $('#contentDiv').addClass('pt-14');
+                });
+
+            $(document).mouseup(function(e) {
+                var container = $(".navDiv");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    $('#topNav').removeClass('absolute');
+                    $('#topNav').addClass('sticky');
+                $('#contentDiv').removeClass('pt-14');
+                }
+            });
+        });
+    </script>
 </x-app-layout>
