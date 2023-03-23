@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +24,7 @@ Route::get('/', function () {
     if(!auth()->user()){
         return view('auth.login');
     }else{
-        return view('dashboard');
+        return redirect()->route('dashboard');
     }
 });
 
@@ -45,7 +48,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
 });
 
-Route::middleware('auth')->middleware('role')->group(function(){
+Route::middleware('role')->group(function(){
+
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // USERS
     Route::get('/system-management/user', [UserController::class, 'index'])->name('user.index');
@@ -66,6 +72,16 @@ Route::middleware('auth')->middleware('role')->group(function(){
     Route::get('/system-management/table/delete/{slug}', [TableController::class, 'delete'])->name('table.delete');
     Route::get('/system-management/table/{page}', [TableController::class, 'paginate']);
     Route::get('/system-management/table/{page}/{search}', [TableController::class, 'search']);
+
+    // CATEGORY
+    Route::get('/system-management/category', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('/system-management/category/add', [CategoryController::class, 'add'])->name('category.add');
+    Route::post('/system-management/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/system-management/category/edit/{slug}', [CategoryController::class, 'edit']);
+    Route::post('/system-management/category/update', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('/system-management/category/delete/{slug}', [CategoryController::class, 'delete'])->name('category.delete');
+    Route::get('/system-management/category/{page}', [CategoryController::class, 'paginate']);
+    Route::get('/system-management/category/{page}/{search}', [CategoryController::class, 'search']);
 });
 
 Route::view('error', 'error');

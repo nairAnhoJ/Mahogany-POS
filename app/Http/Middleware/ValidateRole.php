@@ -15,7 +15,7 @@ class ValidateRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(auth()->user()->role != 1){
+        if(!isset(auth()->user()->role) || auth()->user()->role != 1){
             return redirect('error');
         }
         return $next($request);

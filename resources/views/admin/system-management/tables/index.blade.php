@@ -17,7 +17,7 @@
         }
     </style>
 
-    @section('page_title', 'USERS')
+    @section('page_title', 'TABLES')
 
     {{-- DELETE MODAL --}}
         <!-- Modal toggle -->
@@ -156,7 +156,7 @@
                                                     </div>
                                                 </div>
                                             ';
-                                        }else if($x == $users->count()){
+                                        }else if($x == $tables->count()){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">

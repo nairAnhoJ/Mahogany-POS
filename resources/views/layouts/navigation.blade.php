@@ -13,24 +13,88 @@
             </h2>
         </div>
 
-
-        @if (url()->current() != url('/inventory/add') && url()->current() != url('/inventory/edit') && Str::contains(url()->current(), url('/inventory')))
-            <div class="self-center float-right md:hidden ml-auto">
-                <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
-                    <i class="uil uil-ellipsis-v text-black"></i>
-                </button>
-                <!-- Dropdown menu -->
-                <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
-                    <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
-                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
-                            <li>
-                                <a href="{{ route('inventory.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
-                            </li>
-                        </ul>
+        {{-- INVENTORY ADD --}}
+            @if (url()->current() != url('/inventory/add') && url()->current() != url('/inventory/edit') && Str::contains(url()->current(), url('/inventory')))
+                <div class="self-center float-right md:hidden ml-auto">
+                    <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
+                        <i class="uil uil-ellipsis-v text-black"></i>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
+                        <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
+                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
+                                <li>
+                                    <a href="{{ route('inventory.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        {{-- INVENTORY ADD END --}}
+
+        {{-- USER ADD --}}
+            @if (url()->current() != url('/system-management/user/add') && url()->current() != url('/system-management/user/edit') && Str::contains(url()->current(), url('/system-management/user')))
+                <div class="self-center float-right md:hidden ml-auto">
+                    <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
+                        <i class="uil uil-ellipsis-v text-black"></i>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
+                        <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
+                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
+                                <li>
+                                    <a href="{{ route('user.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        {{-- USER ADD END --}}
+
+        {{-- TABLE ADD --}}
+            @if (url()->current() != url('/system-management/table/add') && url()->current() != url('/system-management/table/edit') && Str::contains(url()->current(), url('/system-management/table')))
+                <div class="self-center float-right md:hidden ml-auto">
+                    <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
+                        <i class="uil uil-ellipsis-v text-black"></i>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
+                        <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
+                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
+                                <li>
+                                    <a href="{{ route('table.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        {{-- TABLE ADD END --}}
+
+        {{-- CATEGORY ADD --}}
+            @if (url()->current() != url('/system-management/category/add') && url()->current() != url('/system-management/category/edit') && Str::contains(url()->current(), url('/system-management/category')))
+                <div class="self-center float-right md:hidden ml-auto">
+                    <button id="inventoryMenu" data-dropdown-toggle="dropdownInventoryMenu" class="text-white h-8 w-7 bg-white-700 focus:outline-none font-medium rounded-lg text-base text-center inline-flex items-center" type="button">
+                        <i class="uil uil-ellipsis-v text-black"></i>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownInventoryMenu" class="z-10 hidden divide-y divide-gray-100 px-3">
+                        <div class="bg-gray-50 rounded-lg w-44 px-3 border shadow-md">
+                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="inventoryMenu">
+                                <li>
+                                    <a href="{{ route('category.add') }}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">ADD</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        {{-- CATEGORY ADD END --}}
+
+
+
     </div>
      
      <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
@@ -44,7 +108,8 @@
             <ul class="space-y-2">
                 <li>
                     <a href="{{ route('dashboard') }}" class="{{ (Str::contains(url()->current(), url('/dashboard')) || url()->current() == url('/')) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
+                        <i class="uil uil-analysis text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        {{-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> --}}
                         <span class="ml-3">Dashboard</span>
                     </a>
                 </li>
@@ -76,6 +141,11 @@
                         <li>
                             <a href="{{ route('table.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/table'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
                                 Table List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('category.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/category'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Item Category
                             </a>
                         </li>
                         <li>
