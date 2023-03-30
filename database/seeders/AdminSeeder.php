@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             'name' => 'Administrator',
             'username' => 'POS-admin',
             'password' => '$2y$10$q0cHOBT5KkT0gjmG06/SUeaYKpoGfdhnIeWUv5qtuHgROpXVLRRka',
-            'role' => 1,
+            'role' => 0,
             'slug' => Str::random(60),
         ]);
     }
