@@ -21,7 +21,6 @@ class ValidateRole
         //     return redirect('error');
         // }
         $roles = array($role1, $role2, $role3, $role4);
-        // dd($request->user()->role , $roles);
         if($request->user()){
             foreach($roles as $role){
                 if($request->user()->role == $role){

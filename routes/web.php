@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\KitchenController;
 use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
@@ -27,28 +28,17 @@ Route::get('/', function () {
     if(!auth()->user()){
         return view('auth.login');
     }else{
-        return redirect()->route('dashboard');
+
+        if(auth()->user()->role == 1){
+            return redirect()->route('dashboard');
+        }else if(auth()->user()->role == 2){
+            return redirect()->route('dashboard');
+        }else if(auth()->user()->role == 3){
+            return redirect()->route('kitchen.display');
+        }else if(auth()->user()->role == 4){
+            return redirect()->route('dashboard');
+        }
     }
-});
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // INVENTORY
-    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
-    Route::get('/inventory/add', [InventoryController::class, 'add'])->name('inventory.add');
-    Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
-    Route::get('/inventory/edit/{slug}', [InventoryController::class, 'edit']);
-    Route::post('/inventory/update', [InventoryController::class, 'update'])->name('inventory.update');
-    Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
-    Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
-    Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
 });
 
 Route::middleware("role:1")->group(function(){
@@ -98,7 +88,10 @@ Route::middleware("role:1")->group(function(){
 });
 
 
-Route::middleware('role:1,3')->group(function(){
+Route::middleware("role:1,3")->group(function(){
+
+    // DASHBOARD
+    Route::get('/kitchen-display', [KitchenController::class, 'index'])->name('kitchen.display');
 
     // MENU
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
@@ -109,6 +102,21 @@ Route::middleware('role:1,3')->group(function(){
     Route::get('/menu/delete/{slug}', [MenuController::class, 'delete'])->name('menu.delete');
     Route::get('/menu/{page}', [MenuController::class, 'paginate']);
     Route::get('/menu/{page}/{search}', [MenuController::class, 'search']);
+
+});
+
+
+Route::middleware('role:1,4')->group(function(){
+
+    // INVENTORY
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory/add', [InventoryController::class, 'add'])->name('inventory.add');
+    Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/inventory/edit/{slug}', [InventoryController::class, 'edit']);
+    Route::post('/inventory/update', [InventoryController::class, 'update'])->name('inventory.update');
+    Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
+    Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
+    Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
 
 });
 
