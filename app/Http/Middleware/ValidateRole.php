@@ -13,11 +13,23 @@ class ValidateRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+
+
+    public function handle(Request $request, Closure $next, $role1=null, $role2=null, $role3=null, $role4=null)
     {
-        if(!isset(auth()->user()->role) || auth()->user()->role != 1){
-            return redirect('error');
+        // if(!isset(auth()->user()->role) || auth()->user()->role != 0){
+        //     return redirect('error');
+        // }
+        $roles = array($role1, $role2, $role3, $role4);
+        // dd($request->user()->role , $roles);
+        if($request->user()){
+            foreach($roles as $role){
+                if($request->user()->role == $role){
+                    return $next($request);
+                }
+            }
         }
-        return $next($request);
+
+        return redirect('error');
     }
 }

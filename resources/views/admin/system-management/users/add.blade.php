@@ -25,6 +25,17 @@
                         <label for="username" class="block text-sm font-medium text-gray-900 lg:text-base">Username <span class="text-red-500">*</span></label>
                         <input type="text" id="username" name="username" value="{{ old('username') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off" required>
                     </div>
+
+                    <div class="mb-2">
+                        <label for="role" class="block text-sm font-medium text-gray-900 lg:text-base">Role<span class="text-red-500">*</span></label>
+                        <select id="role" name="role" value="{{ old('role') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
+                            <option value="1">Administrator</option>
+                            <option value="2">Cashier</option>
+                            <option value="3">Cook</option>
+                            <option value="4">Reciever</option>
+                        </select>
+                    </div>
+
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-900 lg:text-base">Password <span class="text-red-500">*</span></label>
                         <input type="password" id="password" name="password" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>

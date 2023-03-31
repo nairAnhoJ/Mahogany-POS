@@ -17,7 +17,7 @@
         }
     </style>
 
-    @section('page_title', 'USERS')
+    @section('page_title', 'ITEM CATEGORIES')
 
     {{-- DELETE MODAL --}}
         <!-- Modal toggle -->
@@ -77,7 +77,7 @@
                     <div class="mb-3">
                         <div class="md:grid md:grid-cols-2">
                             <div class=" w-24">
-                                <a href="{{ route('user.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</a>
+                                <a href="{{ route('menu.category.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</a>
                             </div>
                             <div class="justify-self-end w-full xl:w-4/5">
                                 <form method="GET" action="" id="searchForm" class="w-full">
@@ -86,7 +86,7 @@
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                         </div>
-                                        <input type="search" id="searchInput" class="block z-10 w-full px-4 py-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="SEARCH" value="{{ $search }}" autocomplete="off">
+                                        <input type="search" id="searchInput" class="block w-full px-4 py-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="SEARCH" value="{{ $search }}" autocomplete="off">
                                         <button id="clearButton" type="button" class=" absolute right-20 bottom-1">
                                             <i class="uil uil-times text-2xl"></i>
                                         </button>
@@ -109,37 +109,18 @@
                                                 Name
                                             </th>
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                Username
-                                            </th>
-                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $user)
+                                        @foreach ($categories as $category)
                                             <tr class="bg-white border-b">
                                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $user->name }}
+                                                    {{ $category->name }}
                                                 </th>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    {{ $user->username }}
-                                                </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    @php
-                                                        if($user->role == 1){
-                                                            echo 'Administrator';
-                                                        }else if($user->role == 2){
-                                                            echo 'Cashier';
-                                                        }else if($user->role == 3){
-                                                            echo 'Cook';
-                                                        }else if($user->role == 4){
-                                                            echo 'Receiver';
-                                                        }
-                                                    @endphp
-                                                </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    <a href="{{ url('/system-management/user/edit/'.$user->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $user->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                    <a href="{{ url('/system-management/menu-category/edit/'.$category->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $category->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -154,78 +135,42 @@
                             <div id="accordion-collapse" data-accordion="collapse">
                                 @php
                                     $x = 1;
-                                    $role = '';
-                                    foreach ($users as $user) {
-                                        
-                                        if($user->role == 1){
-                                            $role = 'Administrator';
-                                        }else if($user->role == 2){
-                                            $role = 'Cashier';
-                                        }else if($user->role == 3){
-                                            $role = 'Cook';
-                                        }else if($user->role == 4){
-                                            $role = 'Receiver';
-                                        }
-
+                                    foreach ($categories as $category) {
                                         if($x == 1){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$user->name.'</span>
+                                                        <span>'.$category->name.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
                                                         <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Username</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$user->username.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Username</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$role.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/system-management/user/edit/'.$user->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$user->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                <a href="'.url('/menu-category/edit/'.$category->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$category->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ';
-                                        }else if($x == $users->count()){
+                                        }else if($x == $categories->count()){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$user->name.'</span>
+                                                        <span>'.$category->name.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
-                                                        <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$user->username.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Username</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$role.'
-                                                            </div>
-                                                        </div>
                                                         <div class="grid grid-cols-3">
                                                             <div>Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/system-management/user/edit/'.$user->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$user->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                <a href="'.url('/system-management/menu-category/edit/'.$category->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$category->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -235,29 +180,17 @@
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$user->name.'</span>
+                                                        <span>'.$category->name.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$user->username.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Username</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$role.'
-                                                            </div>
-                                                        </div>
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/system-management/user/edit/'.$user->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$user->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                <a href="'.url('/system-management/menu-category/edit/'.$category->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$category->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -279,15 +212,15 @@
                             $next = $page + 1;
                             $from = ($prev * 100) + 1;
                             $to = $page * 100;
-                            if($to > $userCount){
-                                $to = $userCount;
-                            }if($userCount == 0){
+                            if($to > $categoryCount){
+                                $to = $categoryCount;
+                            }if($categoryCount == 0){
                                 $from = 0;
                             }
                         @endphp
                         <div class="justify-self-center md:justify-self-start self-center">
                             <span class="text-sm text-gray-700">
-                                Showing <span class="font-semibold text-gray-900">{{ $from }}</span> to <span class="font-semibold text-gray-900">{{ $to }}</span> of <span class="font-semibold text-gray-900">{{ $userCount }}</span> Items
+                                Showing <span class="font-semibold text-gray-900">{{ $from }}</span> to <span class="font-semibold text-gray-900">{{ $to }}</span> of <span class="font-semibold text-gray-900">{{ $categoryCount }}</span> Items
                             </span>
                         </div>
 
@@ -295,7 +228,7 @@
                             <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
                                 <ul class="inline-flex items-center -space-x-px">
                                     <li>
-                                        <a href="{{ ($search == '') ? url('/system-management/user/'.$prev) : url('/system-management/user/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                        <a href="{{ ($search == '') ? url('/system-management/menu-category/'.$prev) : url('/system-management/menu-category/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
                                             <i class="uil uil-angle-left-b"></i>
                                             <span class="sr-only">Previous</span>
                                         </a>
@@ -304,7 +237,7 @@
                                         <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">{{ $page }}</p>
                                     </li>
                                     <li>
-                                        <a href="{{ ($search == '') ? url('/system-management/user/'.$next) : url('/system-management/user/'.$next.'/'.$search); }}" class="{{ ($to == $userCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                        <a href="{{ ($search == '') ? url('/system-management/menu-category/'.$next) : url('/system-management/menu-category/'.$next.'/'.$search); }}" class="{{ ($to == $categoryCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                                             <i class="uil uil-angle-right-b"></i>
                                             <span class="sr-only">Next</span>
                                         </a>
@@ -325,9 +258,9 @@
             $('#searchButton').click(function(){
                 var search = $('#searchInput').val();
                 if(search != ""){
-                    $('#searchForm').prop('action', `{{ url('/system-management/user/1/${search}') }}`);
+                    $('#searchForm').prop('action', `{{ url('/system-management/menu-category/1/${search}') }}`);
                 }else{
-                    $('#searchForm').prop('action', `{{ url('/system-management/user/1') }}`);
+                    $('#searchForm').prop('action', `{{ url('/system-management/menu-category/1') }}`);
                 }
                 $('#searchForm').submit();
             });
@@ -349,7 +282,7 @@
 
             $('.deleteButton').click(function(){
                 var slug = $(this).data('slug');
-                $('.deleteConfirm').prop('href', `{{ url('/system-management/user/delete/${slug}') }}`);
+                $('.deleteConfirm').prop('href', `{{ url('/system-management/menu-category/delete/${slug}') }}`);
             });
 
             $('.contentDiv').click(function(){
@@ -358,6 +291,7 @@
             $('.navDiv').click(function(){
                 $('.notif').addClass('hidden');
             });
+            
             $('#navButton').click(function(){
                     $('#topNav').addClass('absolute');
                     $('#topNav').removeClass('sticky');

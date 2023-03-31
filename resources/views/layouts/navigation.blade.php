@@ -120,32 +120,56 @@
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('inventory.index') }}" class="{{ (Str::contains(url()->current(), url('/inventory'))) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
                         <i class="uil uil-box w-6 text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
                         <span class="flex-1 ml-3 whitespace-nowrap">Inventory</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
-                    <button type="button" class="{{ (Str::contains(url()->current(), url('/system-management'))) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                        <i class="uil uil-setting text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
-                        <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>System Management</span>
+                    <button type="button" class="{{ (Str::contains(url()->current(), url('/inventory')) || Str::contains(url()->current(), url('/menu'))) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}" aria-controls="inventoryDropdown" data-collapse-toggle="inventoryDropdown">
+                        <i class="uil uil-box text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="flex-1 ml-3 text-left whitespace-nowrap w-36 mr-2.5" sidebar-toggle-item>Inventory / Menu</span>
                         <i class="uil uil-angle-down text-2xl text-gray-500"></i>
                     </button>
-                    <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                    <ul id="inventoryDropdown" class="hidden py-2 space-y-2">
+                        <li>
+                            <a href="{{ route('inventory.index') }}" class="{{ (Str::contains(url()->current(), url('/inventory'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Inventory
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('menu.index') }}" class="{{ (Str::contains(url()->current(), url('/menu'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Menu
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <button type="button" class="{{ (Str::contains(url()->current(), url('/system-management'))) ? 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-white hover:shadow-md hover:border-gray-200 bg-gray-200 border border-gray-300 shadow-inner' : 'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}" aria-controls="smDropdown" data-collapse-toggle="smDropdown">
+                        <i class="uil uil-setting text-2xl text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ml-3 text-left whitespace-nowrap w-full" sidebar-toggle-item>System Management</span>
+                        <i class="uil uil-angle-down text-2xl text-gray-500"></i>
+                    </button>
+                    <ul id="smDropdown" class="hidden py-2 space-y-2">
                         <li>
                             <a href="{{ route('user.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/user'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
                                 Users
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('table.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/table'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
-                                Table List
+                            <a href="{{ route('inventory.category.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/inventory-category'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Inventory Category
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('category.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/category'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
-                                Item Category
+                            <a href="{{ route('menu.category.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/menu-category'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Menu Category
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('table.index') }}" class="{{ (Str::contains(url()->current(), url('/system-management/table'))) ? 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border hover:bg-white hover:shadow-md hover:border-gray-200 shadow-inner border-gray-300 bg-gray-200' : 'flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200';}}">
+                                Table List
                             </a>
                         </li>
                         <li>

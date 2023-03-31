@@ -48,6 +48,7 @@ class UserController extends Controller
     public function store(Request $request){
         $name = $request->name;
         $username = $request->username;
+        $role = $request->role;
         $password = $request->password;
 
         $request->validate([
@@ -57,8 +58,9 @@ class UserController extends Controller
         ]);
 
         $user = new User();
-        $user->name = $name;
-        $user->username = strtoupper($username);
+        $user->name = strtoupper($name);
+        $user->username = $username;
+        $user->role = $role;
         $user->password = Hash::make($password);
         $user->slug = Str::random(60);
         $user->save();
@@ -74,6 +76,7 @@ class UserController extends Controller
     public function update(Request $request){
         $name = $request->name;
         $username = $request->username;
+        $role = $request->role;
         $password = $request->password;
         $slug = $request->slug;
 
@@ -86,8 +89,9 @@ class UserController extends Controller
 
             DB::table('users')->where('slug', $slug)
                 ->update([
-                    'name' => $name,
+                    'name' => strtoupper($name),
                     'username' => $username,
+                    'role' => $role,
                     'password' => $password
                 ]);
         }else{
@@ -98,8 +102,9 @@ class UserController extends Controller
 
             DB::table('users')->where('slug', $slug)
                 ->update([
-                    'name' => $name,
+                    'name' => strtoupper($name),
                     'username' => $username,
+                    'role' => $role,
                 ]);
         }
 
