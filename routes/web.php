@@ -103,6 +103,7 @@ Route::middleware("role:1,3")->group(function(){
     Route::get('/menu/{page}', [MenuController::class, 'paginate']);
     Route::get('/menu/{page}/{search}', [MenuController::class, 'search']);
 
+    
 });
 
 

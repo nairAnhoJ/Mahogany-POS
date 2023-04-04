@@ -129,7 +129,7 @@
                                                     {{ $menu->name }}
                                                 </th>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    {{ $menu->category_id }}
+                                                    {{ $menu->category }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ $menu->quantity }}
@@ -167,7 +167,7 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Category</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$menu->category_id.'
+                                                                '.$menu->category.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
@@ -205,7 +205,7 @@
                                                         <div class="grid grid-cols-3 content-center">
                                                             <div class="text-xs leading-5">Category</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$menu->category_id.'
+                                                                '.$menu->category.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
@@ -243,7 +243,7 @@
                                                         <div class="grid grid-cols-3 content-center">
                                                             <div class="text-xs leading-5">Category</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$menu->category_id.'
+                                                                '.$menu->category.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">

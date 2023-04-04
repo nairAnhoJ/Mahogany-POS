@@ -10,43 +10,58 @@ use Illuminate\Support\Str;
 class MenuController extends Controller
 {
     public function index(){
-        $menus = DB::table('menus')->orderBy('name', 'asc')->paginate(100);
+        $menus = DB::table('menus')
+            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
+            ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
+            ->orderBy('name', 'asc')
+            ->paginate(100);
         $menuCount = DB::table('menus')->get()->count();
         $page = 1;
         $search = "";
-        return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+
+        if(auth()->user()->role == 1){
+            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+        }elseif(auth()->user()->role == 3){
+            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
+        }
     }
 
     public function paginate($page){
-        $menus = DB::table('menus')->orderBy('name', 'asc')->paginate(100,'*','page',$page);
+        $menus = DB::table('menus')
+            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
+            ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
+            ->orderBy('name', 'asc')
+            ->paginate(100,'*','page',$page);
         $menuCount = DB::table('menus')->get()->count();
         $search = "";
         return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
     }
 
     public function search($page, $search){
-        // $menus = (DB::select('SELECT * FROM menus WHERE CONCAT(item_code,name) LIKE ?', ['%'.$search.'%']))->paginate(100,'*','page',$page);
-        // $menus = DB::table('menus')->orderBy('name', 'asc')->paginate(100,'*','page',$page);
         $menus = DB::table('menus')
-            ->select('*')
-            ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
+            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
+            ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
+            ->whereRaw("CONCAT_WS(' ', menus.name, menu_categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
 
         $menuCount = DB::table('menus')
-            ->select('*')
-            ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
+            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
+            ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
+            ->whereRaw("CONCAT_WS(' ', menus.name, menu_categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->count();
+            
         return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
     }
 
     public function add(){
-        return view('user.inventory.menu.add');
+        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
+
+        return view('user.inventory.menu.add', compact('categories'));
     }
 
     public function store(Request $request){
-        $item_code = $request->item_code;
         $name = $request->name;
         $category_id = $request->category_id;
         $quantity = $request->quantity;
@@ -75,7 +90,6 @@ class MenuController extends Controller
         ]);
 
         $item = new Menu();
-        $item->item_code = $item_code;
         $item->name = $name;
         $item->category_id = $category_id;
         $item->quantity = $quantity;

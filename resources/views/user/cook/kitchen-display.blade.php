@@ -1,9 +1,33 @@
 <x-app-layout>
+
+    <style>
+
+            .displayDiv0{
+                height: calc(100vh - 48px);
+            }
+
+        @media (min-width: 768px) {
+
+        }
+
+        @media (min-width: 1024px) {
+            .displayDiv0{
+                height: calc(100vh - 96px);
+            }
+            .displayDiv{
+                width: calc(100vw - 256px);
+            }
+            .displayDiv2{
+                max-height: calc(100vh - 96px);
+            }
+        }
+    </style>
+
     @section('page_title', 'KITCHEN DISPLAY')
     
     <div class="">
-        <div style="height: calc(100vh - 96px);" class="flex">
-            <div class="h-full w-64 text-white font-black text-xl bg-gradient-to-r from-slate-800 to-slate-700 overflow-x-hidden overflow-y-auto">
+        <div style="" class="displayDiv0 flex">
+            <div class="hidden lg:block h-full w-64 text-white font-black text-xl bg-gradient-to-r from-slate-800 to-slate-700 overflow-x-hidden overflow-y-auto">
                 <div class="flex justify-between p-2">
                     <h1>PRODUCT</h1>
                     <h1 class="w-10 text-center">QTY</h1>
@@ -90,8 +114,8 @@
 
 
 
-            <div style="width: calc(100vw - 256px);" class="h-full overflow-y-auto bg-gray-200">
-                <div style="max-height: calc(100vh - 96px);" class="grid grid-cols-3 gap-4 p-4">
+            <div style="" class="displayDiv h-full w-full overflow-y-auto bg-gray-200">
+                <div style="" class="displayDiv2 grid lg:grid-cols-3 gap-4 p-4">
                     {{--  --}}
                     <div class="bg-white shadow">
                         <div class="bg-red-400 grid grid-cols-2 h-10 text-xl content-center px-2 font-bold tracking-wider text-slate-700">
@@ -190,7 +214,7 @@
                 </div>
             </div>
         </div>
-        <div class="h-12 flex w-screen">
+        <div class="hidden h-12 lg:flex w-screen">
             <div class="w-full h-full">
                 <div class="w-full h-full grid grid-cols-5 bg-slate-700">
                     <div class="text-center leading-10 pt-1 text-xl font-black bg-red-400 tracking-wider text-slate-800">DINE-IN</div>
