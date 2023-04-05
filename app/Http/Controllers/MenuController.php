@@ -34,7 +34,12 @@ class MenuController extends Controller
             ->paginate(100,'*','page',$page);
         $menuCount = DB::table('menus')->get()->count();
         $search = "";
-        return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+
+        if(auth()->user()->role == 1){
+            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+        }elseif(auth()->user()->role == 3){
+            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
+        }
     }
 
     public function search($page, $search){
@@ -52,13 +57,23 @@ class MenuController extends Controller
             ->orderBy('name', 'asc')
             ->count();
             
-        return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+
+        if(auth()->user()->role == 1){
+            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+        }elseif(auth()->user()->role == 3){
+            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
+        }
     }
 
     public function add(){
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
+        $items = DB::table('inventories')->get();
 
-        return view('user.inventory.menu.add', compact('categories'));
+        if(auth()->user()->role == 1){
+            return view('user.inventory.menu.add', compact('categories', 'items'));
+        }elseif(auth()->user()->role == 3){
+            return view('user.cook.menu-preparation-add', compact('categories','items'));
+        }
     }
 
     public function store(Request $request){
