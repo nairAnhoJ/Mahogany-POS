@@ -16,14 +16,14 @@ class CategoryController extends Controller
         $categoryCount = DB::table('categories')->get()->count();
         $page = 1;
         $search = "";
-        return view('admin.system-management.categories.index', compact('categories', 'categoryCount', 'page', 'search'));
+        return view('admin.system-management.inventory-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
     public function paginate($page){
         $categories = DB::table('categories')->orderBy('name', 'asc')->paginate(100,'*','page',$page);
         $categoryCount = DB::table('categories')->get()->count();
         $search = "";
-        return view('admin.system-management.categories.index', compact('categories', 'categoryCount', 'page', 'search'));
+        return view('admin.system-management.inventory-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
     public function search($page, $search){
@@ -38,11 +38,11 @@ class CategoryController extends Controller
             ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->count();
-        return view('admin.system-management.categories.index', compact('categories', 'categoryCount', 'page', 'search'));
+        return view('admin.system-management.inventory-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
     public function add(){
-        return view('admin.system-management.categories.add');
+        return view('admin.system-management.inventory-categories.add');
     }
 
     public function store(Request $request){
@@ -57,12 +57,12 @@ class CategoryController extends Controller
         $category->slug = Str::random(60);
         $category->save();
 
-        return redirect()->route('category.index')->withInput()->with('message', 'Successfully Added');
+        return redirect()->route('inventory.category.index')->withInput()->with('message', 'Successfully Added');
     }
 
     public function edit($slug){
         $category = DB::table('categories')->where('slug', $slug)->first();
-        return view('admin.system-management.categories.edit', compact('category'));
+        return view('admin.system-management.inventory-categories.edit', compact('category'));
     }
 
     public function update(Request $request){
@@ -78,12 +78,12 @@ class CategoryController extends Controller
                 'name' => $name,
             ]);
 
-        return redirect()->route('category.index')->withInput()->with('message', 'Successfully Updated');
+        return redirect()->route('inventory.category.index')->withInput()->with('message', 'Successfully Updated');
     }
 
     public function delete($slug){
         DB::table('categories')->where('slug', $slug)->delete();
 
-        return redirect()->route('category.index')->withInput()->with('message', 'Successfully Deleted');
+        return redirect()->route('inventory.category.index')->withInput()->with('message', 'Successfully Deleted');
     }
 }

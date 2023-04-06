@@ -48,7 +48,16 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            @if (auth()->user()->role == 1)
+                @include('layouts.navigation')
+            @elseif(auth()->user()->role == 2)
+
+            @elseif(auth()->user()->role == 3)
+                @include('layouts.cook-navigation')
+            @elseif(auth()->user()->role == 4)
+                
+            @endif
+
             <!-- Page Content -->
             {{ $slot }}
         </div>
