@@ -7,25 +7,26 @@
                 <div class="bg-white overflow-x-hidden overflow-y-scroll shadow-md rounded-lg py-3 px-5 h-full">
                     <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" id="counter" name="counter" value="1">
                         <div class="mb-2">
-                            <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Menu name</label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
+                            <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Menu name<span class="text-red-500"> *</span></label>
+                            <input type="text" id="name" name="name" value="{{ old('name') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
                         </div>
                         <div class="mb-2">
-                            <label for="category_id" class="block text-sm font-medium text-gray-900 lg:text-base">Category<span class="text-red-500">*</span></label>
-                            <select id="category_id" name="category_id" value="{{ old('category_id') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
+                            <label for="category_id" class="block text-sm font-medium text-gray-900 lg:text-base">Category<span class="text-red-500"> *</span></label>
+                            <select id="category_id" name="category_id" value="{{ old('category_id') }}" class="bg-gray-50 lg:w-2/5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-2">
-                            <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price</label>
-                            <input type="text" id="price" name="price" value="{{ old('price') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
+                            <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price<span class="text-red-500"> *</span></label>
+                            <input type="text" id="price" name="price" value="{{ old('price') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>
-                            <input class="px-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
+                            <input class="px-1 block w-full lg:w-2/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
                         </div>
 
                         <div class="mt-7 mb-2 flex justify-between">
@@ -33,12 +34,12 @@
                             <button id="addButton" type="button" class="text-3xl text-blue-500"><i class="uil uil-plus-circle"></i></button>
                         </div>
 
-                        <div class="mb-2 flex flex-row gap-x-3">
+                        <div class="mb-2 flex flex-row gap-x-3 h-6">
                             <div class="w-2/5 text-center">
-                                <label for="brand" class="mt-3 block text-sm font-medium text-gray-900">Name</label>
+                                <label class="block font-medium text-gray-900">Name</label>
                             </div>
                             <div class="w-2/5 text-center">
-                                <label for="brand" class="mt-3 block text-sm font-medium text-gray-900">Quantity</label>
+                                <label class="block font-medium text-gray-900">Quantity</label>
                             </div>
                             <div class="w-1/5 flex">
                                 <div class="w-1/2"></div>
@@ -70,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="w-2/5">
-                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center">
+                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
                                 </div>
                                 <div class="w-1/5 flex">
                                     <div id="unit1" class="w-1/2 text-lg leading-9"></div>
@@ -140,12 +141,13 @@
                 $('.uil-angle-down').removeClass('-rotate-180');
             });
 
-            jQuery(document).on( "click", ".quantity", function(){
+            jQuery(document).on( "keyup", ".quantity", function(){
                 var val = $(this).val().replace(/[^0-9]/g, '');
                 $(this).val(val);
             });
 
             $('#addButton').click(function(){
+                $('#counter').val(counter);
                 $('#ingredientsDiv').append(`
                     <div id="ing${counter}" class="mb-5 flex flex-row gap-x-3">
                         <div class="w-2/5">

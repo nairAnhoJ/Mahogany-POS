@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ingredient;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -77,11 +78,11 @@ class MenuController extends Controller
     }
 
     public function store(Request $request){
-        $name = $request->name;
+        $name = strtoupper($request->name);
         $category_id = $request->category_id;
-        $quantity = $request->quantity;
         $price = $request->price;
         $image = $request->image;
+        $Totalcounter = $request->counter;
 
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('menus')->where('slug', $slug)->get();
@@ -101,30 +102,58 @@ class MenuController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'quantity' => 'required'
+            'price' => 'required',
         ]);
 
         $item = new Menu();
         $item->name = $name;
         $item->category_id = $category_id;
-        $item->quantity = $quantity;
         $item->price = $price;
+        $item->quantity = 0;
+        $item->current_quantity = 0;
         if($image != null){
             $item->image = $imagePath;
         }
         $item->slug = $slug;
         $item->save();
+        
+        for($counter = 1; $counter <= $Totalcounter; $counter++){
+            $iname = 'item'.$counter;
+            $qname = 'quantity'.$counter;
+
+            if($request->$iname != null){
+                $invUnit = (DB::table('inventories')->where('id', $request->$iname)->first())->unit;
+                $ingr = new Ingredient();
+                $ingr->menu_id = $item->id;
+                $ingr->inventory_id = $request->$iname;
+                $ingr->quantity = $request->$qname;
+                $ingr->unit = $invUnit;
+                $ingr->save();
+            }
+        }
 
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Added');
     }
 
     public function edit($slug){
         $item = DB::table('menus')->where('slug', $slug)->first();
-        // dd($item);
-        return view('user.inventory.menu.edit', compact('item'));
+        $ingredients = DB::table('ingredients')
+            ->select('ingredients.id', 'ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name AS name', 'ingredients.quantity', 'ingredients.unit')
+            ->join('inventories', 'ingredients.inventory_id', 'inventories.id')
+            ->where('ingredients.menu_id', $item->id)->get();
+        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
+        $items = DB::table('inventories')->get();
+        
+        if(auth()->user()->role == 1){
+            return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
+        }elseif(auth()->user()->role == 3){
+            return view('user.cook.menu-preparation-edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
+        }
     }
 
     public function update(Request $request){
+        dd($request);
+
         $oldSlug = $request->slug;
         $item_code = $request->item_code;
         $name = $request->name;
