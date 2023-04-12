@@ -97,7 +97,8 @@ class MenuController extends Controller
 
         $imagePath = null;
         if($image != null){
-            $imagePath = $request->file('image')->storeAs('images/items/'.$slug. '.' . $request->file('image')->getClientOriginalExtension(), 'public');
+            $filename = $slug. '.' . $request->file('image')->getClientOriginalExtension();
+            $imagePath = $request->file('image')->storeAs('images/menu',$filename , 'public');
         }
 
         $request->validate([
@@ -152,15 +153,13 @@ class MenuController extends Controller
     }
 
     public function update(Request $request){
-        dd($request);
-
         $oldSlug = $request->slug;
-        $item_code = $request->item_code;
-        $name = $request->name;
+        $name = strtoupper($request->name);
         $category_id = $request->category_id;
-        $quantity = $request->quantity;
         $price = $request->price;
         $image = $request->image;
+        $Totalcounter = $request->counter;
+        $menuID = (DB::table('menus')->where('slug', $oldSlug)->first())->id;
 
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('menus')->where('slug', $slug)->get();
@@ -175,21 +174,20 @@ class MenuController extends Controller
 
         $imagePath = null;
         if($image != null){
-            $imagePath = $request->file('image')->storeAs('public/images/items/'.$slug. '.' . $request->file('image')->getClientOriginalExtension());
+            $filename = $slug. '.' . $request->file('image')->getClientOriginalExtension();
+            $imagePath = $request->file('image')->storeAs('images/menu',$filename , 'public');
         }
 
         $request->validate([
             'name' => 'required',
-            'quantity' => 'required'
+            'price' => 'required',
         ]);
 
         if($image != null){
             DB::table('menus')->where('slug', $oldSlug)
                 ->update([
-                    'item_code' => $item_code,
                     'name' => $name,
                     'category_id' => $category_id,
-                    'quantity' => $quantity,
                     'price' => $price,
                     'image' => $imagePath,
                     'slug' => $slug,
@@ -197,13 +195,29 @@ class MenuController extends Controller
         }else{
             DB::table('menus')->where('slug', $oldSlug)
                 ->update([
-                    'item_code' => $item_code,
                     'name' => $name,
                     'category_id' => $category_id,
-                    'quantity' => $quantity,
                     'price' => $price,
                     'slug' => $slug,
                 ]);
+        }
+        
+        DB::table('ingredients')->where('menu_id', $menuID)->delete();
+
+        for($counter = 1; $counter <= $Totalcounter; $counter++){
+            $iname = 'item'.$counter;
+            $qname = 'quantity'.$counter;
+
+            if($request->$iname != null){
+                $invUnit = (DB::table('inventories')->where('id', $request->$iname)->first())->unit;
+
+                $ingr = new Ingredient();
+                $ingr->menu_id = $menuID;
+                $ingr->inventory_id = $request->$iname;
+                $ingr->quantity = $request->$qname;
+                $ingr->unit = $invUnit;
+                $ingr->save();
+            }
         }
 
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Updated');

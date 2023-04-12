@@ -7,7 +7,7 @@
                 <div class="bg-white overflow-x-hidden overflow-y-scroll shadow-md rounded-lg py-3 px-5 h-full">
                     <form action="{{ route('menu.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" id="counter" name="counter" value="{{$ingredients->count()}}">
+                        <input type="hidden" id="counter" name="counter" value="{{ ($ingredients->count() == 0) ? 1 : $ingredients->count(); }}">
                         <input type="hidden" name="slug" value="{{$slug}}">
                         <div class="mb-2">
                             <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Menu name<span class="text-red-500"> *</span></label>
@@ -52,39 +52,77 @@
                             @php
                                 $counter = $ingredients->count() + 1;
                                 $x = 1;
-                            @endphp
-                            @foreach ($ingredients as $ingredient)
-                                <div id="ing{{$x}}" class="mb-5 flex flex-row gap-x-3">
-                                    <div class="w-2/5">
-                                        <div class="wrapper w-full relative">
-                                            <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
-                                                <span>{{ $ingredient->name }}</span>
-                                                <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
-                                            </div>
-                                            <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
-                                                <div class="search relative">
-                                                    <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
-                                                    <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+
+                                if ($counter != 1) {
+                                    foreach ($ingredients as $ingredient){
+                                        echo
+                                        '<div id="ing'.$x.'" class="mb-5 flex flex-row gap-x-3">
+                                            <div class="w-2/5">
+                                                <div class="wrapper w-full relative">
+                                                    <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                                                        <span>'.$ingredient->name.'</span>
+                                                        <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                                                    </div>
+                                                    <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                                                        <div class="search relative">
+                                                            <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                                            <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                                                        </div>
+                                                        <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                                                            <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                                            ';foreach ($items as $item){
+                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
+                                                            }
+                                                        echo '</ul>
+                                                    </div>
+                                                    <input type="hidden" name="item'.$x.'" value="'.$ingredient->inventory_id.'">
                                                 </div>
-                                                <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                                    <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
-                                                    @foreach ($items as $item)
-                                                        <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="{{$x}}" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
-                                                    @endforeach
-                                                </ul>
                                             </div>
-                                            <input type="hidden" name="item{{$x}}" value="{{ $ingredient->inventory_id }}">
+                                            <div class="w-2/5">
+                                                <input type="text" id="quantity'.$x.'" name="quantity'.$x.'" value="'.$ingredient->quantity.'" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                                            </div>
+                                            <div class="w-1/5 flex">
+                                                <div id="unit'.$x.'" class="w-1/2 text-lg leading-9">'.$ingredient->unit.'</div>
+                                                <button type="button" data-thisid="ing'.$x++.'" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                                            </div>
+                                        </div>';
+                                    }
+                                }else{
+                                    echo '
+                                        <div id="ing'.$x.'" class="mb-5 flex flex-row gap-x-3">
+                                            <div class="w-2/5">
+                                                <div class="wrapper w-full relative">
+                                                    <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                                                        <span></span>
+                                                        <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                                                    </div>
+                                                    <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                                                        <div class="search relative">
+                                                            <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                                            <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                                                        </div>
+                                                        <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                                                            <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                                            ';foreach ($items as $item){
+                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
+                                                            }
+                                                        echo '</ul>
+                                                    </div>
+                                                    <input type="hidden" name="item'.$x.'" value="">
+                                                </div>
+                                            </div>
+                                            <div class="w-2/5">
+                                                <input type="text" id="quantity'.$x.'" name="quantity'.$x.'" value="" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                                            </div>
+                                            <div class="w-1/5 flex">
+                                                <div id="unit'.$x.'" class="w-1/2 text-lg leading-9"></div>
+                                                <button type="button" data-thisid="ing'.$x++.'" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="w-2/5">
-                                        <input type="text" id="quantity{{$x}}" name="quantity{{$x}}" value="{{ $ingredient->quantity }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
-                                    </div>
-                                    <div class="w-1/5 flex">
-                                        <div id="unit{{$x}}" class="w-1/2 text-lg leading-9">{{ $ingredient->unit }}</div>
-                                        <button type="button" data-thisid="ing{{$x++}}" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
-                                    </div>
-                                </div>
-                            @endforeach
+                                    ';
+                                }
+
+                            @endphp
                         </div>
 
                         <div class="flex justify-between">

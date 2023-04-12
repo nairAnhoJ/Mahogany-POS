@@ -95,7 +95,7 @@
                                                     Category
                                                 </th>
                                                 <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                    Quantity
+                                                    Quantity <span class="pl-5"></span>
                                                 </th>
                                                 <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                     Price
@@ -114,8 +114,8 @@
                                                     <td class="px-6 py-4 text-center whitespace-nowrap">
                                                         {{ $menu->category }}
                                                     </td>
-                                                    <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                        {{ $menu->quantity }}
+                                                    <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
+                                                        <span class="flex">{{ $menu->quantity }}</span><button data-slug="{{$menu->slug}}" class="addQuantity ml-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button>
                                                     </td>
                                                     <td class="px-6 py-4 text-center whitespace-nowrap">
                                                         {{ '₱ '.number_format($menu->price, 2, '.', ',') }}
@@ -343,6 +343,13 @@
 
             $('.contentDiv').click(function(){
                 $('.notif').addClass('hidden');
+            });
+
+
+
+            $('.addQuantity').click(function(){
+                var slug = $(this).data('slug');
+                alert(slug);
             });
         });
     </script>
