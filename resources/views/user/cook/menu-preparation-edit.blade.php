@@ -139,6 +139,7 @@
         $(document).ready(function() {
 
             var counter = "<?php echo $counter; ?>";
+            counter++;
 
             jQuery(document).on( "click", ".select-btn", function(e){
                 $('.content').not($(this).closest('.wrapper').find('.content')).addClass('hidden');

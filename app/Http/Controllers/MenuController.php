@@ -224,6 +224,9 @@ class MenuController extends Controller
     }
 
     public function delete($slug){
+        $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
+        
+        DB::table('ingredients')->where('menu_id', $menuID)->delete();
         DB::table('menus')->where('slug', $slug)->delete();
 
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Deleted');
