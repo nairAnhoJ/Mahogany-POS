@@ -39,39 +39,46 @@
     {{-- DELETE MODAL END --}}
 
     {{-- ADD QUANTITY MODAL --}}
-        <div id="addQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+        <div id="changeQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
-                <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                <form method="POST" action="{{ route('menu.changeqty') }}" id="changeQtyForm" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                    @csrf
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
                         <h3 class="font-semibold text-gray-900 flex items-center">
                             {{-- <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i> --}}
-                            <span class="text-blue-500 text-base md:text-lg lg:text-xl">Add Quantity</span>
+                            <span id="changeQtyTitle" class="text-base md:text-lg lg:text-xl">Add Quantity</span>
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="addQtyModal">
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="changeQtyModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="px-6 py-3 md:py-6 space-y-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            Quantity
-                        </p>
+                    <div class="px-6 py-3">
+                        <div class="text-xs md:text-base leading-relaxed text-gray-500">
+                            <input type="hidden" id="s" name="s">
+                            <input type="hidden" id="slug" name="slug">
+                            <div>
+                                <label for="quantity" class="block text-sm font-medium text-gray-900">Quantity</label>
+                                <input type="text" id="quantity" name="quantity" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs" autocomplete="off">
+                            </div>
+                            <p class="mt-3 italic">* Please double check the quantity.</p>
+                        </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="submit" href="" class="deleteConfirm w-24 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
-                        <button data-modal-hide="addQtyModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                        <button disabled type="submit" id="addQtyButton" class="disabled:opacity-50 disabled:pointer-events-none w-24 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
+                        <button data-modal-hide="changeQtyModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900">Cancel</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     {{-- ADD QUANTITY MODAL END --}}
 
-    {{-- NOTIFICATION --}}
+    {{-- SUCCESS NOTIFICATION --}}
         @if (session('message'))
-            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-72 h-12 lg:ml-32 bg-emerald-200 rounded-lg z-50 shadow-md shadow-emerald-800 flex flex-row justify-between px-2">
+            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-emerald-200 rounded-lg z-50 shadow-md shadow-emerald-800 flex flex-row justify-between px-2">
                 <div class="flex">
                     <i class="self-center uil uil-cloud-check text-emerald-800 text-2xl"></i>
                     <h1 class="self-center text-emerald-800 font-semibold ml-1">{{ session('message') }}</h1>
@@ -81,7 +88,21 @@
                 </button>
             </div>
         @endif
-    {{-- NOTIFICATION END --}}
+    {{-- SUCCESS NOTIFICATION END --}}
+
+    {{-- ERROR NOTIFICATION --}}
+        @if (session('error'))
+            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-red-200 rounded-lg z-50 shadow-md shadow-red-800 flex flex-row justify-between px-2">
+                <div class="flex">
+                    <i class="self-center uil uil-cloud-check text-red-800 text-2xl"></i>
+                    <h1 class="self-center text-red-800 font-semibold ml-1">{{ session('error') }}</h1>
+                </div>
+                <button class="notifButton self-center">
+                    <i class="uil uil-times text-2xl text-red-800"></i>
+                </button>
+            </div>
+        @endif
+    {{-- ERROR NOTIFICATION END --}}
 
     <div class="">
         <div style="height: calc(100vh - 48px);" class="flex">
@@ -126,7 +147,7 @@
                                                     Category
                                                 </th>
                                                 <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                    Quantity <span class="pl-5"></span>
+                                                    Quantity
                                                 </th>
                                                 <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                     Price
@@ -146,7 +167,11 @@
                                                         {{ $menu->category }}
                                                     </td>
                                                     <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
-                                                        <span class="flex">{{ $menu->quantity }}</span><button data-slug="{{$menu->slug}}"  data-modal-target="addQtyModal" data-modal-toggle="addQtyModal"class="addQuantity ml-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button>
+                                                        <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button>
+                                                        
+                                                        <span class="flex">{{ $menu->quantity }}</span>
+
+                                                        <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="reduceQuantity ml-2"><i class="uil uil-minus-circle text-xl text-red-500 flex"></i></button>
                                                     </td>
                                                     <td class="px-6 py-4 text-center whitespace-nowrap">
                                                         {{ '₱ '.number_format($menu->price, 2, '.', ',') }}
@@ -379,6 +404,38 @@
 
             $('.addQuantity').click(function(){
                 var slug = $(this).data('slug');
+                $('#slug').val(slug);
+                $('#quantity').val('');
+                $('#s').val('add');
+                $('#quantity').focus();
+
+                $('#changeQtyTitle').html('Add Quantity');
+
+                $('#changeQtyTitle').addClass('text-blue-500');
+                $('#changeQtyTitle').removeClass('text-red-500');
+            });
+
+            $('.reduceQuantity').click(function(){
+                var slug = $(this).data('slug');
+                $('#slug').val(slug);
+                $('#quantity').val('');
+                $('#s').val('reduce');
+                $('#quantity').focus();
+
+                $('#changeQtyTitle').html('Reduce Quantity');
+
+                $('#changeQtyTitle').addClass('text-red-500');
+                $('#changeQtyTitle').removeClass('text-blue-500');
+            });
+
+            jQuery(document).on( "keyup", "#quantity", function(){
+                var val = $(this).val().replace(/[^0-9]/g, '');
+                $(this).val(val);
+                if(val == ''){
+                    $('#addQtyButton').prop('disabled', true);
+                }else{
+                    $('#addQtyButton').prop('disabled', false);
+                }
             });
         });
     </script>

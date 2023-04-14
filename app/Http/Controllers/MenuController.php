@@ -223,6 +223,47 @@ class MenuController extends Controller
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Updated');
     }
 
+    public function changeqty(Request $request){
+        $slug = $request->slug;
+        $quantity = $request->quantity;
+        $s = $request->s;
+        $cur_quantity = (DB::table('menus')->where('slug', $slug)->first())->quantity;
+
+        $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
+        $ings = DB::table('ingredients')->where('menu_id', $menuID)->get();
+
+        foreach($ings as $ing){
+
+            $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
+            if($s == 'add'){
+                $new_quantity = $old_quantity - ($ing->quantity * $quantity);
+                $uqty = $cur_quantity + $quantity;
+            }else{
+                $new_quantity = $old_quantity + ($ing->quantity * $quantity);
+                $uqty = $cur_quantity - $quantity;
+            }
+
+            if($new_quantity < 0){
+                return redirect()->route('menu.index')->withInput()->with('error', 'Insufficient Ingredients');
+            }
+            if($uqty < 0){
+                return redirect()->route('menu.index')->withInput()->with('error', 'Error Changing Quantity');
+            }
+
+            DB::table('inventories')->where('id', $ing->inventory_id)->update([
+                'quantity' => $new_quantity
+            ]);
+        }
+
+        DB::table('menus')->where('slug', $slug)
+            ->update([
+                'current_quantity' => $uqty,
+                'quantity' => $uqty,
+            ]);
+
+        return redirect()->route('menu.index')->withInput()->with('message', 'Quantity Successfully Changed');
+    }
+
     public function delete($slug){
         $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
         

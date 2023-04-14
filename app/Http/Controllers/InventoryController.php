@@ -59,7 +59,7 @@ class InventoryController extends Controller
         $item_code = $request->item_code;
         $name = $request->name;
         $category_id = $request->category_id;
-        $quantity = $request->quantity;
+        // $quantity = $request->quantity;
         $reorder_point = $request->reorder_point;
         $unit = $request->unit;
         $price = $request->price;
@@ -83,7 +83,6 @@ class InventoryController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'quantity' => 'required',
             'reorder_point' => 'required'
         ]);
 
@@ -91,7 +90,7 @@ class InventoryController extends Controller
         $item->item_code = $item_code;
         $item->name = $name;
         $item->category_id = $category_id;
-        $item->quantity = $quantity;
+        $item->quantity = 0;
         $item->reorder_point = $reorder_point;
         $item->unit = $unit;
         $item->price = $price;
@@ -116,7 +115,7 @@ class InventoryController extends Controller
         $item_code = $request->item_code;
         $name = $request->name;
         $category_id = $request->category_id;
-        $quantity = $request->quantity;
+        // $quantity = $request->quantity;
         $reorder_point = $request->reorder_point;
         $unit = $request->unit;
         $price = $request->price;
@@ -140,7 +139,6 @@ class InventoryController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'quantity' => 'required',
             'reorder_point' => 'required'
         ]);
 
@@ -150,7 +148,6 @@ class InventoryController extends Controller
                     'item_code' => $item_code,
                     'name' => $name,
                     'category_id' => $category_id,
-                    'quantity' => $quantity,
                     'reorder_point' => $reorder_point,
                     'unit' => $unit,
                     'price' => $price,
@@ -163,7 +160,6 @@ class InventoryController extends Controller
                     'item_code' => $item_code,
                     'name' => $name,
                     'category_id' => $category_id,
-                    'quantity' => $quantity,
                     'price' => $price,
                     'slug' => $slug,
                 ]);

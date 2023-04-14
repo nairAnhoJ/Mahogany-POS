@@ -9,12 +9,12 @@
                     @csrf
                     <div class="mb-2">
                         <label for="item_code" class="block text-sm font-medium text-gray-900 lg:text-base">Item Code</label>
-                        <input type="text" id="item_code" name="item_code" value="{{ old('item_code') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
+                        <input type="text" id="item_code" name="item_code" value="{{ old('item_code') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off">
                     </div>
 
                     <div class="mb-2">
                         <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Item Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off" required>
                     </div>
 
                     <div class="mb-2">
@@ -26,14 +26,14 @@
                         </select>
                     </div>
 
-                    <div class="mb-2">
+                    {{-- <div class="mb-2">
                         <label for="quantity" class="block text-sm font-medium text-gray-900 lg:text-base">Quantity <span class="text-red-500">*</span></label>
-                        <input type="text" id="quantity" name="quantity" value="{{ old('quantity') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
-                    </div>
+                        <input type="text" id="quantity" name="quantity" value="{{ old('quantity') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off" required>
+                    </div> --}}
 
                     <div class="mb-2">
                         <label for="reorder_point" class="block text-sm font-medium text-gray-900 lg:text-base">Reorder Point<span class="text-red-500">*</span></label>
-                        <input type="text" id="reorder_point" name="reorder_point" value="{{ old('reorder_point') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
+                        <input type="text" id="reorder_point" name="reorder_point" value="{{ old('reorder_point') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off" required>
                     </div>
 
                     <div class="mb-2">
@@ -47,7 +47,7 @@
 
                     <div class="mb-2">
                         <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price</label>
-                        <input type="text" id="price" name="price" value="{{ old('price') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
+                        <input type="text" id="price" name="price" value="{{ old('price') }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off">
                     </div>
 
                     <div class="mb-3">
