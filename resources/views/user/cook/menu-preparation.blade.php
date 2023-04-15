@@ -39,23 +39,23 @@
     {{-- DELETE MODAL END --}}
 
     {{-- ADD QUANTITY MODAL --}}
-        <div id="changeQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
+        {{-- <div id="changeQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+            <div class="relative w-full h-full max-w-2xl md:h-auto"> --}}
                 <!-- Modal content -->
-                <form method="POST" action="{{ route('menu.changeqty') }}" id="changeQtyForm" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
-                    @csrf
+                {{-- <form method="POST" action="{{ route('menu.changeqty') }}" id="changeQtyForm" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                    @csrf --}}
                     <!-- Modal header -->
-                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
+                    {{-- <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
+                        <h3 class="font-semibold text-gray-900 flex items-center"> --}}
                             {{-- <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i> --}}
-                            <span id="changeQtyTitle" class="text-base md:text-lg lg:text-xl">Add Quantity</span>
+                            {{-- <span id="changeQtyTitle" class="text-base md:text-lg lg:text-xl">Add Quantity</span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="changeQtyModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
-                    </div>
+                    </div> --}}
                     <!-- Modal body -->
-                    <div class="px-6 py-3">
+                    {{-- <div class="px-6 py-3">
                         <div class="text-xs md:text-base leading-relaxed text-gray-500">
                             <input type="hidden" id="s" name="s">
                             <input type="hidden" id="slug" name="slug">
@@ -65,15 +65,15 @@
                             </div>
                             <p class="mt-3 italic">* Please double check the quantity.</p>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- Modal footer -->
-                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
+                    {{-- <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
                         <button disabled type="submit" id="addQtyButton" class="disabled:opacity-50 disabled:pointer-events-none w-24 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
                         <button data-modal-hide="changeQtyModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900">Cancel</button>
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
     {{-- ADD QUANTITY MODAL END --}}
 
     {{-- SUCCESS NOTIFICATION --}}
@@ -103,6 +103,43 @@
             </div>
         @endif
     {{-- ERROR NOTIFICATION END --}}
+
+    {{-- QUANTITY CHANGING SIDEBAR --}}
+        <button data-drawer-target="addServingModal" data-drawer-toggle="addServingModal" aria-controls="addServingModal" type="button" id="addServingButton" class="hidden">
+        </button>
+            
+        <aside id="addServingModal" data-drawer-backdrop="static" tabindex="-1" class="fixed top-0 left-1/3 lg:left-1/2 z-40 w-2/3 lg:w-1/2 h-screen transition-transform translate-x-full" aria-label="Sidebar">
+            <form method="POST" action="{{ route('menu.changeqty') }}" class="h-full px-4 py-4 overflow-y-auto bg-gray-50 relative">
+                @csrf
+                <h1 id="menuName" class="font-bold text-3xl tracking-wider">MENU NAME</h1>
+                <div class="grid grid-cols-2 mt-5 mb-1 w-full">
+                    <input type="hidden" id="slug" name="slug">
+                    <p class="font-bold text-2xl tracking-wide">Servings</p>
+                    <div class="flex flex-row-reverse items-center rounded-lg text-center">
+                        <button id="incQty" type="button">
+                            <i class="uil uil-plus-circle text-3xl text-blue-500"></i>
+                        </button>
+                        <div class="text-2xl mx-2">
+                            <input type="text" id="servings" name="servings" value="" class="w-14 p-0 h-9 bg-gray-50 text-center">
+                        </div>
+                        <button id="decQty" type="button">
+                            <i class="uil uil-minus-circle text-3xl text-red-500"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="">
+                    <h2 class="font-bold text-2xl tracking-wide">INGREDIENTS</h2>
+                    <div id="ingredients" class="">
+                        
+                    </div>
+                </div>
+                <div class="absolute bottom-4 right-4">
+                    <button type="submit"  data-drawer-hide="addServingModal" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Proceed</button>
+                    <button type="button" data-drawer-hide="addServingModal" class="text-white bg-gray-500 hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Cancel</button>
+                </div>
+            </form>
+        </aside>
+    {{-- QUANTITY CHANGING SIDEBAR END --}}
 
     <div class="">
         <div style="height: calc(100vh - 48px);" class="flex">
@@ -159,24 +196,24 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($menus as $menu)
-                                                <tr class="bg-white border-b">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                <tr class="addServing bg-white border-b cursor-pointer hover:bg-slate-50">
+                                                    <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
                                                         {{ $menu->name }}
                                                     </th>
-                                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         {{ $menu->category }}
                                                     </td>
-                                                    <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
-                                                        <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button>
+                                                    <td class="px-6 py-3 text-center whitespace-nowrap flex justify-center items-center">
+                                                        {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button> --}}
                                                         
-                                                        <span class="flex">{{ $menu->quantity }}</span>
+                                                        <span data-slug="{{$menu->slug}}" class="flex">{{ $menu->quantity }}</span>
 
-                                                        <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="reduceQuantity ml-2"><i class="uil uil-minus-circle text-xl text-red-500 flex"></i></button>
+                                                        {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="reduceQuantity ml-2"><i class="uil uil-minus-circle text-xl text-red-500 flex"></i></button> --}}
                                                     </td>
-                                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         {{ '₱ '.number_format($menu->price, 2, '.', ',') }}
                                                     </td>
-                                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                     </td>
                                                 </tr>
@@ -401,31 +438,132 @@
                 $('.notif').addClass('hidden');
             });
 
+            // $('.addQuantity').click(function(){
+            //     var slug = $(this).data('slug');
+            //     $('#slug').val(slug);
+            //     $('#quantity').val('');
+            //     $('#s').val('add');
+            //     $('#quantity').focus();
 
-            $('.addQuantity').click(function(){
-                var slug = $(this).data('slug');
-                $('#slug').val(slug);
-                $('#quantity').val('');
-                $('#s').val('add');
-                $('#quantity').focus();
+            //     $('#changeQtyTitle').html('Add Quantity');
 
-                $('#changeQtyTitle').html('Add Quantity');
+            //     $('#changeQtyTitle').addClass('text-blue-500');
+            //     $('#changeQtyTitle').removeClass('text-red-500');
+            // });
 
-                $('#changeQtyTitle').addClass('text-blue-500');
-                $('#changeQtyTitle').removeClass('text-red-500');
+            // $('.reduceQuantity').click(function(){
+            //     var slug = $(this).data('slug');
+            //     $('#slug').val(slug);
+            //     $('#quantity').val('');
+            //     $('#s').val('reduce');
+            //     $('#quantity').focus();
+
+            //     $('#changeQtyTitle').html('Reduce Quantity');
+
+            //     $('#changeQtyTitle').addClass('text-red-500');
+            //     $('#changeQtyTitle').removeClass('text-blue-500');
+            // });
+
+            $('#incQty').click(function(){
+                var qty = $('#servings').val();
+                qty++;
+                $('#servings').val(qty);
+
+                var slug = $('#slug').val();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('menu.computeqty') }}",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{
+                        slug: slug,
+                        qty: qty,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#ingredients').html(result.ingredients);
+                    }
+                })
             });
 
-            $('.reduceQuantity').click(function(){
-                var slug = $(this).data('slug');
-                $('#slug').val(slug);
-                $('#quantity').val('');
-                $('#s').val('reduce');
-                $('#quantity').focus();
+            $('#decQty').click(function(){
+                var qty = $('#servings').val();
+                qty--;
+                if(qty > 0){
+                    $('#servings').val(qty);
+                }else{
+                    qty++;
+                }
 
-                $('#changeQtyTitle').html('Reduce Quantity');
+                var slug = $('#slug').val();
+                var _token = $('input[name="_token"]').val();
 
-                $('#changeQtyTitle').addClass('text-red-500');
-                $('#changeQtyTitle').removeClass('text-blue-500');
+                $.ajax({
+                    url:"{{ route('menu.computeqty') }}",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{
+                        slug: slug,
+                        qty: qty,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#ingredients').html(result.ingredients);
+                    }
+                })
+            });
+
+            $('#servings').on('keyup', function() {
+                var qty = $(this).val().replace(/[^0-9]/g, '');
+                $(this).val(qty);
+                if(qty == ''){
+                    $(this).val(1);
+                }
+
+                if(qty < 1){
+                    $('#servings').val(1);
+                    qty = 1;
+                }
+
+                var slug = $('#slug').val();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('menu.computeqty') }}",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{
+                        slug: slug,
+                        qty: qty,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#ingredients').html(result.ingredients);
+                    }
+                })
+            });
+
+            $('.addServing').click(function(){
+                var slug = $(this).find('span').data('slug');
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('menu.view') }}",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{
+                        slug: slug,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#menuName').html(result.name);
+                        $('#ingredients').html(result.ingredients);
+                        $('#servings').val(1);
+                        $('#slug').val(slug);
+                        $('#addServingButton').click();
+                    }
+                })
             });
 
             jQuery(document).on( "keyup", "#quantity", function(){

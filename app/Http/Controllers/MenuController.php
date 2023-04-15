@@ -182,25 +182,6 @@ class MenuController extends Controller
             'name' => 'required',
             'price' => 'required',
         ]);
-
-        if($image != null){
-            DB::table('menus')->where('slug', $oldSlug)
-                ->update([
-                    'name' => $name,
-                    'category_id' => $category_id,
-                    'price' => $price,
-                    'image' => $imagePath,
-                    'slug' => $slug,
-                ]);
-        }else{
-            DB::table('menus')->where('slug', $oldSlug)
-                ->update([
-                    'name' => $name,
-                    'category_id' => $category_id,
-                    'price' => $price,
-                    'slug' => $slug,
-                ]);
-        }
         
         DB::table('ingredients')->where('menu_id', $menuID)->delete();
 
@@ -220,13 +201,93 @@ class MenuController extends Controller
             }
         }
 
+        if($image != null){
+            DB::table('menus')->where('slug', $oldSlug)
+                ->update([
+                    'name' => $name,
+                    'category_id' => $category_id,
+                    'price' => $price,
+                    'image' => $imagePath,
+                    'slug' => $slug,
+                ]);
+        }else{
+            DB::table('menus')->where('slug', $oldSlug)
+                ->update([
+                    'name' => $name,
+                    'category_id' => $category_id,
+                    'price' => $price,
+                    'slug' => $slug,
+                ]);
+        }
+
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Updated');
+    }
+
+    public function view(Request $request){
+        $slug = $request->slug;
+        $menu = DB::table('menus')->where('slug', $slug)->first();
+        $name = $menu->name;
+        $id = $menu->id;
+
+        $ings = DB::table('ingredients')
+            ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.unit')
+            ->join('inventories', 'ingredients.inventory_id', '=', 'inventories.id')
+            ->where('menu_id', $id)->get();
+
+        $ingredients = '';
+
+        foreach($ings as $ing){
+            $ingredients .= '
+                <div class="px-4 text-xl font-semibold tracking-wide">
+                    <h1><span>'.$ing->quantity.'</span><span>'.$ing->unit.'</span><span class="ml-8">'.$ing->name.'</span></h1>
+                </div>
+            ';
+        }
+        
+
+        $result = array(
+            'name' => $name,
+            'ingredients' => $ingredients,
+        );
+        
+        echo json_encode($result);
+    }
+
+    public function computeqty(Request $request){
+        $slug = $request->slug;
+        $qty = $request->qty;
+
+        $menu = DB::table('menus')->where('slug', $slug)->first();
+        $name = $menu->name;
+        $id = $menu->id;
+
+        $ings = DB::table('ingredients')
+            ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.unit')
+            ->join('inventories', 'ingredients.inventory_id', '=', 'inventories.id')
+            ->where('menu_id', $id)->get();
+
+        $ingredients = '';
+
+        foreach($ings as $ing){
+            $nqty = $ing->quantity * $qty;
+            $ingredients .= '
+                <div class="px-4 text-xl font-semibold tracking-wide">
+                    <h1><span>'.$nqty.'</span><span>'.$ing->unit.'</span><span class="ml-8">'.$ing->name.'</span></h1>
+                </div>
+            ';
+        }
+        
+        $result = array(
+            'name' => $name,
+            'ingredients' => $ingredients,
+        );
+        
+        echo json_encode($result);
     }
 
     public function changeqty(Request $request){
         $slug = $request->slug;
-        $quantity = $request->quantity;
-        $s = $request->s;
+        $quantity = $request->servings;
         $cur_quantity = (DB::table('menus')->where('slug', $slug)->first())->quantity;
 
         $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
@@ -235,24 +296,17 @@ class MenuController extends Controller
         foreach($ings as $ing){
 
             $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
-            if($s == 'add'){
-                $new_quantity = $old_quantity - ($ing->quantity * $quantity);
-                $uqty = $cur_quantity + $quantity;
-            }else{
-                $new_quantity = $old_quantity + ($ing->quantity * $quantity);
-                $uqty = $cur_quantity - $quantity;
-            }
+            $tqty = $ing->quantity * $quantity;
+            $new_quantity = $old_quantity - $tqty;
+            $uqty = $cur_quantity + $quantity;
 
             if($new_quantity < 0){
                 return redirect()->route('menu.index')->withInput()->with('error', 'Insufficient Ingredients');
+            }else{
+                DB::table('inventories')->where('id', $ing->inventory_id)->update([
+                    'quantity' => $new_quantity
+                ]);
             }
-            if($uqty < 0){
-                return redirect()->route('menu.index')->withInput()->with('error', 'Error Changing Quantity');
-            }
-
-            DB::table('inventories')->where('id', $ing->inventory_id)->update([
-                'quantity' => $new_quantity
-            ]);
         }
 
         DB::table('menus')->where('slug', $slug)
