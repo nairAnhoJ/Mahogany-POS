@@ -51,7 +51,7 @@
             @if (auth()->user()->role == 1)
                 @include('layouts.navigation')
             @elseif(auth()->user()->role == 2)
-
+                @include('layouts.cashier-navigation')
             @elseif(auth()->user()->role == 3)
                 @include('layouts.cook-navigation')
             @elseif(auth()->user()->role == 4)

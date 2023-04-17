@@ -6,6 +6,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KitchenController;
 use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\POSController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -28,14 +29,13 @@ Route::get('/', function () {
     if(!auth()->user()){
         return view('auth.login');
     }else{
-
-        if(auth()->user()->role == 1){
+        if(auth()->user()->role == '1'){
             return redirect()->route('dashboard');
-        }else if(auth()->user()->role == 2){
-            return redirect()->route('dashboard');
-        }else if(auth()->user()->role == 3){
+        }else if(auth()->user()->role == '2'){
+            return redirect()->route('pos.index');
+        }else if(auth()->user()->role == '3'){
             return redirect()->route('kitchen.display');
-        }else if(auth()->user()->role == 4){
+        }else if(auth()->user()->role == '4'){
             return redirect()->route('dashboard');
         }
     }
@@ -89,7 +89,6 @@ Route::middleware("role:1")->group(function(){
 
 
 Route::middleware("role:1,3")->group(function(){
-
     // DASHBOARD
     Route::get('/kitchen-display', [KitchenController::class, 'index'])->name('kitchen.display');
 
@@ -105,13 +104,10 @@ Route::middleware("role:1,3")->group(function(){
     Route::get('/menu/delete/{slug}', [MenuController::class, 'delete'])->name('menu.delete');
     Route::get('/menu/{page}', [MenuController::class, 'paginate']);
     Route::get('/menu/{page}/{search}', [MenuController::class, 'search']);
-
-    
 });
 
 
 Route::middleware('role:1,4')->group(function(){
-
     // INVENTORY
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('/inventory/add', [InventoryController::class, 'add'])->name('inventory.add');
@@ -121,6 +117,13 @@ Route::middleware('role:1,4')->group(function(){
     Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
     Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
     Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
+});
+
+
+Route::middleware('role:2')->group(function(){
+
+    // POS
+    Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
 
 });
 

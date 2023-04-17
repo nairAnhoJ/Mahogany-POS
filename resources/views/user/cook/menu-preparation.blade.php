@@ -120,7 +120,7 @@
                             <i class="uil uil-plus-circle text-3xl text-blue-500"></i>
                         </button>
                         <div class="text-2xl mx-2">
-                            <input type="text" id="servings" name="servings" value="" class="w-14 p-0 h-9 bg-gray-50 text-center">
+                            <input type="text" id="servings" name="servings" value="" class="w-14 p-0 h-9 bg-gray-50 text-center" autocomplete="off">
                         </div>
                         <button id="decQty" type="button">
                             <i class="uil uil-minus-circle text-3xl text-red-500"></i>

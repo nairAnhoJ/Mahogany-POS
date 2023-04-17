@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
         if(auth()->user()->role == 1){
             return redirect()->route('dashboard');
         }else if(auth()->user()->role == 2){
-            return redirect()->route('dashboard');
+            return redirect()->route('pos.index');
         }else if(auth()->user()->role == 3){
             return redirect()->route('kitchen.display');
         }else if(auth()->user()->role == 4){

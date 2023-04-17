@@ -28,5 +28,12 @@ class AdminSeeder extends Seeder
             'role' => 3,
             'slug' => Str::random(60),
         ]);
+        User::create([
+            'name' => 'CASHIER',
+            'username' => 'pos-cashier',
+            'password' => '$2y$10$PzJnXOfGq6hCQ4t3gLWIiOgSiCu5OJ99gA7Wm3g9KrVz7H6tthUDS',
+            'role' => 2,
+            'slug' => Str::random(60),
+        ]);
     }
 }
