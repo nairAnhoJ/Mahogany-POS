@@ -4,10 +4,10 @@
         
     </style>
 
-    @section('page_title', 'POS')
+    @section('page_title', '')
 
     {{-- SELECT TABLE MODAL --}}
-        <div id="tableModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div id="tableModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative w-full max-w-3xl max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow">
@@ -28,53 +28,116 @@
                                     <button class="inline-block p-4 rounded-t-lg" id="all-tab" data-tabs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">All</button>
                                 </li>
                                 <li class="mr-2" role="presentation">
-                                    <button class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="open-tab" data-tabs-target="#open" type="button" role="tab" aria-controls="open" aria-selected="true"><span class="flex items-center text-sm font-medium"><span class="flex w-3 h-3 bg-emerald-500 rounded-full mr-1.5 flex-shrink-0"></span>Open</span></button>
+                                    <button class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="open-tab" data-tabs-target="#open" type="button" role="tab" aria-controls="open" aria-selected="false"><span class="flex items-center text-sm font-medium"><span class="flex w-3 h-3 bg-emerald-500 rounded-full mr-1.5 flex-shrink-0"></span>Open</span></button>
                                 </li>
                                 <li class="mr-2" role="presentation">
                                     <button class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="occupied-tab" data-tabs-target="#occupied" type="button" role="tab" aria-controls="occupied" aria-selected="false"><span class="flex items-center text-sm font-medium"><span class="flex w-3 h-3 bg-red-500 rounded-full mr-1.5 flex-shrink-0"></span>Occupied</span></button>
                                 </li>
-                                <li role="presentation">
+                                {{-- <li role="presentation">
                                     <button class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="reserved-tab" data-tabs-target="#reserved" type="button" role="tab" aria-controls="reserved" aria-selected="false"><span class="flex items-center text-sm font-medium"><span class="flex w-3 h-3 bg-orange-500 rounded-full mr-1.5 flex-shrink-0"></span>Reserved</span></button>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                         <div id="tableTab">
-                            <div class="hidden p-4 rounded-lg bg-gray-50" id="all" role="tabpanel" aria-labelledby="all-tab">
-                                <p class="text-sm text-gray-500">This is some placeholder content the <strong class="font-medium text-gray-800">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                            <div class="hidden p-4 rounded-lg bg-gray-50 max-h-[calc(100vh-320px)] overflow-y-auto" id="all" role="tabpanel" aria-labelledby="all-tab">
+                                <div class="grid grid-cols-4 gap-4 text-center">
+                                    @foreach ($tables as $table)
+                                        <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                            <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="hidden p-4 rounded-lg bg-gray-50" id="open" role="tabpanel" aria-labelledby="open-tab">
-                                <p class="text-sm text-gray-500">This is some placeholder content the <strong class="font-medium text-gray-800">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                                <div class="grid grid-cols-4 gap-4 text-center">
+                                    @foreach ($tables as $table)
+                                        @if ($table->status == 0)
+                                            <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="hidden p-4 rounded-lg bg-gray-50" id="occupied" role="tabpanel" aria-labelledby="occupied-tab">
-                                <p class="text-sm text-gray-500">This is some placeholder content the <strong class="font-medium text-gray-800">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                                <div class="grid grid-cols-4 gap-4 text-center">
+                                    @foreach ($tables as $table)
+                                        @if ($table->status == 1)
+                                            <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="hidden p-4 rounded-lg bg-gray-50" id="reserved" role="tabpanel" aria-labelledby="reserved-tab">
+                            {{-- <div class="hidden p-4 rounded-lg bg-gray-50" id="reserved" role="tabpanel" aria-labelledby="reserved-tab">
                                 <p class="text-sm text-gray-500">This is some placeholder content the <strong class="font-medium text-gray-800">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-                        <button data-modal-hide="tableModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Save</button>
-                        <button data-modal-hide="tableModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                        {{-- <button data-modal-hide="tableModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Save</button> --}}
+                        <button data-modal-hide="tableModal" type="button" class="text-gray-500 bg-white hover:bg-gray-10 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     {{-- SELECT TABLE MODAL END --}}
 
-    <div style="height: calc(100vh - 48px)" class="p-4 w-screen grid grid-cols-3 gap-4">
-        <div class=" col-span-2 h-full bg-white shadow-lg rounded-lg border border-gray-200">
+    <div style="height: calc(100vh - 48px)" class="p-4 w-screen flex xl:grid xl:grid-cols-3 gap-4">
+        <div class="h-full w-[calc(100%-384px)] xl:w-auto xl:col-span-2 bg-white shadow-lg rounded-lg border border-gray-200">
 
         </div>
-        <div class="h-full bg-white shadow-lg rounded-lg border border-gray-200">
+        <div class="h-full w-96 xl:w-auto bg-white shadow-lg rounded-lg border border-gray-200">
             <div class="flex justify-between p-2 items-center">
-                <h1 class="text-2xl font-black tracking-wide">
+                <input type="hidden" id="table" name="table">
+                <h1 id="tableName" class="text-2xl font-black tracking-wide">
                     - - -
                 </h1>
                 <button type="button" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 rounded-lg shadow border border-gray-100">
                     <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="w-10 rounded-full">
                 </button>
+            </div>
+            <div class="mt-5">
+                <div class="flex flex-col">
+                    <div>
+                        <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                            <div class="col-span-4 text-sm text-left">
+                                BONELESS DAING NA BANGUS
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button class="aspect-square w-full bg-red-600"><i class="uil uil-minus text-xl text-red-200"></i></button>
+                            </div>
+                            <div class="col-span-2 px-2 flex items-center justify-center">
+                                <input type="text" class="w-full text-center border-0 h-7" value="1">
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button class="aspect-square w-full bg-emerald-600"><i class="uil uil-plus text-xl text-emerald-200"></i></button>
+                            </div>
+                            <div class="col-span-3 flex items-center justify-center">
+                                9,999.00
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button class="aspect-square w-full bg-red-600"><i class="uil uil-times text-xl text-red-200"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="p-4">
+                            sadfasd
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -111,7 +174,7 @@
 
 
 
-        {{-- <div class="h-full ">
+        <div class="h-full ">
             <div  class="h-full overflow-hidden bg-white ">
                 <div class="h-full">
                     <div class="h-full mx-auto grid grid-cols-1 gap-2 max-w-2xl gap-y-2 gap-x-2 sm:gap-y-20  lg:max-w-none lg:grid-cols-4">
@@ -514,11 +577,21 @@
                 </div>
               </div>
             </div>
-          </div> --}}
+          </div>
 
+    
+    
+    
     <script>
         $(document).ready(function() {
-
+            $('.tableButton').click(function(){
+                var id = $(this).data('table');
+                var name = $(this).data('tablename');
+                $('#table').val(id);
+                $('#tableName').html(name);
+                $('.tableButton').removeClass('ring-4 ring-inset ring-blue-500');
+                $(this).addClass('ring-4 ring-inset ring-blue-500');
+            })
         });
     </script>
 </x-app-layout>

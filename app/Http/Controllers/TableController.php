@@ -46,7 +46,7 @@ class TableController extends Controller
     }
 
     public function store(Request $request){
-        $name = $request->name;
+        $name = strtoupper($request->name);
 
         $request->validate([
             'name' => ['required'],
@@ -66,7 +66,7 @@ class TableController extends Controller
     }
 
     public function update(Request $request){
-        $name = $request->name;
+        $name = strtoupper($request->name);
         $slug = $request->slug;
 
         $request->validate([

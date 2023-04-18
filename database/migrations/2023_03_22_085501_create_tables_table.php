@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status');
+            $table->string('status')->default(0); // 0 - Open , 1 - Occupied , 2 - Reserved
             $table->string('slug')->unique();
             $table->timestamps();
         });
