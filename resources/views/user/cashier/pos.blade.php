@@ -110,31 +110,62 @@
             </div>
             <div class="mt-5">
                 <div class="flex flex-col">
-                    <div>
+                    <div class="h-[calc(100vh-350px)]">
                         <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                            <div class="col-span-4 text-sm text-left">
-                                BONELESS DAING NA BANGUS
+                            <div class="col-span-4 text-xs font-semibold text-left flex items-center pr-2">
+                                ADOBONG MANOK NA PINAUPO
                             </div>
                             <div class="flex items-center justify-center">
-                                <button class="aspect-square w-full bg-red-600"><i class="uil uil-minus text-xl text-red-200"></i></button>
+                                <button class="aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                             </div>
                             <div class="col-span-2 px-2 flex items-center justify-center">
-                                <input type="text" class="w-full text-center border-0 h-7" value="1">
+                                <input type="text" class="w-full text-center text-sm font-semibold border-0 h-7" value="1">
                             </div>
                             <div class="flex items-center justify-center">
-                                <button class="aspect-square w-full bg-emerald-600"><i class="uil uil-plus text-xl text-emerald-200"></i></button>
+                                <button class="aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
                             </div>
-                            <div class="col-span-3 flex items-center justify-center">
+                            <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
                                 9,999.00
                             </div>
                             <div class="flex items-center justify-center">
-                                <button class="aspect-square w-full bg-red-600"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                <button class="aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div class="p-4">
-                            sadfasd
+                            <div class="pt-2 grid w-full">
+                                <div class="row-span-2  ">
+                                    <div class="grid grid-cols-2">
+                                        <div class="justify-self-start ">
+                                            <strong class="text-slate-600 text-xl font-medium ">Subtotal</strong>
+                                        </div>
+                                        <div class="justify-self-end ">
+                                            <strong class="text-slate-600 text-xl font-medium ">1000.00</strong>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="justify-self-start ">
+                                            <strong class="text-slate-600 text-sm font-medium ">Tax</strong>
+                                        </div>
+                                        <div class="justify-self-end ">
+                                            <strong class="text-slate-600 text-sm font-medium ">120.00</strong>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="justify-self-start ">
+                                            <strong class="text-slate-600 text-2xl font-medium ">TOTAL</strong>
+                                        </div>
+                                        <div class="justify-self-end ">
+                                            <strong class="text-slate-600 text-2xl font-medium ">1120.00</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-auto row-span-1 flex items-center ">
+                                    <button type="button"  class="m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
+                                    <button type="button"  class="w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
