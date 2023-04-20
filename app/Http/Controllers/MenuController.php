@@ -289,23 +289,25 @@ class MenuController extends Controller
         $slug = $request->slug;
         $quantity = $request->servings;
         $cur_quantity = (DB::table('menus')->where('slug', $slug)->first())->quantity;
+        $uqty = $cur_quantity + $quantity;
 
         $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
         $ings = DB::table('ingredients')->where('menu_id', $menuID)->get();
 
-        foreach($ings as $ing){
+        if($ings->count() > 0){
+            foreach($ings as $ing){
 
-            $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
-            $tqty = $ing->quantity * $quantity;
-            $new_quantity = $old_quantity - $tqty;
-            $uqty = $cur_quantity + $quantity;
+                $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
+                $tqty = $ing->quantity * $quantity;
+                $new_quantity = $old_quantity - $tqty;
 
-            if($new_quantity < 0){
-                return redirect()->route('menu.index')->withInput()->with('error', 'Insufficient Ingredients');
-            }else{
-                DB::table('inventories')->where('id', $ing->inventory_id)->update([
-                    'quantity' => $new_quantity
-                ]);
+                if($new_quantity < 0){
+                    return redirect()->route('menu.index')->withInput()->with('error', 'Insufficient Ingredients');
+                }else{
+                    DB::table('inventories')->where('id', $ing->inventory_id)->update([
+                        'quantity' => $new_quantity
+                    ]);
+                }
             }
         }
 

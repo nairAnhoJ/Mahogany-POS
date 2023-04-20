@@ -1,7 +1,14 @@
 <x-app-layout>
 
     <style>
-        
+        #categoryTabs::-webkit-scrollbar {
+            height: 0px;  /* Remove scrollbar width */
+            background: transparent;  /* Set scrollbar background to transparent */
+        }
+        #categoryAllContents::-webkit-scrollbar {
+            width: 0px;  /* Remove scrollbar width */
+            background: transparent;  /* Set scrollbar background to transparent */
+        }
     </style>
 
     @section('page_title', '')
@@ -23,7 +30,7 @@
                     <!-- Modal body -->
                     <div class="p-6">
                         <div class="mb-4 border-b border-gray-200">
-                            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#tableTab" role="tablist">
+                            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="categoryTabs" data-tabs-toggle="#tableTab" role="tablist">
                                 <li class="mr-2" role="presentation">
                                     <button class="inline-block p-4 rounded-t-lg" id="all-tab" data-tabs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">All</button>
                                 </li>
@@ -95,82 +102,219 @@
     {{-- SELECT TABLE MODAL END --}}
 
     <div style="height: calc(100vh - 48px)" class="p-4 w-screen flex xl:grid xl:grid-cols-3 gap-4">
-        <div class="h-full w-[calc(100%-384px)] xl:w-auto xl:col-span-2 bg-white shadow-lg rounded-lg border border-gray-200">
 
-        </div>
-        <div class="h-full w-96 xl:w-auto bg-white shadow-lg rounded-lg border border-gray-200">
-            <div class="flex justify-between p-2 items-center">
-                <input type="hidden" id="table" name="table">
-                <h1 id="tableName" class="text-2xl font-black tracking-wide">
-                    - - -
-                </h1>
-                <button type="button" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 rounded-lg shadow border border-gray-100">
-                    <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="w-10 rounded-full">
-                </button>
-            </div>
-            <div class="mt-5">
-                <div class="flex flex-col">
-                    <div class="h-[calc(100vh-350px)]">
-                        <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                            <div class="col-span-4 text-xs font-semibold text-left flex items-center pr-2">
-                                ADOBONG MANOK NA PINAUPO
+        {{-- LEFT CONTENT --}}
+            <div class="h-full w-[calc(100%-384px)] xl:w-auto xl:col-span-2 bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+                <div>
+                    <div class="p-2 flex flex-row-reverse">
+                        <form class="flex items-center w-1/2">   
+                            <label for="simple-search" class="sr-only">Search</label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search" required autocomplete="off">
                             </div>
-                            <div class="flex items-center justify-center">
-                                <button class="aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                            <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-full border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <span class="sr-only">Search</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="p-2 border-b border-neutral-300">
+                        <div class="flex justify-between w-full">
+                            <div class="p-px">
+                                <button class="w-9 aspect-square border border-neutral-300 rounded-lg scroll-left">
+                                    <i class="uil uil-arrow-left text-2xl"></i>
+                                </button>
                             </div>
-                            <div class="col-span-2 px-2 flex items-center justify-center">
-                                <input type="text" class="w-full text-center text-sm font-semibold border-0 h-7" value="1">
+                            <div class="py-0.5 px-4 overflow-x-hidden w-[calc(100vw-920)]">
+                                <div id="categoryTabs" data-tabs-toggle="#categoryTabContent" role="tablist" class="overflow-x-scroll flex gap-x-2">
+
+                                    <button id="cat1-tab" data-tabs-target="#cat1" type="button" role="tab" aria-controls="cat1" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                        CAT 1
+                                    </button>
+
+
+                                    <button id="cat2-tab" data-tabs-target="#cat2" type="button" role="tab" aria-controls="cat2" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                        CAT 2
+                                    </button>
+
+                                </div>
                             </div>
-                            <div class="flex items-center justify-center">
-                                <button class="aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                            </div>
-                            <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                9,999.00
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                            <div class="p-px">
+                                <button class="w-9 aspect-square border border-neutral-300 rounded-lg scroll-right">
+                                    <i class="uil uil-arrow-right text-2xl"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="p-4">
-                            <div class="pt-2 grid w-full">
-                                <div class="row-span-2  ">
-                                    <div class="grid grid-cols-2">
-                                        <div class="justify-self-start ">
-                                            <strong class="text-slate-600 text-xl font-medium ">Subtotal</strong>
+                    <div id="categoryAllContents" class="h-[calc(100vh-194px)] overflow-y-auto">
+                        <div id="categoryTabContent" class="h-auto bg-gray-100">
+                            <div class="hidden p-8" id="cat1" role="tabpanel" aria-labelledby="cat1-tab">
+                                <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
+                                    {{--  --}}
+                                        <div class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all">
+                                            <div class="w-full aspect-square">
+                                                <img src="{{ asset('storage/images/menu/menu-1.jpeg') }}" alt="" class="rounded-xl">
+                                            </div>
+                                            <div class="h-[calc(100%-184px)] text-center">
+                                                <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                    <p class="text-lg font-medium">
+                                                        Tapsilog
+                                                    </p>
+                                                </div>
+                                                <div class="h-1/3 flex justify-center items-center">
+                                                    <p class="text-xl font-bold">
+                                                        ₱ 85.00
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="justify-self-end ">
-                                            <strong class="text-slate-600 text-xl font-medium ">1000.00</strong>
+                                    {{--  --}}
+                                        <div class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all">
+                                            <div class="w-full aspect-square">
+                                                <img src="{{ asset('storage/images/menu/menu-1.jpeg') }}" alt="" class="rounded-xl">
+                                            </div>
+                                            <div class="h-[calc(100%-184px)] text-center">
+                                                <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                    <p class="text-lg font-medium">
+                                                        Tapsilog
+                                                    </p>
+                                                </div>
+                                                <div class="h-1/3 flex justify-center items-center">
+                                                    <p class="text-xl font-bold">
+                                                        ₱ 85.00
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all">
+                                            <div class="w-full aspect-square">
+                                                <img src="{{ asset('storage/images/menu/menu-1.jpeg') }}" alt="" class="rounded-xl">
+                                            </div>
+                                            <div class="h-[calc(100%-184px)] text-center">
+                                                <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                    <p class="text-lg font-medium">
+                                                        Tapsilog
+                                                    </p>
+                                                </div>
+                                                <div class="h-1/3 flex justify-center items-center">
+                                                    <p class="text-xl font-bold">
+                                                        ₱ 85.00
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all">
+                                            <div class="w-full aspect-square">
+                                                <img src="{{ asset('storage/images/menu/menu-1.jpeg') }}" alt="" class="rounded-xl">
+                                            </div>
+                                            <div class="h-[calc(100%-184px)] text-center">
+                                                <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                    <p class="text-lg font-medium">
+                                                        Tapsilog
+                                                    </p>
+                                                </div>
+                                                <div class="h-1/3 flex justify-center items-center">
+                                                    <p class="text-xl font-bold">
+                                                        ₱ 85.00
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="hidden" id="cat2" role="tabpanel" aria-labelledby="cat2-tab">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{-- LEFT CONTENT --}}
+
+        {{-- RIGHT CONTENT --}}
+            <div class="h-full w-96 xl:w-auto bg-white shadow-lg rounded-lg border border-gray-200">
+                <div class="border border-neutral-300 rounded-lg m-2">
+                    <div class="flex justify-between p-2 items-center">
+                        <input type="hidden" id="table" name="table">
+                        <h1 id="tableName" class="text-2xl font-black tracking-wide pl-2">
+                            - - -
+                        </h1>
+                        <button type="button" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 rounded-lg shadow border border-gray-100">
+                            <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="w-9 rounded-full">
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <div class="flex flex-col">
+                        <div class="h-[calc(100vh-350px)] overflow-y-auto">
+                            {{--  --}}
+                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                        ADOBONG MANOK
                                     </div>
-                                    <div class="grid grid-cols-2">
-                                        <div class="justify-self-start ">
-                                            <strong class="text-slate-600 text-sm font-medium ">Tax</strong>
-                                        </div>
-                                        <div class="justify-self-end ">
-                                            <strong class="text-slate-600 text-sm font-medium ">120.00</strong>
-                                        </div>
+                                    <div class="flex items-center justify-center">
+                                        <button class="aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                     </div>
-                                    <div class="grid grid-cols-2">
-                                        <div class="justify-self-start ">
-                                            <strong class="text-slate-600 text-2xl font-medium ">TOTAL</strong>
-                                        </div>
-                                        <div class="justify-self-end ">
-                                            <strong class="text-slate-600 text-2xl font-medium ">1120.00</strong>
-                                        </div>
+                                    <div class="col-span-1 flex items-center justify-center">
+                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">99</p>
+                                        <input type="hidden" value="1">
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button class="aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                    </div>
+                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                        9,999.00
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button class="aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                                     </div>
                                 </div>
-                                <div class="p-auto row-span-1 flex items-center ">
-                                    <button type="button"  class="m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
-                                    <button type="button"  class="w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                            {{--  --}}
+                        </div>
+                        <div>
+                            <div class="p-4">
+                                <div class="pt-2 grid w-full">
+                                    <div class="row-span-2">
+                                        <div class="grid grid-cols-2">
+                                            <div class="justify-self-start ">
+                                                <strong class="text-slate-600 text-xl font-medium ">Subtotal</strong>
+                                            </div>
+                                            <div class="justify-self-end ">
+                                                <strong class="text-slate-600 text-xl font-medium ">1000.00</strong>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="grid grid-cols-2">
+                                            <div class="justify-self-start ">
+                                                <strong class="text-slate-600 text-sm font-medium ">Tax</strong>
+                                            </div>
+                                            <div class="justify-self-end ">
+                                                <strong class="text-slate-600 text-sm font-medium ">120.00</strong>
+                                            </div>
+                                        </div> --}}
+                                        <div class="grid grid-cols-2">
+                                            <div class="justify-self-start ">
+                                                <strong class="text-slate-600 text-2xl font-medium ">TOTAL</strong>
+                                            </div>
+                                            <div class="justify-self-end ">
+                                                <strong class="text-slate-600 text-2xl font-medium ">1120.00</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-auto row-span-1 flex items-center ">
+                                        <button type="button"  class="m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
+                                        <button type="button"  class="w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {{-- RIGHT CONTENT --}}
+
     </div>
 
 
@@ -228,7 +372,7 @@
                                         </form>
                                     </div>
                                     <div class="py-4 flex row-span-4  relative rounded-lg ">
-                                        <ul id="myTab"  role="tablist" class="h-full w-full my-3 text-gray-50  rounded-lg   mx-auto grid grid-cols-4 gap-8 max-w-2xl gap-y-8 gap-x-2 sm:gap-y-2 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+                                        <ul id="categoryTabs"  role="tablist" class="h-full w-full my-3 text-gray-50  rounded-lg   mx-auto grid grid-cols-4 gap-8 max-w-2xl gap-y-8 gap-x-2 sm:gap-y-2 lg:mx-0 lg:max-w-none lg:grid-cols-5">
                                             <li id="best-tab" type="button" role="tab" aria-controls="best" aria-selected="false" class="text-xl flex justify-center border mr-2 h-full w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl  font-medium rounded-lg  px-5 py-2.5 text-center shadow">
                                                 <h5  class="m-auto"> Best Seller</h5>
                                             </li>
@@ -267,7 +411,7 @@
                                     <div  id="best" role="tabpanel" aria-labelledby="best-tab" style="height: 400px" class="hidden w-full my-3 overflow-y-auto rounded-lg shadow mx-auto grid grid-cols-4 gap-8 max-w-2xl gap-y-8 gap-x-2 sm:gap-y-2 lg:mx-0 lg:max-w-none lg:grid-cols-5">
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -280,7 +424,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -293,7 +437,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -306,7 +450,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                         <a href="#">
-                                            <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                            <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                         </a>
                                         <div class="px-5 ">
                                             <a href="#">
@@ -319,7 +463,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -332,7 +476,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -345,7 +489,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -361,7 +505,7 @@
           
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -374,7 +518,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -387,7 +531,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -400,7 +544,7 @@
                                         </div>
                                         <div class=" m-auto h-44 w-44 max-w-sm bg-white border border-gray-200 rounded-lg shadow bg-white ">
                                             <a href="#">
-                                                <img class="h-2/4 w-2/4 rounded-t-lg" src="../src/bulalographics.png" alt="product image" />
+                                                <img class="h-2/4 w-2/4 rounded-t-lg" alt="product image" />
                                             </a>
                                             <div class="px-5 ">
                                                 <a href="#">
@@ -623,6 +767,16 @@
                 $('.tableButton').removeClass('ring-4 ring-inset ring-blue-500');
                 $(this).addClass('ring-4 ring-inset ring-blue-500');
             })
+
+            $('.scroll-left').click(function() {
+                var divW = (($('#categoryTabs').width() * 2) / 3);
+                $('#categoryTabs').animate({scrollLeft: '-=' + divW + 'px'}, 'slow');
+            });
+            
+            $('.scroll-right').click(function() {
+                var divW = (($('#categoryTabs').width() * 2) / 3);
+                $('#categoryTabs').animate({scrollLeft: '+=' + divW + 'px'}, 'slow');
+            });
         });
     </script>
 </x-app-layout>
