@@ -124,6 +124,9 @@ Route::middleware('role:2')->group(function(){
 
     // POS
     Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
+    Route::post('/pos/add', [POSController::class, 'add'])->name('pos.add');
+    Route::post('/pos/inc', [POSController::class, 'inc'])->name('pos.inc');
+    Route::post('/pos/desc', [POSController::class, 'desc'])->name('pos.desc');
 
 });
 
