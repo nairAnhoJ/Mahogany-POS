@@ -127,6 +127,7 @@ Route::middleware('role:2')->group(function(){
     Route::post('/pos/add', [POSController::class, 'add'])->name('pos.add');
     Route::post('/pos/inc', [POSController::class, 'inc'])->name('pos.inc');
     Route::post('/pos/desc', [POSController::class, 'desc'])->name('pos.desc');
+    Route::post('/pos/remove', [POSController::class, 'remove'])->name('pos.remove');
 
 });
 
