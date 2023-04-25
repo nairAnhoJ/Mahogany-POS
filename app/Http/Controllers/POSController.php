@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Order;
+use App\Models\Ordered;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -31,6 +33,15 @@ class POSController extends Controller
         $ord = DB::table('orders')->where('menu_id', $menu->id)->first();
         $notif = '';
 
+        $orderSlug = Str::random(60);
+        $norderSlug = $orderSlug;
+        $check_slug = DB::table('inventories')->where('slug', $norderSlug)->get();
+        while(count($check_slug) > 0){
+            $norderSlug = Str::random(60);
+            $check_slug = DB::table('inventories')->where('slug', $norderSlug)->get();
+        }
+        $orderSlug = $norderSlug;
+
         if($menu->current_quantity > 0){
                 if($ord != null){
                     if($ord->quantity < $menu->current_quantity){
@@ -46,7 +57,7 @@ class POSController extends Controller
                         $order->price = $menu->price;
                         $order->total_price = $total_price;
                         $order->current_stock = $current_quantity;
-                        $order->slug = Str::random(60);
+                        $order->slug = $orderSlug;
                         $order->save();
                     }else{
                         $notif .= '
@@ -74,7 +85,7 @@ class POSController extends Controller
                     $order->price = $menu->price;
                     $order->total_price = $total_price;
                     $order->current_stock = $current_quantity;
-                    $order->slug = Str::random(60);
+                    $order->slug = $orderSlug;
                     $order->save();
                 }
         }else{
@@ -125,12 +136,14 @@ class POSController extends Controller
             $total = $total + $order->total_price;
         }
 
+        $amount = $total;
 
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
             'thisNotif' => $notif,
+            'amount' => $amount
         );
 
         echo json_encode($response);
@@ -140,7 +153,7 @@ class POSController extends Controller
         $slug = $request->slug;
         $corder = DB::table('orders')->where('slug', $slug)->first();
         $menu_qty = (DB::table('menus')->where('id', $corder->menu_id)->first())->current_quantity;
-        $notif = 'a';
+        $notif = '';
 
         if($corder->quantity < $menu_qty){
             $quantity = $corder->quantity + 1;
@@ -199,12 +212,14 @@ class POSController extends Controller
             $total = $total + $order->total_price;
         }
 
+        $amount = $total;
 
         $response = array(
             'thisNotif' => $notif,
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
-            'total' => number_format($total, 2, '.', ',')
+            'total' => number_format($total, 2, '.', ','),
+            'amount' => $amount
         );
 
         echo json_encode($response);
@@ -260,11 +275,13 @@ class POSController extends Controller
             $total = $total + $order->total_price;
         }
 
+        $amount = $total;
 
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
-            'total' => number_format($total, 2, '.', ',')
+            'total' => number_format($total, 2, '.', ','),
+            'amount' => $amount
         );
 
         echo json_encode($response);
@@ -306,12 +323,131 @@ class POSController extends Controller
             
             $subTotal = $subTotal + $order->total_price;
             $total = $total + $order->total_price;
+            $amount = $total + $order->total_price;
         }
+
+        $amount = $total;
 
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
-            'total' => number_format($total, 2, '.', ',')
+            'total' => number_format($total, 2, '.', ','),
+            'amount' => $amount
+        );
+
+        echo json_encode($response);
+    }
+
+    public function pay(Request $request){
+        $amount = $request->amount;
+        $table = $request->table;
+
+        if($table == 0){
+            $type = 'TAKE OUT';
+        }else{
+            $type = 'DINE-IN';
+        }
+
+        $id = Transaction::latest()->pluck('id')->first();
+        if($id == null){
+            $id = 1;
+        }else{
+            $id++;
+        }
+        $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
+
+        $number = date('mdY').'-'.$nid;
+
+        $tranSlug = Str::random(60);
+        $ntranSlug = $tranSlug;
+        $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
+        while(count($check_slug) > 0){
+            $ntranSlug = Str::random(60);
+            $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
+        }
+        $tranSlug = $ntranSlug;
+
+        $tran = new Transaction();
+        $tran->number = $number;
+        $tran->total = $amount;
+        $tran->type = $type;
+        $tran->table = $table;
+        $tran->status = 'PAID';
+        $tran->order_status = 'PREPARING';
+        $tran->slug = $tranSlug;
+        $tran->save();
+
+        $orders = DB::table('orders')->get();
+        foreach($orders as $order){
+            $orderSlug = Str::random(60);
+            $norderSlug = $orderSlug;
+            $check_slug = DB::table('transactions')->where('slug', $norderSlug)->get();
+            while(count($check_slug) > 0){
+                $norderSlug = Str::random(60);
+                $check_slug = DB::table('transactions')->where('slug', $norderSlug)->get();
+            }
+            $orderSlug = $norderSlug;
+
+            $ordered = new Ordered();
+            $ordered->tran_id = $tran->id;
+            $ordered->menu_id = $order->menu_id;
+            $ordered->quantity = $order->quantity;
+            $ordered->price = $order->total_price;
+            $ordered->status = 'PREPARING';
+            $ordered->slug = $orderSlug;
+            $ordered->save();
+
+            $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->current_quantity;
+            $nqty = $oqty - $order->quantity;
+
+            DB::table('menus')->where('id', $order->menu_id)->update([
+                'current_quantity' => $nqty
+            ]);
+        }
+
+        DB::table('orders')->truncate();
+
+        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
+        $orderResult = '';
+        $subTotal = 0;
+        $total = 0;
+        foreach($orders as $order){
+            $orderResult .= '
+                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                        '.$order->name.'
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                    </div>
+                                    <div class="col-span-1 flex items-center justify-center">
+                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
+                                        <input type="hidden" value="'.$order->quantity.'">
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                    </div>
+                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                        '.number_format($order->total_price, 2, ".", ",").'
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                    </div>
+                                </div>
+                            ';
+            
+            $subTotal = $subTotal + $order->total_price;
+            $total = $total + $order->total_price;
+            $amount = $total + $order->total_price;
+        }
+
+        $amount = $total;
+
+        $response = array(
+            'orders' => $orderResult,
+            'subTotal' => number_format($subTotal, 2, '.', ','),
+            'total' => number_format($total, 2, '.', ','),
+            'amount' => $amount
         );
 
         echo json_encode($response);
