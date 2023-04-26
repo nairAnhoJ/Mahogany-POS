@@ -14,8 +14,8 @@ class POSController extends Controller
 {
     public function index(){
         $tables = DB::table('tables')->orderBy('name', 'asc')->get();
-        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
-        $menus = DB::table('menus')->orderBy('name', 'asc')->get();
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
+        $menus = DB::table('menus')->where('current_quantity', '>', 0)->orderBy('name', 'asc')->get();
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
         $subTotal = 0;
         $total = 0;
@@ -43,51 +43,61 @@ class POSController extends Controller
         $orderSlug = $norderSlug;
 
         if($menu->current_quantity > 0){
-                if($ord != null){
-                    if($ord->quantity < $menu->current_quantity){
-                        $quantity = $ord->quantity + 1;
-                        $total_price = $menu->price * $quantity;
-                        $current_quantity = $menu->current_quantity - $quantity;
-                        DB::table('orders')->where('id', $ord->id)->delete();
-
-                        $order = new Order();
-                        $order->menu_id = $menu->id; 
-                        $order->name = $menu->name;
-                        $order->quantity = $quantity;
-                        $order->price = $menu->price;
-                        $order->total_price = $total_price;
-                        $order->current_stock = $current_quantity;
-                        $order->slug = $orderSlug;
-                        $order->save();
-                    }else{
-                        $notif .= '
-                        <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
-                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                <span class="sr-only">Error icon</span>
-                            </div>
-                            <div class="ml-3 pr-10 text-base font-medium">This menu is already out of stock.</div>
-                            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8" data-dismiss-target="#toast-danger" aria-label="Close">
-                                <span class="sr-only">Close</span>
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                            </button>
-                        </div>';
-                    }
-                }else{
-                    $quantity = 1;
+            if($ord != null){
+                if($menu->current_quantity > 0){
+                    $quantity = $ord->quantity + 1;
                     $total_price = $menu->price * $quantity;
-                    $current_quantity = $menu->current_quantity - $quantity;
-                        
+                    $current_quantity = $menu->current_quantity - 1;
+                    DB::table('orders')->where('id', $ord->id)->delete();
+
                     $order = new Order();
-                    $order->menu_id = $menu->id; 
+                    $order->menu_id = $menu->id;
                     $order->name = $menu->name;
                     $order->quantity = $quantity;
                     $order->price = $menu->price;
                     $order->total_price = $total_price;
                     $order->current_stock = $current_quantity;
+                    $order->cashier = auth()->id();
                     $order->slug = $orderSlug;
                     $order->save();
+
+                    DB::table('menus')->where('id', $menu->id)->update([
+                        'current_quantity' => $current_quantity,
+                    ]);
+                }else{
+                    $notif .= '
+                    <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
+                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Error icon</span>
+                        </div>
+                        <div class="ml-3 pr-10 text-base font-medium">This menu is already out of stock.</div>
+                        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8" data-dismiss-target="#toast-danger" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </div>';
                 }
+            }else{
+                $quantity = 1;
+                $total_price = $menu->price * $quantity;
+                $current_quantity = $menu->current_quantity - $quantity;
+                    
+                $order = new Order();
+                $order->menu_id = $menu->id; 
+                $order->name = $menu->name;
+                $order->quantity = $quantity;
+                $order->price = $menu->price;
+                $order->total_price = $total_price;
+                $order->current_stock = $current_quantity;
+                $order->cashier = auth()->id();
+                $order->slug = $orderSlug;
+                $order->save();
+
+                DB::table('menus')->where('id', $menu->id)->update([
+                    'current_quantity' => $current_quantity,
+                ]);
+            }
         }else{
             $notif = '
             <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
@@ -103,7 +113,7 @@ class POSController extends Controller
             </div>';
         }
 
-        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
@@ -155,7 +165,7 @@ class POSController extends Controller
         $menu_qty = (DB::table('menus')->where('id', $corder->menu_id)->first())->current_quantity;
         $notif = '';
 
-        if($corder->quantity < $menu_qty){
+        if($menu_qty > 0){
             $quantity = $corder->quantity + 1;
         }else{
             $quantity = $corder->quantity;
@@ -179,7 +189,11 @@ class POSController extends Controller
             'current_stock' => $current_quantity,
         ]);
 
-        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
+        DB::table('menus')->where('id', $corder->menu_id)->update([
+            'current_quantity' => $current_quantity,
+        ]);
+
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
@@ -242,7 +256,11 @@ class POSController extends Controller
             'current_stock' => $current_quantity,
         ]);
 
-        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
+        DB::table('menus')->where('id', $corder->menu_id)->update([
+            'current_quantity' => $current_quantity,
+        ]);
+
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
@@ -289,10 +307,19 @@ class POSController extends Controller
 
     public function remove(Request $request){
         $slug = $request->slug;
+        $ord = DB::table('orders')->where('slug', $slug)->first();
+        $mid = $ord->menu_id;
+        $qty = $ord->quantity;
+        $oqty = (DB::table('menus')->where('id', $mid)->first())->current_quantity;
+        $nqty = $oqty + $qty;
+
+        DB::table('menus')->where('id', $mid)->update([
+            'current_quantity' => $nqty,
+        ]);
 
         DB::table('orders')->where('slug', $slug)->delete();
 
-        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
@@ -374,40 +401,41 @@ class POSController extends Controller
         $tran->table = $table;
         $tran->status = 'PAID';
         $tran->order_status = 'PREPARING';
+        $tran->cashier = auth()->id();
         $tran->slug = $tranSlug;
         $tran->save();
 
-        $orders = DB::table('orders')->get();
+        $orders = DB::table('orders')->where('cashier', auth()->id())->get();
         foreach($orders as $order){
             $orderSlug = Str::random(60);
             $norderSlug = $orderSlug;
-            $check_slug = DB::table('transactions')->where('slug', $norderSlug)->get();
+            $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
             while(count($check_slug) > 0){
                 $norderSlug = Str::random(60);
-                $check_slug = DB::table('transactions')->where('slug', $norderSlug)->get();
+                $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
             }
             $orderSlug = $norderSlug;
 
-            $ordered = new Ordered();
-            $ordered->tran_id = $tran->id;
-            $ordered->menu_id = $order->menu_id;
-            $ordered->quantity = $order->quantity;
-            $ordered->price = $order->total_price;
-            $ordered->status = 'PREPARING';
-            $ordered->slug = $orderSlug;
-            $ordered->save();
+            DB::table('ordered')->insert([
+                'tran_id' => $tran->id,
+                'menu_id' => $order->menu_id,
+                'quantity' => $order->quantity,
+                'price' => $order->total_price,
+                'status' => 'PREPARING',
+                'slug' => $orderSlug,
+            ]);
 
-            $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->current_quantity;
+            $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;
             $nqty = $oqty - $order->quantity;
 
             DB::table('menus')->where('id', $order->menu_id)->update([
-                'current_quantity' => $nqty
+                'quantity' => $nqty
             ]);
+
+            DB::table('orders')->where('id', $order->id)->delete();
         }
 
-        DB::table('orders')->truncate();
-
-        $orders = DB::table('orders')->orderBy('id', 'desc')->get();
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
         $subTotal = 0;
         $total = 0;

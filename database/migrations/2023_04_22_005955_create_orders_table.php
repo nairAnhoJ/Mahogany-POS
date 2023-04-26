@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('price');
             $table->string('total_price');
             $table->string('current_stock');
+            $table->string('cashier');
             $table->string('slug');
             $table->timestamps();
         });

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('table');
             $table->string('status'); // paid or unpaid or cancelled
             $table->string('order_status'); // preparing or served or cancelled
+            $table->string('cashier');
             $table->string('slug');
             $table->timestamps();
         });
