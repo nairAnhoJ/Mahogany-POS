@@ -31,12 +31,12 @@
                <span class="ml-3">POS</span>
             </a>
          </li>
-         {{-- <li>
-            <a href="" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+         <li>
+            <a href="{{ route('orders.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                <i class="uil uil-utensils-alt text-2xl text-gray-500"></i>
-               <span class="ml-3">Reservations</span>
+               <span class="ml-3">Orders</span>
             </a>
-         </li> --}}
+         </li>
       </ul>
    </div>
 </div>

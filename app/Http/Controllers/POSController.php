@@ -81,7 +81,7 @@ class POSController extends Controller
             }else{
                 $quantity = 1;
                 $total_price = $menu->price * $quantity;
-                $current_quantity = $menu->current_quantity - $quantity;
+                $current_quantity = $menu->current_quantity - 1;
                     
                 $order = new Order();
                 $order->menu_id = $menu->id; 
@@ -167,8 +167,18 @@ class POSController extends Controller
 
         if($menu_qty > 0){
             $quantity = $corder->quantity + 1;
+            $total_price = $corder->price * $quantity;
+            $current_quantity = $corder->current_stock - 1;
+            DB::table('orders')->where('slug', $slug)->update([
+                'quantity' => $quantity,
+                'total_price' => $total_price,
+                'current_stock' => $current_quantity,
+            ]);
+    
+            DB::table('menus')->where('id', $corder->menu_id)->update([
+                'current_quantity' => $current_quantity,
+            ]);
         }else{
-            $quantity = $corder->quantity;
             $notif = '<div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
                         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -181,17 +191,6 @@ class POSController extends Controller
                         </button>
                     </div>';
         }
-        $total_price = $corder->price * $quantity;
-        $current_quantity = $corder->current_stock - 1;
-        DB::table('orders')->where('slug', $slug)->update([
-            'quantity' => $quantity,
-            'total_price' => $total_price,
-            'current_stock' => $current_quantity,
-        ]);
-
-        DB::table('menus')->where('id', $corder->menu_id)->update([
-            'current_quantity' => $current_quantity,
-        ]);
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
@@ -245,20 +244,18 @@ class POSController extends Controller
 
         if($corder->quantity > 1){
             $quantity = $corder->quantity - 1;
-        }else{
-            $quantity = $corder->quantity;
+            $total_price = $corder->price * $quantity;
+            $current_quantity = $corder->current_stock + 1;
+            DB::table('orders')->where('slug', $slug)->update([
+                'quantity' => $quantity,
+                'total_price' => $total_price,
+                'current_stock' => $current_quantity,
+            ]);
+    
+            DB::table('menus')->where('id', $corder->menu_id)->update([
+                'current_quantity' => $current_quantity,
+            ]);
         }
-        $total_price = $corder->price * $quantity;
-        $current_quantity = $corder->current_stock + 1;
-        DB::table('orders')->where('slug', $slug)->update([
-            'quantity' => $quantity,
-            'total_price' => $total_price,
-            'current_stock' => $current_quantity,
-        ]);
-
-        DB::table('menus')->where('id', $corder->menu_id)->update([
-            'current_quantity' => $current_quantity,
-        ]);
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $orderResult = '';
@@ -423,6 +420,8 @@ class POSController extends Controller
                 'price' => $order->total_price,
                 'status' => 'PREPARING',
                 'slug' => $orderSlug,
+                'created_at' => date('Y-m-d h:i:s'),
+                'updated_at' => date('Y-m-d h:i:s')
             ]);
 
             $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;

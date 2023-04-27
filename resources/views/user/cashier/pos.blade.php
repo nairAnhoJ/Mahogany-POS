@@ -149,7 +149,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button data-modal-hide="changeModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                        <button data-modal-hide="changeModal" type="button" onclick="window.location.reload()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
                     </div>
                 </div>
             </div>
@@ -441,6 +441,10 @@
 
     <script>
         $(document).ready(function() {
+            function refreshPage() {
+                location.reload();
+            }
+
             $('.tableButton').click(function(){
                 var id = $(this).data('table');
                 var name = $(this).data('tablename');
