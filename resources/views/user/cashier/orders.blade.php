@@ -5,6 +5,7 @@
 
     @section('page_title', '')
 
+
     {{-- LOADING --}}
         <div wire:loading id="loadingScreen" class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[60] overflow-hidden bg-gray-900 opacity-75 opa flex flex-col items-center justify-center">
             <div role="status">
@@ -75,9 +76,11 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="px-4 py-2 space-y-4">
+                    <div class="px-4 py-2 space-y-4 h-[500px] overflow-y-auto">
                         <input type="hidden" name="table" id="table">
-                        <p id="allOrders" class="text-xl leading-relaxed text-gray-500 font-semibold">
+                        <p class="text-xl leading-relaxed text-gray-500 font-semibold">
+                            <div id="allOrders" class="relative h-auto">
+                            </div>
                         </p>
                     </div>
                     <!-- Modal footer -->
@@ -91,6 +94,7 @@
     {{-- SELECTED TABLE END --}}
 
     <div class="p-6 h-[calc(100vh-48px)] w-screen">
+        @csrf
         <div class="w-full grid grid-cols-5 gap-6">
             @foreach ($tables as $table)
                 <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} w-full aspect-square h-auto rounded-xl">
@@ -109,30 +113,28 @@
                 var id = $(this).data('table');
                 var name = $(this).data('tablename');
                 var status = $(this).data('status');
+                var _token = $('input[name="_token"]').val();
 
                 if(status != 0){
-                    $('#allOrders').html('');
                     $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+
+                    $.ajax({
+                        url:"{{ route('orders.getMenu') }}",
+                        method:"POST",
+                        data:{
+                            id: id,
+                            _token: _token
+                        },
+                        success:function(result){
+                            $('#allOrders').html(result);
+                            $('#table').val(id);
+                            $('#tableName').html(name);
+                        }
+                    })
                 }else{
                     $('#cancelOrderDiv').html('');
                     $('#allOrders').html('This table is not occupied.');
                 }
-
-                $('#table').val(id);
-                $('#tableName').html(name);
-
-                // $.ajax({
-                //     url:"{{ route('orders.get') }}",
-                //     method:"POST",
-                //     dataType: 'json',
-                //     data:{
-                //         id: id,
-                //         _token: _token
-                //     },
-                //     success:function(result){
-
-                //     }
-                // })
 
                 $('#openSelectedTableModal').click();
             })

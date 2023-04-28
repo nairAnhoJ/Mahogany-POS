@@ -133,7 +133,7 @@ Route::middleware('role:2')->group(function(){
 
     // ORDERS
     Route::get('/orders', [OrderedController::class, 'index'])->name('orders.index');
-    Route::post('/orders/get', [POSController::class, 'get'])->name('orders.get');
+    Route::post('/orders/get-menu', [OrderedController::class, 'getMenu'])->name('orders.getMenu');
 
 });
 
