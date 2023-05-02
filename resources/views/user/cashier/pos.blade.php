@@ -17,7 +17,7 @@
     {{-- LOADING --}}
         <div wire:loading id="loadingScreen" class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[60] overflow-hidden bg-gray-900 opacity-75 opa flex flex-col items-center justify-center">
             <div role="status">
-                <svg aria-hidden="true" class="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg aria-hidden="true" class="inline w-10 h-10 mr-2 text-gray-200 animate-spin fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                 </svg>
@@ -68,6 +68,98 @@
         </div>
     {{-- REMOVE MODAL END --}}
 
+    {{-- MOP MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="MOPModal" data-modal-toggle="MOPModal" id="openMOPModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="MOPModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-5xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Mode of Payment
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="MOPModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <input type="hidden" name="mop" id="mop">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <button type="button" data-mop="CASH" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="mopButton text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
+                                    <i class="uil uil-money-bill text-6xl mr-3"></i>
+                                    <span class="text-3xl font-bold">CASH</span>
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" data-mop="DEBIT / CREDIT CARD" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
+                                    <i class="uil uil-transaction text-6xl mr-3"></i>
+                                    <span class="text-3xl font-bold">DEBIT / CREDIT CARD</span>
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" data-mop="GCASH / MAYA" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center  mr-2 mb-2 w-full">
+                                    <i class="uil uil-bolt text-6xl mr-3"></i>
+                                    <span class="text-3xl font-bold">GCASH / MAYA</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
+                        <button data-modal-hide="MOPModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- MOP MODAL END --}}
+
+
+    {{-- NAME/NUMBER MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="detailsModal" data-modal-toggle="detailsModal" id="openDetailsModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="detailsModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-3xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Details
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="detailsModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <input type="hidden" id="paymentMethod">
+                        <div class="mb-6">
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                            <input type="text" id="payor_name" name="payor_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <div class="mb-6">
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Account/Phone Number</label>
+                            <input type="text" id="payor_number" name="payor_number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
+                        <button id="detailsContButton" data-modal-hide="detailsModal" type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none rounded-lg border border-emerald-300 text-lg font-bold px-5 py-5 focus:z-10 w-full">CONTINUE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- NAME/NUMBER MODAL END --}}
+
+
     {{-- AMOUNT RECEIVED MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" id="openAmountReceivedModal" class="hidden" type="button"></button>
@@ -91,7 +183,7 @@
                         <div class="mb-2">
                             <label for="amount" class="block mb-2 text-base font-medium text-gray-900">Amount Received</label>
                             <input type="text" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                            <p id="amountError" class="hidden text-sm text-red-500 italic">Invalid amount. Please enter an amount more than or equal to <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span>.</p>
+                            <p id="amountError" class="hidden text-sm text-red-500 italic">Invalid amount. Please enter an amount more than or equal to <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span></p>
                         </div>
                         <div class="w-full h-auto rounded-lg flex flex-col justify-between px-32">
                             <div class="grid grid-cols-4 gap-4">
@@ -155,6 +247,39 @@
             </div>
         </div>
     {{-- CHANGE MODAL END --}}
+
+
+    {{-- PAYLATER CONFIRMATION MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="plConModal" data-modal-toggle="plConModal" id="openPLConModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="plConModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Paylater Confirmation
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="plConModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        Confirm Paylater Transaction
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
+                        <button data-modal-hide="plConModal" id="plConfirmButton" type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none rounded-lg border border-emerald-300 text-sm font-medium px-5 py-5 w-full">Confirm</button>
+                        <button data-modal-hide="plConModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- PAYLATER CONFIRMATION MODAL END --}}
 
     {{-- SELECT TABLE MODAL --}}
         <div id="tableModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -426,8 +551,8 @@
                                         </div>
                                     </div>
                                     <div class="p-auto row-span-1 flex items-center ">
-                                        <button id="payButton" type="button" class="m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
-                                        <button type="button"  class="w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                                        <button {{ ($total < 1) ? 'disabled' : ''; }} id="payButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
+                                        <button {{ ($total < 1) ? 'disabled' : ''; }} id="payLaterButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
                                     </div>
                                 </div>
                             </div>
@@ -441,9 +566,9 @@
 
     <script>
         $(document).ready(function() {
-            function refreshPage() {
-                location.reload();
-            }
+            // function refreshPage() {
+            //     location.reload();
+            // }
 
             $('.tableButton').click(function(){
                 var id = $(this).data('table');
@@ -452,6 +577,13 @@
                 $('#tableName').html(name);
                 $('.tableButton').removeClass('ring-4 ring-inset ring-blue-500');
                 $(this).addClass('ring-4 ring-inset ring-blue-500');
+
+                if(id == '0'){
+                    $('#payLaterButton').prop('disabled', true);
+                }else{
+                    $('#payLaterButton').prop('disabled', false);
+                }
+
                 $('.closeTableModal').click();
             })
 
@@ -484,6 +616,8 @@
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#notifDiv').html(result.thisNotif);
+                        $('#payButton').prop('disabled', false);
+                        $('#payLaterButton').prop('disabled', false);
                     }
                 })
             });
@@ -563,6 +697,7 @@
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
+                        location.reload();
                     }
                 })
             });
@@ -587,7 +722,6 @@
                 }
             });
 
-
             $('#amount').on('keyup', function() {
                 var inputValue = $(this).val();
                 $(this).val(inputValue.replace(/[^0-9\.]/g, ''));
@@ -603,7 +737,17 @@
                 if(table != ''){
                     $('#amountError').addClass('hidden');
                     $('#amount').val('');
-                    $('#openAmountReceivedModal').click();
+                    $('#openMOPModal').click();
+                }else{
+                    $('#openTableModal').click();
+                }
+            });
+
+            $('#payLaterButton').click(function(){
+                var table = $('#table').val();
+                if(table != '' && table != '0'){
+                    $('#paymentMethod').val('0');
+                    $('#openDetailsModal').click();
                 }else{
                     $('#openTableModal').click();
                 }
@@ -613,6 +757,9 @@
                 var amount = $(this).data('amount');
                 var amountInput = $('#amount').val();
                 var table = $('#table').val();
+                var mop = $('#mop').val();
+                var payor_name = $('#payor_name').val();
+                var payor_number = $('#payor_number').val();
                 var _token = $('input[name="_token"]').val();
 
                 if(amountInput < amount){
@@ -631,6 +778,10 @@
                         data:{
                             amount: amount,
                             table: table,
+                            amountInput: amountInput,
+                            mop: mop,
+                            payor_name: payor_name,
+                            payor_number: payor_number,
                             _token: _token
                         },
                         success:function(result){
@@ -644,6 +795,53 @@
                     })
                 }
 
+            });
+
+            $('.mopButton').click(function(){
+                var mop = $(this).data('mop');
+                $('#mop').val(mop);
+                $('#paymentMethod').val('1');
+            });
+
+            $('#detailsContButton').click(function(){
+                var pm = $('#paymentMethod').val();
+
+                if(pm == 1){
+                    $('#openAmountReceivedModal').click();
+                }else{
+                    $('#openPLConModal').click();
+                }
+            });
+
+            $('#plConfirmButton').click(function(){
+                var amount = $('#payNowButton').data('amount');
+                var table = $('#table').val();
+                var payor_name = $('#payor_name').val();
+                var payor_number = $('#payor_number').val();
+                var _token = $('input[name="_token"]').val();
+
+                $('#loadingScreen').removeClass('hidden');
+
+                $.ajax({
+                    url:"{{ route('pos.paylater') }}",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{
+                        amount: amount,
+                        table: table,
+                        payor_name: payor_name,
+                        payor_number: payor_number,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#ordersDiv').html(result.orders);
+                        $('#subTotal').html(result.subTotal);
+                        $('#total').html(result.total);
+                        $('#actualAmount').html(result.amount);
+                        $('#payNowButton').data('amount', result.amount);
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
             });
         });
     </script>

@@ -130,6 +130,7 @@ Route::middleware('role:2')->group(function(){
     Route::post('/pos/desc', [POSController::class, 'desc'])->name('pos.desc');
     Route::post('/pos/remove', [POSController::class, 'remove'])->name('pos.remove');
     Route::post('/pos/pay', [POSController::class, 'pay'])->name('pos.pay');
+    Route::post('/pos/paylater', [POSController::class, 'paylater'])->name('pos.paylater');
 
     // ORDERS
     Route::get('/orders', [OrderedController::class, 'index'])->name('orders.index');

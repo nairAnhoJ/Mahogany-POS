@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('number');
             $table->string('total');
+            $table->string('mode_of_payment')->nullable();
+            $table->string('amount')->nullable();
+            $table->string('payor_name')->nullable();
+            $table->string('payor_number')->nullable();
             $table->string('type'); // dine-in or take-out
             $table->string('table');
             $table->string('status'); // paid or unpaid or cancelled

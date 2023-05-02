@@ -365,6 +365,11 @@ class POSController extends Controller
     public function pay(Request $request){
         $amount = $request->amount;
         $table = $request->table;
+        $amountInput = $request->amountInput;
+        $mop = $request->mop;
+        $payor_name = $request->payor_name;
+        $payor_number = $request->payor_number;
+
 
         if($table == 0){
             $type = 'TAKE OUT';
@@ -394,6 +399,10 @@ class POSController extends Controller
         $tran = new Transaction();
         $tran->number = $number;
         $tran->total = $amount;
+        $tran->mode_of_payment = $mop;
+        $tran->amount = $amountInput;
+        $tran->payor_name = ucfirst($payor_name);
+        $tran->payor_number = $payor_number;
         $tran->type = $type;
         $tran->table = $table;
         $tran->status = 'PAID';
@@ -467,6 +476,131 @@ class POSController extends Controller
             $total = $total + $order->total_price;
             $amount = $total + $order->total_price;
         }
+
+        DB::table('tables')->where('id', $table)->update([
+            'status' => 1
+        ]);
+
+        $amount = $total;
+
+        $response = array(
+            'orders' => $orderResult,
+            'subTotal' => number_format($subTotal, 2, '.', ','),
+            'total' => number_format($total, 2, '.', ','),
+            'amount' => $amount
+        );
+
+        echo json_encode($response);
+    }
+
+    public function paylater(Request $request){
+        $amount = $request->amount;
+        $table = $request->table;
+        $payor_name = $request->payor_name;
+        $payor_number = $request->payor_number;
+        $type = 'DINE-IN';
+
+        $id = Transaction::latest()->pluck('id')->first();
+        if($id == null){
+            $id = 1;
+        }else{
+            $id++;
+        }
+        $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
+
+        $number = date('mdY').'-'.$nid;
+
+        $tranSlug = Str::random(60);
+        $ntranSlug = $tranSlug;
+        $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
+        while(count($check_slug) > 0){
+            $ntranSlug = Str::random(60);
+            $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
+        }
+        $tranSlug = $ntranSlug;
+
+        $tran = new Transaction();
+        $tran->number = $number;
+        $tran->total = $amount;
+        $tran->payor_name = ucfirst($payor_name);
+        $tran->payor_number = $payor_number;
+        $tran->type = $type;
+        $tran->table = $table;
+        $tran->status = 'UNPAID';
+        $tran->order_status = 'PREPARING';
+        $tran->cashier = auth()->id();
+        $tran->slug = $tranSlug;
+        $tran->save();
+
+        $orders = DB::table('orders')->where('cashier', auth()->id())->get();
+        foreach($orders as $order){
+            $orderSlug = Str::random(60);
+            $norderSlug = $orderSlug;
+            $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
+            while(count($check_slug) > 0){
+                $norderSlug = Str::random(60);
+                $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
+            }
+            $orderSlug = $norderSlug;
+
+            DB::table('ordered')->insert([
+                'tran_id' => $tran->id,
+                'menu_id' => $order->menu_id,
+                'quantity' => $order->quantity,
+                'price' => $order->total_price,
+                'status' => 'PREPARING',
+                'slug' => $orderSlug,
+                'created_at' => date('Y-m-d h:i:s'),
+                'updated_at' => date('Y-m-d h:i:s')
+            ]);
+
+            $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;
+            $nqty = $oqty - $order->quantity;
+
+            DB::table('menus')->where('id', $order->menu_id)->update([
+                'quantity' => $nqty
+            ]);
+
+            DB::table('orders')->where('id', $order->id)->delete();
+        }
+
+        $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
+        $orderResult = '';
+        $subTotal = 0;
+        $total = 0;
+        foreach($orders as $order){
+            $orderResult .= '
+                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                        '.$order->name.'
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                    </div>
+                                    <div class="col-span-1 flex items-center justify-center">
+                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
+                                        <input type="hidden" value="'.$order->quantity.'">
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                    </div>
+                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                        '.number_format($order->total_price, 2, ".", ",").'
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                    </div>
+                                </div>
+                            ';
+            
+            $subTotal = $subTotal + $order->total_price;
+            $total = $total + $order->total_price;
+            $amount = $total + $order->total_price;
+        }
+
+        DB::table('tables')->where('id', $table)->update([
+            'status' => 1
+        ]);
 
         $amount = $total;
 
