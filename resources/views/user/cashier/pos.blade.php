@@ -840,6 +840,7 @@
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#loadingScreen').addClass('hidden');
+                        location.reload();
                     }
                 })
             });

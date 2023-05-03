@@ -134,6 +134,8 @@ Route::middleware('role:2')->group(function(){
 
     // ORDERS
     Route::get('/orders', [OrderedController::class, 'index'])->name('orders.index');
+    Route::post('/orders/reduce', [OrderedController::class, 'reduce'])->name('orders.reduce');
+    Route::post('/orders/remove', [OrderedController::class, 'remove'])->name('orders.remove');
     Route::post('/orders/get-menu', [OrderedController::class, 'getMenu'])->name('orders.getMenu');
 
 });

@@ -29,7 +29,7 @@
         <button data-modal-target="removeModal" data-modal-toggle="removeModal" id="openRemoveModal" class="hidden" type="button"></button>
     
         <!-- Main modal -->
-        <div id="removeModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div id="removeModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
             <div class="relative w-full max-w-2xl max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow">
@@ -47,7 +47,6 @@
                         <p class="text-base leading-relaxed text-gray-500">
                             Are you sure you want to remove this order?
                         </p>
-                        <p id="removeMenuName" class="text-base leading-relaxed text-gray-500 font-semibold"></p>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
@@ -59,12 +58,46 @@
         </div>
     {{-- REMOVE MODAL END --}}
 
+    {{-- REDUCE MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="reduceModal" data-modal-toggle="reduceModal" id="openReduceModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="reduceModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            <i class="uil uil-exclamation-triangle text-red-500 text-3xl mr-3"></i>Reduce Quantity
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="reduceModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <p class="text-base leading-relaxed text-gray-500">
+                            Are you sure you want to reduce the quantity of this order?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
+                        <button id="acceptReduceButton" data-modal-hide="reduceModal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
+                        <button data-modal-hide="reduceModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- REDUCE MODAL END --}}
+
     {{-- SELECTED TABLE MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="selectedTableModal" data-modal-toggle="selectedTableModal" id="openSelectedTableModal" class="hidden" type="button"></button>
     
         <!-- Main modal -->
-        <div id="selectedTableModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div id="selectedTableModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative w-full max-w-2xl max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow">
@@ -84,8 +117,9 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <div id="cancelOrderDiv" class="w-1/2"></div>
-                        <button data-modal-hide="selectedTableModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-bold px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Close</button>
+                        <div id="completeOrderDiv" class="w-1/3"></div>
+                        <div id="cancelOrderDiv" class="w-1/3"></div>
+                        <button data-modal-hide="selectedTableModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-bold px-5 py-5 hover:text-gray-900 focus:z-10 w-1/3">Close</button>
                     </div>
                 </div>
             </div>
@@ -108,13 +142,18 @@
 
     <script>
         $(document).ready(function() {
+            var slug;
+            var table;
+            var _token = $('input[name="_token"]').val();
+
             $('.tableButton').click(function(){
                 var id = $(this).data('table');
                 var name = $(this).data('tablename');
                 var status = $(this).data('status');
-                var _token = $('input[name="_token"]').val();
 
                 if(status != 0){
+                    $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Complete Order</button>');
+
                     $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
 
                     $.ajax({
@@ -128,15 +167,72 @@
                             $('#allOrders').html(result);
                             $('#table').val(id);
                             $('#tableName').html(name);
+                            $('#openSelectedTableModal').click();
                         }
                     })
                 }else{
+                    $('#completeOrderDiv').html('');
                     $('#cancelOrderDiv').html('');
                     $('#allOrders').html('This table is not occupied.');
+                    $('#openSelectedTableModal').click();
                 }
-
-                $('#openSelectedTableModal').click();
             })
+
+
+            jQuery(document).on("click", ".reduceButton", function(){
+                slug = $(this).data('slug');
+                table = $(this).data('table');
+
+                $('#openReduceModal').click();
+            });
+
+
+            jQuery(document).on("click", "#acceptReduceButton", function(){
+                $('#loadingScreen').removeClass('hidden');
+                $.ajax({
+                    url:"{{ route('orders.reduce') }}",
+                    method:"POST",
+                    data:{
+                        slug: slug,
+                        table: table,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#allOrders').html(result);
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
+            });
+
+
+            jQuery(document).on("click", ".removeButton", function(){
+                slug = $(this).data('slug');
+                table = $(this).data('table');
+
+                $('#openRemoveModal').click();
+            });
+
+
+            jQuery(document).on("click", "#acceptRemoveButton", function(){
+                $('#loadingScreen').removeClass('hidden');
+                $.ajax({
+                    url:"{{ route('orders.remove') }}",
+                    method:"POST",
+                    data:{
+                        slug: slug,
+                        table: table,
+                        _token: _token
+                    },
+                    success:function(result){
+                        if(result != '1'){
+                            $('#allOrders').html(result);
+                        }else{
+                            location.reload();
+                        }
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
+            });
         });
     </script>
 </x-app-layout>
