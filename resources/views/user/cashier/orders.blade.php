@@ -79,8 +79,7 @@
                     <div class="px-4 py-2 space-y-4 h-[500px] overflow-y-auto">
                         <input type="hidden" name="table" id="table">
                         <p class="text-xl leading-relaxed text-gray-500 font-semibold">
-                            <div id="allOrders" class="relative h-auto">
-                            </div>
+                            <div id="allOrders" class="relative h-auto"></div>
                         </p>
                     </div>
                     <!-- Modal footer -->

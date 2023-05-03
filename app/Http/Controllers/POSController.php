@@ -477,9 +477,11 @@ class POSController extends Controller
             $amount = $total + $order->total_price;
         }
 
-        DB::table('tables')->where('id', $table)->update([
-            'status' => 1
-        ]);
+        if($table > 0){
+            DB::table('tables')->where('id', $table)->update([
+                'status' => 1
+            ]);
+        }
 
         $amount = $total;
 
