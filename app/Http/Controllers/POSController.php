@@ -370,46 +370,55 @@ class POSController extends Controller
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
 
-
         if($table == 0){
             $type = 'TAKE OUT';
         }else{
             $type = 'DINE-IN';
         }
 
-        $id = Transaction::latest()->pluck('id')->first();
-        if($id == null){
-            $id = 1;
+        $this_tran = DB::table('transactions')->where('table', $table)->where('status', 'PAID')->where('order_status', '!=', 'CANCELLED')->where('order_status', '!=', 'COMPLETED')->first();
+        if($this_tran){
+            $tran_id = $this_tran->id;
+
+            DB::table('transactions')->where('id', $tran_id)->increment('total', $amount);
+            DB::table('transactions')->where('id', $tran_id)->increment('amount', $amountInput);
         }else{
-            $id++;
-        }
-        $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
+            $id = Transaction::latest()->pluck('id')->first();
+            if($id == null){
+                $id = 1;
+            }else{
+                $id++;
+            }
+            $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
 
-        $number = date('mdY').'-'.$nid;
+            $number = date('mdY').'-'.$nid;
 
-        $tranSlug = Str::random(60);
-        $ntranSlug = $tranSlug;
-        $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
-        while(count($check_slug) > 0){
-            $ntranSlug = Str::random(60);
+            $tranSlug = Str::random(60);
+            $ntranSlug = $tranSlug;
             $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
-        }
-        $tranSlug = $ntranSlug;
+            while(count($check_slug) > 0){
+                $ntranSlug = Str::random(60);
+                $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
+            }
+            $tranSlug = $ntranSlug;
 
-        $tran = new Transaction();
-        $tran->number = $number;
-        $tran->total = $amount;
-        $tran->mode_of_payment = $mop;
-        $tran->amount = $amountInput;
-        $tran->payor_name = ucfirst($payor_name);
-        $tran->payor_number = $payor_number;
-        $tran->type = $type;
-        $tran->table = $table;
-        $tran->status = 'PAID';
-        $tran->order_status = 'PREPARING';
-        $tran->cashier = auth()->id();
-        $tran->slug = $tranSlug;
-        $tran->save();
+            $tran = new Transaction();
+            $tran->number = $number;
+            $tran->total = $amount;
+            $tran->mode_of_payment = $mop;
+            $tran->amount = $amountInput;
+            $tran->payor_name = ucfirst($payor_name);
+            $tran->payor_number = $payor_number;
+            $tran->type = $type;
+            $tran->table = $table;
+            $tran->status = 'PAID';
+            $tran->order_status = 'PREPARING';
+            $tran->cashier = auth()->id();
+            $tran->slug = $tranSlug;
+            $tran->save();
+
+            $tran_id = $tran->id;
+        }
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->get();
         foreach($orders as $order){
@@ -423,10 +432,10 @@ class POSController extends Controller
             $orderSlug = $norderSlug;
 
             DB::table('ordered')->insert([
-                'tran_id' => $tran->id,
+                'tran_id' => $tran_id,
                 'menu_id' => $order->menu_id,
                 'quantity' => $order->quantity,
-                'price' => $order->total_price,
+                // 'price' => $order->total_price,
                 'status' => 'PREPARING',
                 'slug' => $orderSlug,
                 'created_at' => date('Y-m-d h:i:s'),
@@ -502,37 +511,48 @@ class POSController extends Controller
         $payor_number = $request->payor_number;
         $type = 'DINE-IN';
 
-        $id = Transaction::latest()->pluck('id')->first();
-        if($id == null){
-            $id = 1;
+
+        $this_tran = DB::table('transactions')->where('table', $table)->where('status', 'UNPAID')->where('order_status', '!=', 'CANCELLED')->where('order_status', '!=', 'COMPLETED')->first();
+        if($this_tran){
+            $tran_id = $this_tran->id;
+
+            DB::table('transactions')->where('id', $tran_id)->increment('total', $amount);
         }else{
-            $id++;
-        }
-        $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
+            
+            $id = Transaction::latest()->pluck('id')->first();
+            if($id == null){
+                $id = 1;
+            }else{
+                $id++;
+            }
+            $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
 
-        $number = date('mdY').'-'.$nid;
+            $number = date('mdY').'-'.$nid;
 
-        $tranSlug = Str::random(60);
-        $ntranSlug = $tranSlug;
-        $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
-        while(count($check_slug) > 0){
-            $ntranSlug = Str::random(60);
+            $tranSlug = Str::random(60);
+            $ntranSlug = $tranSlug;
             $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
-        }
-        $tranSlug = $ntranSlug;
+            while(count($check_slug) > 0){
+                $ntranSlug = Str::random(60);
+                $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
+            }
+            $tranSlug = $ntranSlug;
 
-        $tran = new Transaction();
-        $tran->number = $number;
-        $tran->total = $amount;
-        $tran->payor_name = ucfirst($payor_name);
-        $tran->payor_number = $payor_number;
-        $tran->type = $type;
-        $tran->table = $table;
-        $tran->status = 'UNPAID';
-        $tran->order_status = 'PREPARING';
-        $tran->cashier = auth()->id();
-        $tran->slug = $tranSlug;
-        $tran->save();
+            $tran = new Transaction();
+            $tran->number = $number;
+            $tran->total = $amount;
+            $tran->payor_name = ucfirst($payor_name);
+            $tran->payor_number = $payor_number;
+            $tran->type = $type;
+            $tran->table = $table;
+            $tran->status = 'UNPAID';
+            $tran->order_status = 'PREPARING';
+            $tran->cashier = auth()->id();
+            $tran->slug = $tranSlug;
+            $tran->save();
+
+            $tran_id = $tran->id;
+        }
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->get();
         foreach($orders as $order){
@@ -546,10 +566,10 @@ class POSController extends Controller
             $orderSlug = $norderSlug;
 
             DB::table('ordered')->insert([
-                'tran_id' => $tran->id,
+                'tran_id' => $tran_id,
                 'menu_id' => $order->menu_id,
                 'quantity' => $order->quantity,
-                'price' => $order->total_price,
+                // 'price' => $order->total_price,
                 'status' => 'PREPARING',
                 'slug' => $orderSlug,
                 'created_at' => date('Y-m-d h:i:s'),

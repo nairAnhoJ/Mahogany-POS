@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tran_id');
             $table->string('menu_id');
             $table->string('quantity');
-            $table->string('price');
+            // $table->string('price');
             $table->string('status'); // preparing or prepared or cancelled
             $table->string('slug');
             $table->timestamps();
