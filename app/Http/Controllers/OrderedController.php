@@ -53,9 +53,15 @@ class OrderedController extends Controller
                 }
             }
 
+            if($tran->status == 'PAID'){
+                $sColor = 'rgb(16 185 129)';
+            }else{
+                $sColor = 'rgb(240 82 82)';
+            }
+
             $res .= '
                 <div class="relative h-auto mb-5">
-                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="" class="text-emerald-500"> '.$tran->status.'</span></span>
+                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
                     <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative border border-gray-500 z-10 w-full pt-6 pl-2 text-xl font-semibold text-gray-500 tracking-wide rounded-lg">'.$m.'</div>
                 </div>
             ';
@@ -112,9 +118,15 @@ class OrderedController extends Controller
                 }
             }
 
+            if($tran->status == 'PAID'){
+                $sColor = 'rgb(16 185 129)';
+            }else{
+                $sColor = 'rgb(240 82 82)';
+            }
+
             $res .= '
                 <div class="relative h-auto mb-5">
-                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.'</span>
+                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
                     <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative border border-gray-500 z-10 w-full pt-6 pl-2 text-xl font-semibold text-gray-500 tracking-wide rounded-lg">'.$m.'</div>
                 </div>
             ';
@@ -184,15 +196,19 @@ class OrderedController extends Controller
                     }
                 }
 
+                if($tran->status == 'PAID'){
+                    $sColor = 'rgb(16 185 129)';
+                }else{
+                    $sColor = 'rgb(240 82 82)';
+                }
+
                 $res .= '
                     <div class="relative h-auto mb-5">
-                        <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.'</span>
+                        <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
                         <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative border border-gray-500 z-10 w-full pt-6 pl-2 text-xl font-semibold text-gray-500 tracking-wide rounded-lg">'.$m.'</div>
                     </div>
                 ';
             }
-
-
         }
 
         echo $res;
