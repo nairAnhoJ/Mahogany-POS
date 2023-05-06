@@ -92,6 +92,9 @@ Route::middleware("role:1")->group(function(){
 Route::middleware("role:1,3")->group(function(){
     // DASHBOARD
     Route::get('/kitchen-display', [KitchenController::class, 'index'])->name('kitchen.display');
+    Route::post('/kitchen-display/change-status', [KitchenController::class, 'change'])->name('kitchen.change');
+    Route::post('/kitchen-display/check', [KitchenController::class, 'check'])->name('kitchen.check');
+    Route::post('/kitchen-display/serve', [KitchenController::class, 'serve'])->name('kitchen.serve');
 
     // MENU
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
@@ -113,6 +116,8 @@ Route::middleware('role:1,4')->group(function(){
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('/inventory/add', [InventoryController::class, 'add'])->name('inventory.add');
     Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::post('/inventory/add-qty', [InventoryController::class, 'addqty'])->name('inventory.addqty');
+    Route::post('/inventory/minus-qty', [InventoryController::class, 'minusqty'])->name('inventory.minusqty');
     Route::get('/inventory/edit/{slug}', [InventoryController::class, 'edit']);
     Route::post('/inventory/update', [InventoryController::class, 'update'])->name('inventory.update');
     Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
@@ -136,6 +141,8 @@ Route::middleware('role:2')->group(function(){
     Route::get('/orders', [OrderedController::class, 'index'])->name('orders.index');
     Route::post('/orders/reduce', [OrderedController::class, 'reduce'])->name('orders.reduce');
     Route::post('/orders/remove', [OrderedController::class, 'remove'])->name('orders.remove');
+    Route::post('/orders/cancel', [OrderedController::class, 'cancel'])->name('orders.cancel');
+    Route::post('/orders/open', [OrderedController::class, 'open'])->name('orders.open');
     Route::post('/orders/get-menu', [OrderedController::class, 'getMenu'])->name('orders.getMenu');
 
 });

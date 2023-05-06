@@ -55,7 +55,7 @@
             @elseif(auth()->user()->role == 3)
                 @include('layouts.cook-navigation')
             @elseif(auth()->user()->role == 4)
-                
+                @include('layouts.receiver-navigation')
             @endif
 
             <!-- Page Content -->

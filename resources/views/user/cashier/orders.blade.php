@@ -92,6 +92,74 @@
         </div>
     {{-- REDUCE MODAL END --}}
 
+    {{-- CANCEL MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="cancelModal" data-modal-toggle="cancelModal" id="openCancelModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="cancelModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            <i class="uil uil-exclamation-triangle text-red-500 text-3xl mr-3"></i>Cancel All Orders
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="cancelModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <p class="text-base leading-relaxed text-gray-500">
+                            Are you sure you want to cancel all orders in this table?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
+                        <button id="acceptCancelButton" data-modal-hide="cancelModal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
+                        <button data-modal-hide="cancelModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- CANCEL MODAL END --}}
+
+    {{-- OPEN MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="openModal" data-modal-toggle="openModal" id="openOpenModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="openModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Open Table
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="openModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <p class="text-base leading-relaxed text-gray-500">
+                            Are you sure you want to mark this table as open?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
+                        <button id="acceptOpenButton" data-modal-hide="openModal" type="button" class="text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
+                        <button data-modal-hide="openModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- OPEN MODAL END --}}
+
     {{-- SELECTED TABLE MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="selectedTableModal" data-modal-toggle="selectedTableModal" id="openSelectedTableModal" class="hidden" type="button"></button>
@@ -144,29 +212,36 @@
         $(document).ready(function() {
             var slug;
             var table;
+            var id;
             var _token = $('input[name="_token"]').val();
 
             $('.tableButton').click(function(){
-                var id = $(this).data('table');
+                id = $(this).data('table');
                 var name = $(this).data('tablename');
                 var status = $(this).data('status');
 
                 if(status != 0){
-                    $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Complete Order</button>');
-
-                    $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
-
                     $.ajax({
                         url:"{{ route('orders.getMenu') }}",
                         method:"POST",
+                        dataType: 'json',
                         data:{
                             id: id,
                             _token: _token
                         },
                         success:function(result){
-                            $('#allOrders').html(result);
+                            $('#allOrders').html(result.allOrders);
+                            console.log(result.co);
+                            if(result.co == '1'){
+                                $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
+
+                                $('#cancelOrderDiv').html('');
+                            }else{
+                                $('#completeOrderDiv').html('');
+
+                                $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+                            }
                             $('#table').val(id);
-                            $('#tableName').html(name);
                             $('#openSelectedTableModal').click();
                         }
                     })
@@ -176,6 +251,7 @@
                     $('#allOrders').html('This table is not occupied.');
                     $('#openSelectedTableModal').click();
                 }
+                $('#tableName').html(name);
             })
 
 
@@ -192,13 +268,24 @@
                 $.ajax({
                     url:"{{ route('orders.reduce') }}",
                     method:"POST",
+                    dataType: 'json',
                     data:{
                         slug: slug,
                         table: table,
                         _token: _token
                     },
                     success:function(result){
-                        $('#allOrders').html(result);
+                        $('#allOrders').html(result.allOrders);
+                        console.log(result.co);
+                        if(result.co == '1'){
+                            $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
+
+                            $('#cancelOrderDiv').html('');
+                        }else{
+                            $('#completeOrderDiv').html('');
+
+                            $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+                        }
                         $('#loadingScreen').addClass('hidden');
                     }
                 })
@@ -218,17 +305,70 @@
                 $.ajax({
                     url:"{{ route('orders.remove') }}",
                     method:"POST",
+                    dataType: 'json',
                     data:{
                         slug: slug,
                         table: table,
                         _token: _token
                     },
                     success:function(result){
-                        if(result != '1'){
-                            $('#allOrders').html(result);
+                        if(result.allOrders != '1'){
+                            $('#allOrders').html(result.allOrders);
+                            console.log(result.co);
+                            if(result.co == '1'){
+                                $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
+
+                                $('#cancelOrderDiv').html('');
+                            }else{
+                                $('#completeOrderDiv').html('');
+
+                                $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+                            }
                         }else{
                             location.reload();
                         }
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
+            });
+
+            jQuery(document).on("click", "#cancelOrderButton", function(){
+                $('#openCancelModal').click();
+            });
+
+
+            jQuery(document).on("click", "#acceptCancelButton", function(){
+                $('#loadingScreen').removeClass('hidden');
+                $.ajax({
+                    url:"{{ route('orders.cancel') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        location.reload();
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
+            });
+
+            jQuery(document).on("click", "#completeOrderButton", function(){
+                $('#openOpenModal').click();
+            });
+
+
+            jQuery(document).on("click", "#acceptOpenButton", function(){
+                $('#loadingScreen').removeClass('hidden');
+                $.ajax({
+                    url:"{{ route('orders.open') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        location.reload();
                         $('#loadingScreen').addClass('hidden');
                     }
                 })

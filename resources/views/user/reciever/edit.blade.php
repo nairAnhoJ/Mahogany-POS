@@ -2,7 +2,7 @@
 
     @section('page_title', 'INVENTORY - EDIT')
 
-    <div class="p-3 lg:ml-64 lg:pt-3">
+    <div class="p-3 lg:pt-3">
         <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
                 <div class="">
@@ -59,7 +59,7 @@
                             <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price</label>
                             <input type="text" id="price" name="price" value="{{ $item->price }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
                         </div> --}}
-
+                        
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>
                             <input class="px-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">

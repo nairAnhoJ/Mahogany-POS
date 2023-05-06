@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class POSController extends Controller
 {
     public function index(){
-        $tables = DB::table('tables')->orderBy('name', 'asc')->get();
+        $tables = DB::table('tables')->orderBy('id', 'asc')->get();
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $menus = DB::table('menus')->where('current_quantity', '>', 0)->orderBy('name', 'asc')->get();
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
@@ -370,7 +370,7 @@ class POSController extends Controller
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
 
-        if($table == 0){
+        if($table == 1){
             $type = 'TAKE OUT';
         }else{
             $type = 'DINE-IN';
@@ -382,6 +382,10 @@ class POSController extends Controller
 
             DB::table('transactions')->where('id', $tran_id)->increment('total', $amount);
             DB::table('transactions')->where('id', $tran_id)->increment('amount', $amountInput);
+            DB::table('transactions')->where('id', $tran_id)->update([
+                'order_status' => 'PREPARING',
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
         }else{
             $id = Transaction::latest()->pluck('id')->first();
             if($id == null){
@@ -486,7 +490,7 @@ class POSController extends Controller
             $amount = $total + $order->total_price;
         }
 
-        if($table > 0){
+        if($table > 1){
             DB::table('tables')->where('id', $table)->update([
                 'status' => 1
             ]);

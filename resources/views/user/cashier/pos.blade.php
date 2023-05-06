@@ -248,7 +248,6 @@
         </div>
     {{-- CHANGE MODAL END --}}
 
-
     {{-- PAYLATER CONFIRMATION MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="plConModal" data-modal-toggle="plConModal" id="openPLConModal" class="hidden" type="button"></button>
@@ -316,27 +315,15 @@
                         <div id="tableTab">
                             <div class="hidden p-4 rounded-lg bg-gray-50 max-h-[calc(100vh-320px)] overflow-y-auto" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <div class="grid grid-cols-4 gap-4 text-center">
-                                    <div class="bg-emerald-500 aspect-square rounded-xl">
-                                        <button type="button" data-table="0" data-tablename="TAKE-OUT" class="w-full h-full relative tableButton rounded-xl">
-                                            <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">TAKE-OUT</p>
-                                            <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
-                                            {{-- <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2"> --}}
-                                        </button>
-                                    </div>
                                     @foreach ($tables as $table)
-                                        <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
-                                            <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
-                                            </button>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="hidden p-4 rounded-lg bg-gray-50" id="open" role="tabpanel" aria-labelledby="open-tab">
-                                <div class="grid grid-cols-4 gap-4 text-center">
-                                    @foreach ($tables as $table)
-                                        @if ($table->status == 0)
+                                        @if ($table->id == 1)
+                                            <div class="bg-emerald-500 aspect-square rounded-xl">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                    <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
+                                                </button>
+                                            </div>
+                                        @else
                                             <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
                                                 <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
                                                     <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
@@ -347,16 +334,60 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="hidden p-4 rounded-lg bg-gray-50" id="occupied" role="tabpanel" aria-labelledby="occupied-tab">
+                            <div class="hidden p-4 rounded-lg bg-gray-50 max-h-[calc(100vh-320px)] overflow-y-auto" id="open" role="tabpanel" aria-labelledby="open-tab">
                                 <div class="grid grid-cols-4 gap-4 text-center">
                                     @foreach ($tables as $table)
-                                        @if ($table->status == 1)
-                                            <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                        @if ($table->status == 0)
+                                            @if ($table->id == 1)
+                                                <div class="bg-emerald-500 aspect-square rounded-xl">
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                        <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            {{-- <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
                                                 <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
                                                     <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
                                                     <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
                                                 </button>
-                                            </div>
+                                            </div> --}}
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="hidden p-4 rounded-lg bg-gray-50 max-h-[calc(100vh-320px)] overflow-y-auto" id="occupied" role="tabpanel" aria-labelledby="occupied-tab">
+                                <div class="grid grid-cols-4 gap-4 text-center">
+                                    @foreach ($tables as $table)
+                                        @if ($table->status == 1)
+                                            @if ($table->id == 1)
+                                                <div class="bg-emerald-500 aspect-square rounded-xl">
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                        <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            {{-- <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
+                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
+                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                </button>
+                                            </div> --}}
                                         @endif
                                     @endforeach
                                 </div>
@@ -551,8 +582,8 @@
                                         </div>
                                     </div>
                                     <div class="p-auto row-span-1 flex items-center ">
-                                        <button {{ ($total < 1) ? 'disabled' : ''; }} id="payButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
-                                        <button {{ ($total < 1) ? 'disabled' : ''; }} id="payLaterButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                                        <button disabled id="payButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
+                                        <button disabled id="payLaterButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
                                     </div>
                                 </div>
                             </div>
@@ -578,9 +609,11 @@
                 $('.tableButton').removeClass('ring-4 ring-inset ring-blue-500');
                 $(this).addClass('ring-4 ring-inset ring-blue-500');
 
-                if(id == '0'){
+                if(id == '1'){
                     $('#payLaterButton').prop('disabled', true);
+                    $('#payButton').prop('disabled', false);
                 }else{
+                    $('#payButton').prop('disabled', false);
                     $('#payLaterButton').prop('disabled', false);
                 }
 
@@ -600,6 +633,7 @@
             jQuery(document).on("click", ".menu", function(){
                 var slug = $(this).data('slug');
                 var _token = $('input[name="_token"]').val();
+                var id = $('#table').val();
 
                 $.ajax({
                     url:"{{ route('pos.add') }}",
@@ -616,10 +650,9 @@
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#notifDiv').html(result.thisNotif);
-                        $('#payButton').prop('disabled', false);
-                        $('#payLaterButton').prop('disabled', false);
                     }
                 })
+
             });
 
             jQuery(document).on("click", ".incQty", function(){

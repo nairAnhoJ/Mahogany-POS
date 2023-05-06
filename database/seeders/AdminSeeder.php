@@ -35,5 +35,12 @@ class AdminSeeder extends Seeder
             'role' => 2,
             'slug' => Str::random(60),
         ]);
+        User::create([
+            'name' => 'RECEIVER',
+            'username' => 'pos-receiver',
+            'password' => '$2y$10$jgpjzgnV1FjRYWDXO9Erb.Bno46Z1Bd3eY65q5ny1nYWEEzfV8kCG',
+            'role' => 4,
+            'slug' => Str::random(60),
+        ]);
     }
 }

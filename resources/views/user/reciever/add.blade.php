@@ -2,7 +2,7 @@
 
     @section('page_title', 'INVENTORY - ADD')
 
-    <div class="p-3 lg:ml-64 lg:pt-3">
+    <div class="p-3 lg:pt-3">
         <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
                 <form action="{{ route('inventory.store') }}" method="POST" enctype="multipart/form-data" class="grid">
