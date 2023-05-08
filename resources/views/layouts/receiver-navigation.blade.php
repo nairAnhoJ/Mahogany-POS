@@ -31,12 +31,12 @@
                <span class="ml-3">INVENTORY</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{ route('menu.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                <i class="uil uil-utensils-alt text-2xl text-gray-500"></i>
                <span class="ml-3">Menu Preparation</span>
             </a>
-         </li>
+         </li> --}}
       </ul>
    </div>
 </div>

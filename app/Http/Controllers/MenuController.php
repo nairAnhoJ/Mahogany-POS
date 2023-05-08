@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
+use App\Models\InventoryTransaction;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -239,7 +241,7 @@ class MenuController extends Controller
         foreach($ings as $ing){
             $ingredients .= '
                 <div class="px-4 text-xl font-semibold tracking-wide">
-                    <h1><span>'.$ing->quantity.'</span><span>'.$ing->unit.'</span><span class="ml-8">'.$ing->name.'</span></h1>
+                    <h1><span>'.$ing->quantity.'</span><span>'.$ing->unit.'</span><span style="margin-left: 32px;">'.$ing->name.'</span></h1>
                 </div>
             ';
         }
@@ -272,7 +274,7 @@ class MenuController extends Controller
             $nqty = $ing->quantity * $qty;
             $ingredients .= '
                 <div class="px-4 text-xl font-semibold tracking-wide">
-                    <h1><span>'.$nqty.'</span><span>'.$ing->unit.'</span><span class="ml-8">'.$ing->name.'</span></h1>
+                    <h1><span>'.$nqty.'</span><span>'.$ing->unit.'</span><span style="margin-left: 32px;">'.$ing->name.'</span></h1>
                 </div>
             ';
         }
@@ -291,7 +293,9 @@ class MenuController extends Controller
         $cur_quantity = (DB::table('menus')->where('slug', $slug)->first())->quantity;
         $uqty = $cur_quantity + $quantity;
 
-        $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
+        $menu = DB::table('menus')->where('slug', $slug)->first();
+        $menuID = $menu->id;
+        $menuName = $menu->name;
         $ings = DB::table('ingredients')->where('menu_id', $menuID)->get();
 
         if($ings->count() > 0){
@@ -308,6 +312,16 @@ class MenuController extends Controller
                         'quantity' => $new_quantity
                     ]);
                 }
+
+                $it = new InventoryTransaction();
+                $it->inv_id = $ing->inventory_id;
+                $it->type = 'OUTGOING';
+                $it->quantity_before = $old_quantity;
+                $it->quantity = $tqty;
+                $it->quantity_after = $new_quantity;
+                $it->remarks = $menuName;
+                $it->user_id = Auth::id();
+                $it->save();
             }
         }
 
