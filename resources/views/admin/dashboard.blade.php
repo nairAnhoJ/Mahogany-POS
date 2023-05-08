@@ -21,9 +21,9 @@
         }
 
         @media (min-width: 1024px) {
-            #contentDiv{
+            /* #contentDiv{
                 max-height: calc(100vh - 180px);
-            }
+            } */
             #chartDiv{
                 height: calc(100vh - 235px);
             }
@@ -32,9 +32,9 @@
 
     @section('page_title', 'DASHBOARD')
     
-    <div class="p-3 lg:ml-64 lg:pt-3">
-        <div id="contentDiv" class="p-2 w-full">
-            <div class="bg-white shadow-md rounded-lg p-3 w-full">
+    <div class="p-3 lg:ml-64 lg:pt-3 h-screen">
+        <div id="contentDiv" class="p-2 w-full flex">
+            <div class="bg-white shadow-md rounded-lg p-3 w-[calc(100%-33vh)]">
                 <div class="flex justify-end flex-row lg:justify-between mb-3">
                     <div class="hidden lg:block col-span-2 text-2xl">Overview</div>
                     <div class="justify-self-end flex items-center">
@@ -50,24 +50,35 @@
                     <div>
                         <div class="block lg:max-w-sm p-6 bg-emerald-400 border border-gray-200 rounded-lg shadow md:flex md:justify-between lg:block">
                             <h5 class="mb-2 text-base font-medium tracking-tight text-gray-900 md:text-lg md:self-center md:mb-0">Total Profit</h5>
-                            <p class="font-bold text-gray-700 text-2xl md:text-3xl md:self-center lg:text-2xl">₱ 9,999,999.00</p>
+                            <p class="font-bold text-gray-700 text-2xl md:text-3xl md:self-center lg:text-2xl">₱ {{$profit}}</p>
                         </div>
                     </div>
                     <div>
                         <div class="block lg:max-w-sm p-6 bg-sky-400 border border-gray-200 rounded-lg shadow md:flex md:justify-between lg:block">
                             <h5 class="mb-2 text-base font-medium tracking-tight text-gray-900 md:text-lg md:self-center md:mb-0">Total Sales</h5>
-                            <p class="font-bold text-gray-700 text-2xl md:text-3xl md:self-center lg:text-2xl">₱ 9,999,999.00</p>
+                            <p class="font-bold text-gray-700 text-2xl md:text-3xl md:self-center lg:text-2xl">₱ {{$sales}}</p>
                         </div>
                     </div>
                     <div>
                         <div class="block lg:max-w-sm p-6 bg-red-400 border border-gray-200 rounded-lg shadow md:flex md:justify-between lg:block">
                             <h5 class="mb-2 text-base font-medium tracking-tight text-gray-900 md:text-lg md:self-center md:mb-0">Total Expenses</h5>
-                            <p class="font-bold text-gray-700 text-2xl md:text-3xl md:self-center lg:text-2xl">₱ 9,999,999.00</p>
+                            <p class="font-bold text-gray-700 text-2xl md:text-3xl md:self-center lg:text-2xl">₱ {{$expenses}}</p>
                         </div>
                     </div>
                     <div id="chartDiv" class="lg:col-span-3 lg:px-5">
                         <canvas id="myChart" class="w-full"></canvas>
                     </div>
+                </div>
+            </div>
+            <div class="w-[calc(33vh-20px)] ml-5 flex flex-col gap-5">
+                <div class="bg-white shadow-md rounded-lg w-full h-1/3">
+                    Occupied Tables
+                </div>
+                <div class="bg-white shadow-md rounded-lg w-full h-1/3">
+                    a
+                </div>
+                <div class="bg-white shadow-md rounded-lg w-full h-1/3">
+                    a
                 </div>
             </div>
         </div>
