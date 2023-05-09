@@ -46,6 +46,7 @@ Route::middleware("role:1")->group(function(){
 
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/change-timeframe', [DashboardController::class, 'change'])->name('dashboard.change');
 
     // USERS
     Route::get('/system-management/user', [UserController::class, 'index'])->name('user.index');
@@ -144,6 +145,7 @@ Route::middleware('role:2')->group(function(){
     Route::post('/orders/cancel', [OrderedController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/open', [OrderedController::class, 'open'])->name('orders.open');
     Route::post('/orders/get-menu', [OrderedController::class, 'getMenu'])->name('orders.getMenu');
+    Route::get('/orders/print/{id}', [OrderedController::class, 'print']);
 
 });
 

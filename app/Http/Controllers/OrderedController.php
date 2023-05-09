@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function Ramsey\Uuid\v1;
+
 class OrderedController extends Controller
 {
     public function index(){
@@ -321,5 +323,10 @@ class OrderedController extends Controller
         DB::table('tables')->where('id', $table)->update([
             'status' => 0
         ]);
+    }
+
+    public function print($id){
+
+        return view('user.cashier.bill');
     }
 }
