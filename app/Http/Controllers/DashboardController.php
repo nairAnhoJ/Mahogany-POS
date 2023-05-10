@@ -13,6 +13,7 @@ class DashboardController extends Controller
         $today = date('Y-m-d');
 
         $sales = number_format(DB::table('transactions')
+            ->where('order_status', '!=', 'CANCELLED')
             ->whereDate('created_at', $today)
             ->sum('amount'), 2, '.', ',');
 
@@ -34,6 +35,7 @@ class DashboardController extends Controller
 
         if($timeframe == '1'){
             $sales = number_format(DB::table('transactions')
+                ->where('order_status', '!=', 'CANCELLED')
                 ->whereDate('created_at', $today)
                 ->sum('amount'), 2, '.', ',');
     
@@ -72,6 +74,7 @@ class DashboardController extends Controller
             $profitArray = array_reverse($profitArray);
         }elseif($timeframe == '2'){
             $sales = number_format(DB::table('transactions')
+                ->where('order_status', '!=', 'CANCELLED')
                 ->whereRaw("WEEK(created_at) = WEEK(NOW()) AND YEAR(created_at) = YEAR(NOW())")
                 ->sum('amount'), 2, '.', ',');
 
@@ -93,6 +96,7 @@ class DashboardController extends Controller
                 $weekLabel = date('M d', $weekStart);
                     
                 $s = DB::table('transactions')
+                        ->where('order_status', '!=', 'CANCELLED')
                         ->whereBetween('created_at', [date('Y-m-d H:i:s', $weekStart), date('Y-m-d H:i:s', $weekEnd)])
                         ->sum('amount');
                 
@@ -115,6 +119,7 @@ class DashboardController extends Controller
 
         }elseif($timeframe == '3'){
             $sales = number_format(DB::table('transactions')
+                ->where('order_status', '!=', 'CANCELLED')
                 ->whereRaw("MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())")
                 ->sum('amount'), 2, '.', ',');
 
@@ -135,6 +140,7 @@ class DashboardController extends Controller
                 $months[] = [$monthStart->format('Y-m-d'), $monthEnd->format('Y-m-d')];
                     
                 $s = DB::table('transactions')
+                        ->where('order_status', '!=', 'CANCELLED')
                         ->whereBetween('created_at', [$monthStart->format('Y-m-d'), $monthEnd->format('Y-m-d')])
                         ->sum('amount');
                 

@@ -144,7 +144,10 @@ Route::middleware('role:2')->group(function(){
     Route::post('/orders/remove', [OrderedController::class, 'remove'])->name('orders.remove');
     Route::post('/orders/cancel', [OrderedController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/open', [OrderedController::class, 'open'])->name('orders.open');
+    Route::post('/orders/occupy', [OrderedController::class, 'occupy'])->name('orders.occupy');
+    Route::post('/orders/paid', [OrderedController::class, 'paid'])->name('orders.paid');
     Route::post('/orders/get-menu', [OrderedController::class, 'getMenu'])->name('orders.getMenu');
+    Route::post('/orders/get-amount', [OrderedController::class, 'getAmount'])->name('orders.getAmount');
     Route::get('/orders/print/{id}', [OrderedController::class, 'print']);
 
 });

@@ -18,33 +18,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
-    <div class="flex flex-col items-center pt-20">
+    <div class="flex flex-col items-center pt-14">
         <header class="flex flex-col items-center border-b border-dashed border-gray-600 w-[90%] pb-1">
             <h1 class="text-5xl">LOGO</h1>
             <h2 class="text-lg">RESTAURANT NAME</h2>
             <p class="text-sm">RESTAURANT ADDRESS</p>
             <p class="text-sm">CONTACT NUMBER</p>
-            <div class="flex justify-between w-full mt-8">
-                <p class="text-sm font-bold">05052023-0000001</p>
+            <div class="flex justify-between flex-row-reverse w-full mt-8">
+                <p class="text-sm font-bold">{{$trans->table_name}}</p>
+                <p class="text-sm font-bold">CASHIER: {{ Auth::user()->name }}</p>
+            </div>
+            <div class="flex justify-between w-full">
+                <p class="text-sm font-bold">{{$trans->number}}</p>
                 <p class="text-sm font-bold">{{ date('m/d/Y H:i:s') }}</p>
             </div>
         </header>
 
         <div class="w-[90%] mt-5 border-b border-dashed border-gray-600">
             <div class="w-full">
-                <div class="w-full flex justify-between">
-                    <p>2<i class="uil uil-times mr-1"></i>BULALO</p>
-                    <p class="whitespace-nowrap pl-3">P 450.00</p>
-                </div>
-                <div class="w-full flex justify-between">
-                    <p>1<i class="uil uil-times mr-1"></i>SINIGANG NA BABOY</p>
-                    <p class="whitespace-nowrap pl-3">P 450.00</p>
-                </div>
+                @foreach ($orders as $order)
+                    <div class="w-full flex justify-between">
+                        <p class="text-sm">{{$order->quantity}}<i class="uil uil-times mr-1"></i>{{$order->name}}</p>
+                        <p class="whitespace-nowrap pl-3 text-sm">₱ {{number_format($order->amount, 2, '.', ',')}}</p>
+                    </div>
+                @endforeach
             </div>
             <div class="w-full mt-5 mb-3">
-                <div class="w-full flex justify-between text-xl font-bold">
+                <div class="w-full flex justify-between text-lg font-bold">
                     <p>TOTAL</p>
-                    <p class="whitespace-nowrap pl-3">P 450.00</p>
+                    <p class="whitespace-nowrap pl-3">₱ {{number_format($trans->total, 2, '.', ',')}}</p>
                 </div>
             </div>
         </div>

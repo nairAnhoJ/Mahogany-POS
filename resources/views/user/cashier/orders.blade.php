@@ -160,6 +160,181 @@
         </div>
     {{-- OPEN MODAL END --}}
 
+    {{-- OCCUPY MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="occupyModal" data-modal-toggle="occupyModal" id="occupyOpenModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="occupyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Occupy Table
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="occupyModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <p class="text-base leading-relaxed text-gray-500">
+                            Are you sure you want to mark this table as occupied?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
+                        <button id="acceptOccupyButton" data-modal-hide="occupyModal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
+                        <button data-modal-hide="occupyModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- OCCUPY MODAL END --}}
+
+
+    {{-- MOP MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="MOPModal" data-modal-toggle="MOPModal" id="openMOPModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="MOPModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-5xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Mode of Payment
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="MOPModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <input type="hidden" name="mop" id="mop">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <button type="button" data-mop="CASH" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="mopButton text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
+                                    <i class="uil uil-money-bill text-6xl mr-3"></i>
+                                    <span class="text-3xl font-bold">CASH</span>
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" data-mop="DEBIT / CREDIT CARD" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
+                                    <i class="uil uil-transaction text-6xl mr-3"></i>
+                                    <span class="text-3xl font-bold">DEBIT / CREDIT CARD</span>
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" data-mop="GCASH / MAYA" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center  mr-2 mb-2 w-full">
+                                    <i class="uil uil-bolt text-6xl mr-3"></i>
+                                    <span class="text-3xl font-bold">GCASH / MAYA</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
+                        <button data-modal-hide="MOPModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- MOP MODAL END --}}
+
+    {{-- AMOUNT RECEIVED MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" id="openAmountReceivedModal" class="hidden" type="button"></button>
+
+
+        <div id="amountReceivedModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div  class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Pay Now
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="amountReceivedModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <div class="mb-2">
+                            <label for="amount" class="block mb-2 text-base font-medium text-gray-900">Amount Received</label>
+                            <input type="text" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                            <p id="amountError" class="text-sm text-gray-600 italic">Enter an amount more than or equal to <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold"></span></p>
+                        </div>
+                        <div class="w-full h-auto rounded-lg flex flex-col justify-between px-32">
+                            <div class="grid grid-cols-4 gap-4">
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="7">7</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="8">8</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="9">9</button>
+                                <button type="button" class="numpad-button row-span-2 border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="bs"><i class="uil uil-arrow-left"></i></button>
+
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="4">4</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="5">5</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="6">6</button>
+
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="1">1</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="2">2</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="3">3</button>
+                                <button type="button" class="numpad-button row-span-2 border shadow bg-gray-50 focus:scale-95 font-bold" data-value="clr">CLEAR</button>
+
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="0">0</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="00">00</button>
+                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value=".">.</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
+                        <button id="payNowButton" data-amount="" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Mark as Paid</button>
+                        <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- AMOUNT RECEIVED MODAL END --}}
+
+    {{-- CHANGE MODAL --}}
+        <!-- Modal toggle -->
+        <button data-modal-target="changeModal" data-modal-toggle="changeModal" id="openChangeModal" class="hidden" type="button"></button>
+    
+        <!-- Main modal -->
+        <div id="changeModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-[99] hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-800 bg-opacity-70">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Change
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="changeModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4 flex text-4xl leading-relaxed text-gray-500 font-semibold justify-center items-center">
+                        ₱<p id="changeP" class="ml-2"></p>.00
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
+                        <button id="changeCloseModal" data-modal-hide="changeModal" type="button" onclick="window.location.reload()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- CHANGE MODAL END --}}
+
+
     {{-- SELECTED TABLE MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="selectedTableModal" data-modal-toggle="selectedTableModal" id="openSelectedTableModal" class="hidden" type="button"></button>
@@ -172,9 +347,10 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                         <h3 id="tableName" class="text-2xl font-semibold text-gray-900"></h3>
-                        <div class="flex">
+                        <div class="flex items-center">
+                            <div id="paidDiv" class="mr-7">
+                            </div>
                             <div id="printDiv">
-                                <button id="printButton" class="flex items-center border border-gray-400 px-4 py-1 rounded-lg"><i class="uil uil-print text-xl mr-1"></i><span class="font-semibold">Print Bill</span></button>
                             </div>
                             <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-5 inline-flex items-center" data-modal-hide="selectedTableModal">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -211,6 +387,7 @@
                 </div>
             @endforeach
         </div>
+        <input type="hidden" id="mop" name="mop">
     </div>
 
     <script>
@@ -225,6 +402,7 @@
                 var name = $(this).data('tablename');
                 var status = $(this).data('status');
 
+
                 if(status != 0){
                     $.ajax({
                         url:"{{ route('orders.getMenu') }}",
@@ -236,7 +414,15 @@
                         },
                         success:function(result){
                             $('#allOrders').html(result.allOrders);
-                            console.log(result.co);
+
+                            if(result.pd == '1'){
+                                $('#paidDiv').html('');
+                            $('#printDiv').html(``);
+                            }else{
+                                $('#paidDiv').html('<button id="paidButton" class="flex items-center px-4 py-2 rounded-lg bg-emerald-400"><span class="font-semibold">Mark as PAID</span></button>');
+                                $('#printDiv').html(`<a href="{{ url('/orders/print/${id}') }}" target="_blank" class="flex items-center border border-gray-400 px-4 py-1 rounded-lg"><i class="uil uil-print text-xl mr-1"></i><span class="font-semibold">Print Bill</span></a>`);
+                            }
+
                             if(result.co == '1'){
                                 $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
                                 $('#cancelOrderDiv').html('');
@@ -244,7 +430,6 @@
                                 $('#completeOrderDiv').html('');
                                 $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
                             }
-                            $('#printDiv').html(`<a href="{{ url('/orders/print/${id}') }}" target="_blank" class="flex items-center border border-gray-400 px-4 py-1 rounded-lg"><i class="uil uil-print text-xl mr-1"></i><span class="font-semibold">Print Bill</span></a>`);
                             $('#table').val(id);
                             $('#openSelectedTableModal').click();
                         }
@@ -253,6 +438,7 @@
                     $('#completeOrderDiv').html('<button id="occupyButton" data-modal-hide="selectedTableModal" type="button" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Occupy Table</button>');
                     $('#cancelOrderDiv').html('');
                     $('#printDiv').html('');
+                    $('#paidDiv').html('');
                     $('#allOrders').html('This table is not occupied.');
                     $('#openSelectedTableModal').click();
                 }
@@ -378,6 +564,135 @@
                     }
                 })
             });
+
+
+            jQuery(document).on("click", "#occupyButton", function(){
+                $('#occupyOpenModal').click();
+            });
+
+
+            jQuery(document).on("click", "#acceptOccupyButton", function(){
+                $('#loadingScreen').removeClass('hidden');
+                $.ajax({
+                    url:"{{ route('orders.occupy') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        location.reload();
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
+            });
+
+
+
+            jQuery(document).on("click", "#paidButton", function(){
+                $('#openMOPModal').click();
+            });
+
+            $('.mopButton').click(function(){
+                var mop = $(this).data('mop');
+                $('#mop').val(mop);
+                $('#loadingScreen').removeClass('hidden');
+                $.ajax({
+                    url:"{{ route('orders.getAmount') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#actualAmount').html(result);
+                        $('#payNowButton').data('amount', result);
+                        $('#loadingScreen').addClass('hidden');
+                    }
+                })
+            });
+
+            $('#payNowButton').click(function(){
+                var amount = $(this).data('amount');
+                var amountInput = $('#amount').val();
+                var mop = $('#mop').val();
+
+                if(amountInput < amount){
+                    $('#amountError').addClass('text-red-500');
+                }else{
+                    $('#loadingScreen').removeClass('hidden');
+                    var change = amountInput - amount;
+                    $('#payNowCancelButton').click();
+                    $('#changeP').html(change);
+
+                    $.ajax({
+                        url:"{{ route('orders.paid') }}",
+                        method:"POST",
+                        data:{
+                            id: id,
+                            amountInput: amountInput,
+                            mop: mop,
+                            _token: _token
+                        },
+                        success:function(result){
+                            $('#openChangeModal').click();
+                            $('#loadingScreen').addClass('hidden');
+                        }
+                    })
+                }
+
+            });
+
+            $('.numpad-button').on('click', function() {
+                const $amount = $('#amount');
+                const buttonValue = $(this).data('value');
+
+                if (buttonValue == 'bs') {
+                    $amount.val($amount.val().slice(0, -1));
+                }else if(buttonValue == 'clr'){
+                    $amount.val('');
+                }else if(buttonValue !== undefined){
+                    $amount.val($amount.val() + buttonValue);
+
+                    var inputValue = $('#amount').val();
+
+                    var dotIndex = inputValue.indexOf('.');
+                    if (dotIndex !== -1 && inputValue.indexOf('.', dotIndex + 1) !== -1) {
+                        $('#amount').val(inputValue.substr(0, dotIndex + 1) + inputValue.substr(dotIndex + 1).replace(/\./g, ''));
+                    }
+                }
+            });
+
+            $('#amount').on('keyup', function() {
+                var inputValue = $(this).val();
+                $(this).val(inputValue.replace(/[^0-9\.]/g, ''));
+                
+                var dotIndex = inputValue.indexOf('.');
+                if (dotIndex !== -1 && inputValue.indexOf('.', dotIndex + 1) !== -1) {
+                $(this).val(inputValue.substr(0, dotIndex + 1) + inputValue.substr(dotIndex + 1).replace(/\./g, ''));
+                }
+            });
+
+            $('#changeCloseModal').click(function(){
+                location.reload();
+            });
+
+
+            // jQuery(document).on("click", "#acceptPaidButton", function(){
+            //     $('#loadingScreen').removeClass('hidden');
+            //     $.ajax({
+            //         url:"{{ route('orders.paid') }}",
+            //         method:"POST",
+            //         data:{
+            //             id: id,
+            //             _token: _token
+            //         },
+            //         success:function(result){
+            //             location.reload();
+            //             $('#loadingScreen').addClass('hidden');
+            //         }
+            //     })
+            // });
         });
     </script>
 </x-app-layout>

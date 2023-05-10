@@ -119,7 +119,6 @@
         </div>
     {{-- MOP MODAL END --}}
 
-
     {{-- NAME/NUMBER MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="detailsModal" data-modal-toggle="detailsModal" id="openDetailsModal" class="hidden" type="button"></button>
@@ -158,7 +157,6 @@
             </div>
         </div>
     {{-- NAME/NUMBER MODAL END --}}
-
 
     {{-- AMOUNT RECEIVED MODAL --}}
         <!-- Modal toggle -->
