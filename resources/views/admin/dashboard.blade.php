@@ -89,14 +89,35 @@
 
     <script>
         $(document).ready(function() {
-            const DATA_COUNT = 8;
+            var labelss = <?php echo $labels; ?>;
+            var salesArray = <?php echo $salesArray; ?>;
+            var expensesArray = <?php echo $expensesArray; ?>;
+            var profitArray = <?php echo $profitArray; ?>;
+
+            const DATA_COUNT = 7;
             const labels = [];
-            for (let i = 1; i < DATA_COUNT; ++i) {
-                labels.push(i.toString());
+            const saless = [];
+            const expensess = [];
+            const profit = [];
+            for (let i = 0; i < DATA_COUNT; ++i) {
+                labels.push(labelss[i]);
             }
-            const profits =     [000, 020, 030, 050, 040, 080, 070, 100, 125, 105, 110, 090];
-            const sales =       [000, 060, 070, 030, 060, 120, 180, 120, 185, 145, 190, 170];
-            const expenses =    [000, 040, 020, 020, 040, 110, 020, 060, 045, 105, 080, 080];
+
+            for (let i = 0; i < DATA_COUNT; ++i) {
+                saless.push(salesArray[i]);
+            }
+
+            for (let i = 0; i < DATA_COUNT; ++i) {
+                expensess.push(expensesArray[i]);
+            }
+
+            for (let i = 0; i < DATA_COUNT; ++i) {
+                profit.push(profitArray[i]);
+            }
+
+            const profits =     profit;
+            const sales =       saless;
+            const expenses =    expensess;
             const data = {
                 labels: labels,
                 datasets: [

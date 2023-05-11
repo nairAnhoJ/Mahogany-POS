@@ -22,11 +22,40 @@ class DashboardController extends Controller
             ->whereDate('created_at', $today)
             ->sum('amount'), 2, '.', ',');
 
+        $daysArray = array();
+        $salesArray = array();
+        $expensesArray = array();
+        $profitArray = array();
+
+        for ($i = 0; $i < 7; $i++) {
+            $dayTimestamp = strtotime("-$i days");
+            $dayLabel = date('M d', $dayTimestamp);
+            $seDate = date('Y-m-d', $dayTimestamp);
+            
+            $s = DB::table('transactions')
+                    ->whereDate('created_at', $seDate)
+                    ->sum('amount');
+            
+            $e = DB::table('inventory_transactions')
+                    ->where('type', 'INCOMING')
+                    ->whereDate('created_at', $seDate)
+                    ->sum('amount');
+
+            array_push($daysArray, $dayLabel);
+            array_push($salesArray, $s);
+            array_push($expensesArray, $e);
+            array_push($profitArray, ($s - $e));
+        }
+        $labels = json_encode(array_reverse($daysArray));
+        $salesArray = json_encode(array_reverse($salesArray));
+        $expensesArray = json_encode(array_reverse($expensesArray));
+        $profitArray = json_encode(array_reverse($profitArray));
+
         $profit = number_format(((float) str_replace([','], '', $sales) - (float) str_replace([','], '', $expenses)), 2, '.', ',');
 
         $table = DB::table('tables')->where('status', 1)->get();
 
-        return view('admin.dashboard', compact('sales', 'expenses', 'profit', 'table'));
+        return view('admin.dashboard', compact('sales', 'expenses', 'profit', 'table', 'labels', 'salesArray', 'expensesArray', 'profitArray'));
     }
 
     public function change(Request $request){
