@@ -37,7 +37,7 @@ Route::get('/', function () {
         }else if(auth()->user()->role == '3'){
             return redirect()->route('kitchen.display');
         }else if(auth()->user()->role == '4'){
-            return redirect()->route('dashboard');
+            return redirect()->route('inventory.index');
         }
     }
 });

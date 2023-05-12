@@ -26,10 +26,10 @@
                             </select>
                         </div>
 
-                        <div class="mb-2">
+                        {{-- <div class="mb-2">
                             <label for="quantity" class="block text-sm font-medium text-gray-900 lg:text-base">Quantity <span class="text-red-500">*</span></label>
                             <input type="text" id="quantity" name="quantity" value="{{ $item->quantity }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
-                        </div>
+                        </div> --}}
 
                         <div class="mb-2">
                             <label for="reorder_point" class="block text-sm font-medium text-gray-900 lg:text-base">Reorder Point<span class="text-red-500">*</span></label>
