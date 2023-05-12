@@ -12,7 +12,7 @@
         }
     </style>
 
-    @section('page_title', '')
+    @section('page_title', 'POS')
 
     {{-- LOADING --}}
         <div wire:loading id="loadingScreen" class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[60] overflow-hidden bg-gray-900 opacity-75 opa flex flex-col items-center justify-center">
@@ -420,10 +420,6 @@
                                 </div>
                                 <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search" required autocomplete="off">
                             </div>
-                            {{-- <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-full border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                <span class="sr-only">Search</span>
-                            </button> --}}
                         </div>
                     </div>
                     <div class="p-2 border-b border-neutral-300">
@@ -454,7 +450,7 @@
                     </div>
                     <div id="categoryAllContents" class="h-[calc(100vh-194px)] overflow-y-auto">
                         <div id="categoryTabContent" class="h-auto min-h-full bg-gray-100">
-                            <div class="hidden p-8" id="all-menu" role="tabpanel" aria-labelledby="all-menu-tab">
+                            <div class="p-8" id="all-menu" role="tabpanel" aria-labelledby="all-menu-tab">
                                 <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
                                     @foreach ($menus as $menu)
                                         <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
@@ -595,9 +591,6 @@
 
     <script>
         $(document).ready(function() {
-            // function refreshPage() {
-            //     location.reload();
-            // }
 
             $('.tableButton').click(function(){
                 var id = $(this).data('table');

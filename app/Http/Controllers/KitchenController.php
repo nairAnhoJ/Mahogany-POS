@@ -40,9 +40,10 @@ class KitchenController extends Controller
             ->join('menus', 'ordered.menu_id', '=', 'menus.id')
             ->where('ordered.status', '!=', 'COMPLETED')
             ->where('ordered.status', '!=', 'SERVED')
-            ->groupBy('menus.id')
+            ->groupBy('menus.id', 'menus.category_id', 'menus.name')
             ->orderBy('menus.name', 'asc')
             ->get();
+
 
         return view('user.cook.kitchen-display', compact('ordereds', 'cats', 'sOrders', 'trans'));
     }
