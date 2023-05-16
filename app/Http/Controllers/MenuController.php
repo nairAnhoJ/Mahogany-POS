@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Ingredient;
+use App\Models\Inventory;
 use App\Models\InventoryTransaction;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -18,14 +20,15 @@ class MenuController extends Controller
             ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
             ->orderBy('name', 'asc')
             ->paginate(100);
+        $items = DB::table('inventories')->get();
         $menuCount = DB::table('menus')->get()->count();
         $page = 1;
         $search = "";
 
         if(auth()->user()->role == 1){
-            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
+            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search', 'items'));
         }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
+            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
         }
     }
 
@@ -71,11 +74,12 @@ class MenuController extends Controller
     public function add(){
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
         $items = DB::table('inventories')->get();
+        $menus = DB::table('menus')->get();
 
         if(auth()->user()->role == 1){
-            return view('user.inventory.menu.add', compact('categories', 'items'));
+            return view('user.inventory.menu.add', compact('categories', 'items', 'menus'));
         }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation-add', compact('categories','items'));
+            return view('user.cook.menu-preparation-add', compact('categories','items', 'menus'));
         }
     }
 
@@ -225,6 +229,53 @@ class MenuController extends Controller
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Updated');
     }
 
+    public function move(Request $request){
+        $slug = $request->moveSlug;
+        $qty = $request->moveServings;
+
+        $inv = DB::table('inventories')->where('slug', $slug)->first();
+        $menu = DB::table('menus')->where('slug', $slug)->first();
+
+        if(!$inv){
+            $cat = DB::table('categories')->where('slug', 'menu')->first();
+
+            if(!$cat){
+                $ncat = new Category();
+                $ncat->name = 'Menu';
+                $ncat->slug = 'menu';
+                $ncat->save();
+
+                $catID = $ncat->id;
+            }else{
+                $catID = $cat->id;
+            }
+
+            $ninv = new Inventory();
+            $ninv->name = $menu->name;
+            $ninv->category_id = $catID;
+            $ninv->quantity = $qty;
+            $ninv->reorder_point = '0';
+            $ninv->unit = 'pc';
+            $ninv->slug = $slug;
+            $ninv->save();
+        }else{
+            DB::table('inventories')->where('slug', $slug)->update([
+                'quantity' => $inv->quantity + $qty
+            ]);
+        }
+
+        DB::table('menus')->where('slug', $slug)->update([
+            'current_quantity' => $menu->current_quantity - $qty,
+            'quantity' => $menu->quantity - $qty
+        ]);
+
+        if(auth()->user()->role == 1){
+            // return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Updated');
+        }elseif(auth()->user()->role == 3){
+            return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Moved');
+        }
+    }
+
     public function view(Request $request){
         $slug = $request->slug;
         $menu = DB::table('menus')->where('slug', $slug)->first();
@@ -290,6 +341,7 @@ class MenuController extends Controller
     public function changeqty(Request $request){
         $slug = $request->slug;
         $quantity = $request->servings;
+        $Totalcounter = $request->counter;
         $cur_quantity = (DB::table('menus')->where('slug', $slug)->first())->quantity;
         $uqty = $cur_quantity + $quantity;
 
@@ -322,6 +374,28 @@ class MenuController extends Controller
                 $it->remarks = $menuName;
                 $it->user_id = Auth::id();
                 $it->save();
+            }
+        }
+        
+        for($counter = 1; $counter <= $Totalcounter; $counter++){
+            $iname = 'item'.$counter;
+            $qname = 'quantity'.$counter;
+            $inv = DB::table('inventories')->where('id', $request->$iname)->first();
+
+            if($request->$iname != null){
+                $it = new InventoryTransaction();
+                $it->inv_id = $request->$iname;
+                $it->type = 'OUTGOING';
+                $it->quantity_before = $inv->quantity;
+                $it->quantity = $request->$qname;
+                $it->quantity_after = $inv->quantity - $request->$qname;
+                $it->remarks = $menuName;
+                $it->user_id = Auth::id();
+                $it->save();
+
+                DB::table('inventories')->where('id', $request->$iname)->update([
+                    'quantity' => $inv->quantity - $request->$qname
+                ]);
             }
         }
 

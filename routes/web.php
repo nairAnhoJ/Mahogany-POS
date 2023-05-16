@@ -104,6 +104,7 @@ Route::middleware("role:1,3")->group(function(){
     Route::get('/menu/edit/{slug}', [MenuController::class, 'edit']);
     Route::post('/menu/update', [MenuController::class, 'update'])->name('menu.update');
     Route::post('/menu/view', [MenuController::class, 'view'])->name('menu.view');
+    Route::post('/menu/move', [MenuController::class, 'move'])->name('menu.move');
     Route::post('/menu/compute-quantity', [MenuController::class, 'computeqty'])->name('menu.computeqty');
     Route::post('/menu/change-quantity', [MenuController::class, 'changeqty'])->name('menu.changeqty');
     Route::get('/menu/delete/{slug}', [MenuController::class, 'delete'])->name('menu.delete');

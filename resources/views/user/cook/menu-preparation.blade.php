@@ -37,44 +37,46 @@
             </div>
         </div>
     {{-- DELETE MODAL END --}}
-
-    {{-- ADD QUANTITY MODAL --}}
-        {{-- <div id="changeQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto"> --}}
+    
+    {{-- MOVE MODAL --}}
+        <!-- Modal toggle -->
+        {{-- <button data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+            Toggle modal
+        </button> --}}
+        
+        <!-- Main modal -->
+        <div id="moveMenuModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+            <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
-                {{-- <form method="POST" action="{{ route('menu.changeqty') }}" id="changeQtyForm" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
-                    @csrf --}}
+                <form method="POST" action="{{ route('menu.move') }}" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                    @csrf
                     <!-- Modal header -->
-                    {{-- <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center"> --}}
-                            {{-- <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i> --}}
-                            {{-- <span id="changeQtyTitle" class="text-base md:text-lg lg:text-xl">Add Quantity</span>
+                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
+                        <h3 class="font-semibold text-gray-900 flex items-center">
+                            {{-- <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-yellow-400"></i> --}}
+                            <span class="text-emerald-600 text-base md:text-lg lg:text-xl">Move Menu to Inventory</span>
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="changeQtyModal">
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="moveMenuModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
-                    </div> --}}
+                    </div>
                     <!-- Modal body -->
-                    {{-- <div class="px-6 py-3">
-                        <div class="text-xs md:text-base leading-relaxed text-gray-500">
-                            <input type="hidden" id="s" name="s">
-                            <input type="hidden" id="slug" name="slug">
-                            <div>
-                                <label for="quantity" class="block text-sm font-medium text-gray-900">Quantity</label>
-                                <input type="text" id="quantity" name="quantity" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs" autocomplete="off">
-                            </div>
-                            <p class="mt-3 italic">* Please double check the quantity.</p>
+                    <div class="px-6 py-3 md:py-6 space-y-6">
+                        <input type="hidden" id="moveSlug" name="moveSlug">
+                        <div class="mb-6">
+                            <label for="moveServings" class="block mb-2 text-sm font-medium text-gray-900">Servings</label>
+                            <input type="number" id="moveServings" name="moveServings" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 appearance-none" autocomplete="off" min="1" max="" required>
                         </div>
-                    </div> --}}
+                    </div>
                     <!-- Modal footer -->
-                    {{-- <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <button disabled type="submit" id="addQtyButton" class="disabled:opacity-50 disabled:pointer-events-none w-24 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
-                        <button data-modal-hide="changeQtyModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900">Cancel</button>
+                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
+                        <button type="submit" class="moveConfirm w-24 text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
+                        <button data-modal-hide="moveMenuModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </form>
             </div>
-        </div> --}}
-    {{-- ADD QUANTITY MODAL END --}}
+        </div>
+    {{-- MOVE MODAL END --}}
 
     {{-- SUCCESS NOTIFICATION --}}
         @if (session('message'))
@@ -108,9 +110,10 @@
         <button data-drawer-target="addServingModal" data-drawer-toggle="addServingModal" aria-controls="addServingModal" type="button" id="addServingButton" class="hidden">
         </button>
             
-        <aside id="addServingModal" data-drawer-backdrop="static" tabindex="-1" class="fixed top-0 left-1/3 lg:left-1/2 z-40 w-2/3 lg:w-1/2 h-screen transition-transform translate-x-full" aria-label="Sidebar">
+        <aside id="addServingModal" data-drawer-backdrop="static" tabindex="-1" class="fixed top-0 left-1/4 lg:left-1/4 z-40 w-3/4 lg:w-3/4 h-screen transition-transform translate-x-full" aria-label="Sidebar">
             <form method="POST" action="{{ route('menu.changeqty') }}" class="h-full px-4 py-4 overflow-y-auto bg-gray-50 relative">
                 @csrf
+                <input type="hidden" id="counter" name="counter" value="1">
                 <h1 id="menuName" class="font-bold text-3xl tracking-wider">MENU NAME</h1>
                 <div class="grid grid-cols-2 mt-5 mb-1 w-full">
                     <input type="hidden" id="slug" name="slug">
@@ -132,9 +135,35 @@
                     <div id="ingredients" class="">
                         
                     </div>
+
+                    <div class="mt-5">
+
+                        <div class="mt-7 mb-2 flex items-center">
+                            <h2 class="font-bold text-xl italic tracking-wide mr-5">ADDITIONALS</h2>
+                            <button id="addButton" type="button" class="text-3xl text-blue-500"><i class="uil uil-plus-circle"></i></button>
+                        </div>
+    
+                        <div class="mb-2 flex flex-row gap-x-3 h-6">
+                            <div class="w-2/5 text-center">
+                                <label class="block font-medium text-gray-900">Name</label>
+                            </div>
+                            <div class="w-2/5 text-center">
+                                <label class="block font-medium text-gray-900">Quantity</label>
+                            </div>
+                            <div class="w-1/5 flex">
+                                <div class="w-1/2"></div>
+                                <div class="w-1/2 text-center">Remove</div>
+                            </div>
+                        </div>
+
+                        <div id="addDiv">
+
+                        </div>
+
+                    </div>
                 </div>
-                <div class="absolute bottom-4 right-4">
-                    <button type="submit"  data-drawer-hide="addServingModal" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Proceed</button>
+                <div class="float-right mt-5">
+                    <button type="submit" data-drawer-hide="addServingModal" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Proceed</button>
                     <button type="button" data-drawer-hide="addServingModal" class="text-white bg-gray-500 hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">Cancel</button>
                 </div>
             </form>
@@ -214,7 +243,8 @@
                                                         {{ '₱ '.number_format($menu->price, 2, '.', ',') }}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
-                                                        <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                        <a type="button" data-modal-target="moveMenuModal" data-modal-toggle="moveMenuModal" data-slug="{{ $menu->slug }}" data-quantity="{{ $menu->quantity }}" class="moveButton text-teal-600 hover:underline font-semibold text-sm">Move</a> | 
+                                                        <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="editButton text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -404,6 +434,63 @@
 
     <script>
         $(document).ready(function() {
+
+            var counter = 2;
+
+            jQuery(document).on( "click", ".select-btn", function(e){
+                $('.content').not($(this).closest('.wrapper').find('.content')).addClass('hidden');
+                $(this).closest('.wrapper').find('.content').toggleClass('hidden');
+                $(this).closest('.wrapper').find('.uil-angle-down').toggleClass('-rotate-180');
+                e.stopPropagation();
+            });
+
+            function searchFilter(searchInput){
+                $(".listOption li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(searchInput) > -1)
+                });
+            }
+
+            jQuery(document).on( "click", ".content", function(e){
+                e.stopPropagation();
+            });
+
+            jQuery(document).on( "input", ".selectSearch", function(){
+                var value = $(this).val().toLowerCase();
+                searchFilter(value);
+            });
+
+            jQuery(document).on( "click", ".listOption li", function(){
+                var id = $(this).data('id');
+                    var name = $(this).data('name');
+                var unitid = 'unit' + $(this).data('idnum');
+                var qtyid = 'quantity' + $(this).data('idnum');
+
+                if(id == ""){
+                    $(this).closest('.wrapper').find('input').val(id);
+                    $(this).closest('.wrapper').find('.select-btn span').html(name);
+                    $('.content').addClass('hidden');
+                    $('.selectSearch').val('');
+                    var value = $(".selectSearch").val().toLowerCase();
+                    searchFilter(value);
+
+                    $('#' + unitid).html('');
+                    $('#' + qtyid).val('');
+                }else{
+                    var unit = $(this).data('unit');
+                    $(this).closest('.wrapper').find('input').val(id);
+                    $(this).closest('.wrapper').find('.select-btn span').html(name);
+                    $('.content').addClass('hidden');
+                    $('.selectSearch').val('');
+                    var value = $(".selectSearch").val().toLowerCase();
+                    searchFilter(value);
+
+                    $('#' + unitid).html(unit);
+                    $('#' + qtyid).val('');
+                }
+
+                $('.uil-angle-down').removeClass('-rotate-180');
+            });
+
             $('#searchButton').click(function(){
                 var search = $('#searchInput').val();
                 if(search != ""){
@@ -437,32 +524,6 @@
             $('.contentDiv').click(function(){
                 $('.notif').addClass('hidden');
             });
-
-            // $('.addQuantity').click(function(){
-            //     var slug = $(this).data('slug');
-            //     $('#slug').val(slug);
-            //     $('#quantity').val('');
-            //     $('#s').val('add');
-            //     $('#quantity').focus();
-
-            //     $('#changeQtyTitle').html('Add Quantity');
-
-            //     $('#changeQtyTitle').addClass('text-blue-500');
-            //     $('#changeQtyTitle').removeClass('text-red-500');
-            // });
-
-            // $('.reduceQuantity').click(function(){
-            //     var slug = $(this).data('slug');
-            //     $('#slug').val(slug);
-            //     $('#quantity').val('');
-            //     $('#s').val('reduce');
-            //     $('#quantity').focus();
-
-            //     $('#changeQtyTitle').html('Reduce Quantity');
-
-            //     $('#changeQtyTitle').addClass('text-red-500');
-            //     $('#changeQtyTitle').removeClass('text-blue-500');
-            // });
 
             $('#incQty').click(function(){
                 var qty = $('#servings').val();
@@ -545,25 +606,100 @@
             });
 
             $('.addServing').click(function(){
-                var slug = $(this).find('span').data('slug');
-                var _token = $('input[name="_token"]').val();
+                if (!$(event.target).is('.deleteButton') && !$(event.target).is('.editButton') && !$(event.target).is('.moveButton')) {
+                    var slug = $(this).find('span').data('slug');
+                    var _token = $('input[name="_token"]').val();
 
-                $.ajax({
-                    url:"{{ route('menu.view') }}",
-                    method:"POST",
-                    dataType: 'json',
-                    data:{
-                        slug: slug,
-                        _token: _token
-                    },
-                    success:function(result){
-                        $('#menuName').html(result.name);
-                        $('#ingredients').html(result.ingredients);
-                        $('#servings').val(1);
-                        $('#slug').val(slug);
-                        $('#addServingButton').click();
-                    }
-                })
+                    $.ajax({
+                        url:"{{ route('menu.view') }}",
+                        method:"POST",
+                        dataType: 'json',
+                        data:{
+                            slug: slug,
+                            _token: _token
+                        },
+                        success:function(result){
+                            $('#menuName').html(result.name);
+                            $('#ingredients').html(result.ingredients);
+                            $('#servings').val(1);
+                            $('#slug').val(slug);
+                            $('#addServingButton').click();
+                            $('#addDiv').html(`
+                            <div id="ing1" class="mb-5 flex flex-row gap-x-3">
+                                <div class="w-2/5">
+                                    <div class="wrapper w-full relative">
+                                        <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                                            <span></span>
+                                            <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                                            <div class="search relative">
+                                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                                <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                                            </div>
+                                            <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                                                <li data-id="" data-name="" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                                @foreach ($items as $item)
+                                                    <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <input type="hidden" name="item1" value="">
+                                    </div>
+                                </div>
+                                <div class="w-2/5">
+                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                                </div>
+                                <div class="w-1/5 flex">
+                                    <div id="unit1" class="w-1/2 text-lg leading-9"></div>
+                                    <button type="button" data-thisid="ing1" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                                </div>
+                            </div>`);
+                        }
+                    })
+                }
+            });
+
+            $('#addButton').click(function(){
+                $('#counter').val(counter);
+                $('#addDiv').append(`
+                    <div id="ing${counter}" class="mb-5 flex flex-row gap-x-3">
+                        <div class="w-2/5">
+                            <div class="wrapper w-full relative">
+                                <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                                    <span></span>
+                                    <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                                </div>
+                                <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                                    <div class="search relative">
+                                        <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                        <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                                    </div>
+                                    <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                                        <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                        @foreach ($items as $item)
+                                            <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="${counter}" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <input type="hidden" name="item${counter}" value="">
+                            </div>
+                        </div>
+                        <div class="w-2/5">
+                            <input type="text" id="quantity${counter}" name="quantity${counter}" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center">
+                        </div>
+                        <div class="w-1/5 flex">
+                            <div id="unit${counter}" class="w-1/2 text-lg leading-9"></div>
+                            <button type="button" data-thisid="ing${counter}" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                        </div>
+                    </div>
+                `);
+                counter++;
+            });
+
+            jQuery(document).on( "click", ".removeButton", function(){
+                var thisid = $(this).data('thisid');
+                $('#'+thisid).remove();
             });
 
             jQuery(document).on( "keyup", "#quantity", function(){
@@ -574,6 +710,15 @@
                 }else{
                     $('#addQtyButton').prop('disabled', false);
                 }
+            });
+
+            $('.moveButton').click(function(){
+                var slug = $(this).data('slug');
+                var quantity = $(this).data('quantity');
+
+                $('#moveSlug').val(slug);
+                $('#moveServings').val(1);
+                $('#moveServings').attr('max', quantity);
             });
         });
     </script>
