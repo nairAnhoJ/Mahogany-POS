@@ -173,7 +173,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200">
+                            <a href="{{ route('settings.index') }}" class="flex items-center w-46 p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg ml-5 pl-10 group border border-white hover:bg-white hover:shadow-md hover:border-gray-200">
                                 Settings
                             </a>
                         </li>

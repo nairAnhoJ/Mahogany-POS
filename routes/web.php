@@ -9,6 +9,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderedController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ValidateRole;
@@ -87,6 +88,10 @@ Route::middleware("role:1")->group(function(){
     Route::get('/system-management/menu-category/delete/{slug}', [MenuCategoryController::class, 'delete'])->name('menu.category.delete');
     Route::get('/system-management/menu-category/{page}', [MenuCategoryController::class, 'paginate']);
     Route::get('/system-management/menu-category/{page}/{search}', [MenuCategoryController::class, 'search']);
+
+    // SETTINGS
+    Route::get('/system-management/settings', [SettingController::class, 'settings'])->name('settings.index');
+    Route::post('/system-management/settings/store', [SettingController::class, 'store'])->name('settings.store');
 });
 
 
@@ -138,6 +143,7 @@ Route::middleware('role:2')->group(function(){
     Route::post('/pos/remove', [POSController::class, 'remove'])->name('pos.remove');
     Route::post('/pos/pay', [POSController::class, 'pay'])->name('pos.pay');
     Route::post('/pos/paylater', [POSController::class, 'paylater'])->name('pos.paylater');
+    Route::get('/pos/print/{id}', [POSController::class, 'print']);
 
     // ORDERS
     Route::get('/orders', [OrderedController::class, 'index'])->name('orders.index');

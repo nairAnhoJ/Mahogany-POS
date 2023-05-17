@@ -390,6 +390,9 @@ class OrderedController extends Controller
                     ->get();
 
 
-        return view('user.cashier.bill', compact('orders', 'trans'));
+        $settings = DB::table('settings')->where('id', 1)->first();
+
+
+        return view('user.cashier.bill', compact('orders', 'trans', 'settings'));
     }
 }

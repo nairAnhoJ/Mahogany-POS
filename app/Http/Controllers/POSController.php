@@ -639,4 +639,27 @@ class POSController extends Controller
 
         echo json_encode($response);
     }
+
+    public function print($id){
+        $trans = DB::table('transactions')
+                    ->select('transactions.*', 'tables.name as table_name')
+                    ->join('tables', 'transactions.table', '=', 'tables.id')
+                    ->where('transactions.table', $id)
+                    ->where('transactions.order_status', '!=', 'CANCELLED')
+                    ->where('transactions.order_status', '!=', 'COMPLETED')
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+        $orders = DB::table('ordered')
+                    ->select('ordered.*', 'menus.name')
+                    ->join('menus', 'ordered.menu_id', '=', 'menus.id')
+                    ->where('tran_id', $trans->id)
+                    ->get();
+
+
+        $settings = DB::table('settings')->where('id', 1)->first();
+
+
+        return view('user.cashier.bill', compact('orders', 'trans', 'settings'));
+    }
 }

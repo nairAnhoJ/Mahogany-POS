@@ -16,14 +16,28 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    
+    <style>
+      /* Default styles */
+      header, footer {
+        display: block;
+      }
+  
+      /* Styles for printing */
+      @media print {
+        header, footer {
+          display: none;
+        }
+      }
+    </style>
 </head>
 <body>
     <div class="flex flex-col items-center pt-14">
         <header class="flex flex-col items-center border-b border-dashed border-gray-600 w-[90%] pb-1">
-            <h1 class="text-5xl">LOGO</h1>
-            <h2 class="text-lg">RESTAURANT NAME</h2>
-            <p class="text-sm">RESTAURANT ADDRESS</p>
-            <p class="text-sm">CONTACT NUMBER</p>
+            <img src="{{ asset('storage/'.$settings->logo) }}" class="w-1/2" alt="">
+            <h2 class="text-lg">{{ $settings->name }}</h2>
+            <p class="text-sm">{{ $settings->address }}</p>
+            <p class="text-sm">{{ $settings->number }}</p>
             <div class="flex justify-between flex-row-reverse w-full mt-8">
                 <p class="text-sm font-bold">{{$trans->table_name}}</p>
                 <p class="text-sm font-bold">CASHIER: {{ Auth::user()->name }}</p>
