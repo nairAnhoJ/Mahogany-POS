@@ -48,6 +48,9 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
+            @php
+                $settings = DB::table('settings')->where('id', 1)->first();
+            @endphp
             @if (auth()->user()->role == 1)
                 @include('layouts.navigation')
             @elseif(auth()->user()->role == 2)

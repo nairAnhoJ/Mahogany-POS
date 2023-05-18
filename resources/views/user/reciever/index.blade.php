@@ -12,7 +12,7 @@
 
         @media (min-width: 1024px) {
             #inventoryTable{
-                max-height: calc(100vh - 180px);
+                max-height: calc(100vh - 220px);
             }
         }
     </style>
@@ -132,6 +132,7 @@
                     <div class="px-6 py-6">
                         <p class="text-xs md:text-base leading-relaxed text-gray-500">
                             <input type="hidden" id="minSlug" name="minSlug">
+                            <h1 id="minName" class="pb-5 font-bold text-xl">Kalamansi</h1>
                             <div class="mb-6">
                                 <label for="minQuantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
                                 <div class="flex items-center">
@@ -245,7 +246,7 @@
                                                     {{ $inventory->cat_name }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="uil uil-minus-circle text-red-500 text-xl mr-2"></i></button>
+                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="uil uil-minus-circle text-red-500 text-xl mr-2"></i></button>
                                                     {{ $inventory->quantity }}
                                                     <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="uil uil-plus-circle text-blue-500 text-xl mx-2"></i></button>
                                                     {{ $inventory->unit }}
@@ -525,8 +526,10 @@
 
                 var slug = $(this).data('slug');
                 var unit = $(this).data('unit');
+                var name = $(this).data('name');
                 $('#minSlug').val(slug);
                 $('#minUnit').html(unit);
+                $('#minName').html(name);
             });
         });
      </script>

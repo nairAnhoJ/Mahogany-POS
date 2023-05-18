@@ -102,7 +102,9 @@
             <div>
                 <a href="#" class="flex items-center mb-3">
                     {{-- <img src="{{ asset('storage/images/logo/logo.png') }}" alt="" class="h-10"> --}}
-                    <x-application-logo class="h-10 fill-current text-gray-500 mr-3"/>
+
+                    <img src="{{ asset('storage/'.$settings->logo) }}" class="h-10" alt="">
+                    {{-- <x-application-logo class="h-10 fill-current text-gray-500 mr-3"/> --}}
                 </a>
             </div>
             <ul class="space-y-2">

@@ -13,6 +13,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ValidateRole;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -29,7 +30,8 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     if(!auth()->user()){
-        return view('auth.login');
+        $settings = DB::table('settings')->where('id', 1)->first();
+        return view('auth.login', compact('settings'));
     }else{
         if(auth()->user()->role == '1'){
             return redirect()->route('dashboard');

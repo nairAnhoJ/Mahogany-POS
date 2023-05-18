@@ -16,12 +16,10 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
-
+            @php
+                $settings = DB::table('settings')->where('id', 1)->first();
+            @endphp
+            <img src="{{ asset('storage/'.$settings->logo) }}" class=" w-52" alt="">
             <div class="w-11/12 max-w-md mt-6 px-6 py-4 bg-white shadow-xl overflow-hidden rounded-lg">
                 {{ $slot }}
             </div>
