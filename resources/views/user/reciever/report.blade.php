@@ -12,12 +12,12 @@
 
         @media (min-width: 1024px) {
             #inventoryTable{
-                max-height: calc(100vh - 180px);
+                max-height: calc(100vh - 220px);
             }
         }
     </style>
 
-    @section('page_title', 'INVENTORY')
+    @section('page_title', 'REPORT')
 
     {{-- LOADING --}}
         <div wire:loading id="loadingScreen" class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[60] overflow-hidden bg-gray-900 opacity-75 opa flex flex-col items-center justify-center">
@@ -32,131 +32,6 @@
             <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
         </div>
     {{-- LOADING END --}}
-
-    {{-- DELETE MODAL --}}
-        
-        <!-- Main modal -->
-        <div id="itemDeleteModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
-                <!-- Modal content -->
-                <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i>
-                            <span class="text-red-700 text-base md:text-lg lg:text-xl">Delete Item</span>
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="itemDeleteModal">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="px-6 py-3 md:py-6 space-y-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            Are you sure you want to delete this item?
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <a type="button" href="" class="deleteConfirm w-24 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Yes</a>
-                        <button data-modal-hide="itemDeleteModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{-- DELETE MODAL END --}}
-
-    {{-- ADD MODAL --}}
-        <!-- Main modal -->
-        <div id="addQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
-                <!-- Modal content -->
-                <form method="POST" action="{{ route('inventory.addqty') }}" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
-                    @csrf
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            <span class="text-blue-500 text-base md:text-lg lg:text-xl">Increase Quantity</span>
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="addQtyModal">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="px-6 py-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            <input type="hidden" id="addSlug" name="addSlug">
-                            <div class="mb-6">
-                                <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="quantity" name="quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                    <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
-                                <div class="flex items-center">
-                                    <span class="px-3 text-base font-bold text-gray-600">₱</span>
-                                    <input type="text" id="price" name="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                </div>
-                            </div>
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="submit" class="submitQtyButton w-24 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
-                        <button data-modal-hide="addQtyModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {{-- ADD MODAL END --}}
-
-    {{-- MINUS MODAL --}}
-        <!-- Main modal -->
-        <div id="minusQtyModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
-                <!-- Modal content -->
-                <form method="POST" action="{{ route('inventory.minusqty') }}" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
-                    @csrf
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            <span class="text-red-500 text-base md:text-lg lg:text-xl">Decrease Quantity</span>
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="minusQtyModal">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="px-6 py-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            <input type="hidden" id="minSlug" name="minSlug">
-                            <div class="mb-6">
-                                <label for="minQuantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="minQuantity" name="minQuantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                    <span id="minUnit" class="px-3 text-base font-bold text-gray-600"></span>
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="remarks" class="block mb-2 text-sm font-medium text-gray-900">Remarks</label>
-                                <div class="flex items-center">
-                                    {{-- <span class="px-3 text-base font-bold text-gray-600">₱</span> --}}
-                                    <input type="text" id="remarks" name="remarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                </div>
-                            </div>
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="submit" class="submitQtyButton w-24 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
-                        <button data-modal-hide="minusQtyModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {{-- MINUS MODAL END --}}
 
     {{-- NOTIFICATION --}}
         @if (session('message'))
@@ -193,7 +68,7 @@
                     <div class="mb-3">
                         <div class="md:grid md:grid-cols-2">
                             <div class=" w-24">
-                                <a href="{{ route('inventory.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</a>
+                                <a href="{{ route('report.print') }}" target="_blank" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-print mr-1"></i>Print</a>
                             </div>
                             <div class="justify-self-end w-full xl:w-4/5">
                                 <form method="GET" action="" id="searchForm" class="w-full">
@@ -228,10 +103,10 @@
                                                 Category
                                             </th>
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                Quantity
+                                                Current Quantity
                                             </th>
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                Action
+                                                Reorder Point
                                             </th>
                                         </tr>
                                     </thead>
@@ -244,14 +119,11 @@
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ $inventory->cat_name }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="uil uil-minus-circle text-red-500 text-xl mr-2"></i></button>
-                                                    {{ $inventory->quantity }}
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="uil uil-plus-circle text-blue-500 text-xl mx-2"></i></button>
-                                                    {{ $inventory->unit }}
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    {{ $inventory->quantity.' '.$inventory->unit }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    <a href="{{ url('/inventory/edit/'.$inventory->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $inventory->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                    {{ $inventory->reorder_point.' '.$inventory->unit }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -286,14 +158,13 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->quantity.'
+                                                                '.$inventory->quantity.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Action</div>
+                                                            <div class="text-xs leading-5">Reorder Point</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                '.$inventory->reorder_point.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                     </div>
@@ -318,14 +189,13 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->quantity.'
+                                                                '.$inventory->quantity.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
-                                                            <div>Action</div>
+                                                            <div>Reorder Point</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                '.$inventory->reorder_point.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                     </div>
@@ -350,14 +220,13 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->quantity.'
+                                                                '.$inventory->quantity.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Action</div>
+                                                            <div class="text-xs leading-5">Reorder Point</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                '.$inventory->reorder_point.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                     </div>
@@ -425,9 +294,9 @@
             $('#searchButton').click(function(){
                 var search = $('#searchInput').val();
                 if(search != ""){
-                    $('#searchForm').prop('action', `{{ url('/inventory/1/${search}') }}`);
+                    $('#searchForm').prop('action', `{{ url('/report/1/${search}') }}`);
                 }else{
-                    $('#searchForm').prop('action', `{{ url('/inventory/1') }}`);
+                    $('#searchForm').prop('action', `{{ url('/report/1') }}`);
                 }
                 $('#searchForm').submit();
             });
@@ -446,87 +315,6 @@
 
             $('.notifButton').click(function(){
                 $('.notif').addClass('hidden');
-            });
-
-            $('.deleteButton').click(function(){
-                var slug = $(this).data('slug');
-                $('.deleteConfirm').prop('href', `{{ url('/inventory/delete/${slug}') }}`);
-            });
-
-            // $('.contentDiv').click(function(){
-            //     $('.notif').addClass('hidden');
-            // });
-            // $('.navDiv').click(function(){
-            //     $('.notif').addClass('hidden');
-            // });
-            
-            // $('#navButton').click(function(){
-            //     $('#topNav').addClass('absolute');
-            //     $('#topNav').removeClass('sticky');
-            //     $('#topNav').removeClass('z-50');
-            //     $('#contentDiv').addClass('pt-14');
-            // });
-
-            // $(document).mouseup(function(e) {
-            //     var container = $(".navDiv");
-
-            //     if (!container.is(e.target) && container.has(e.target).length === 0) {
-            //         $('#topNav').removeClass('absolute');
-            //         $('#topNav').addClass('sticky');
-            //         $('#topNav').addClass('z-50');
-            //         $('#contentDiv').removeClass('pt-14');
-            //     }
-            // });
-
-            $('#quantity').on('keypress keyup', function(event){
-                var regex = /^[0-9.]+$/;
-                var value = $(this).val() + String.fromCharCode(event.keyCode);
-                if (!regex.test(value)) {
-                event.preventDefault();
-                return false;
-                }
-            });
-            $('#minQuantity').on('keypress keyup', function(event){
-                var regex = /^[0-9.]+$/;
-                var value = $(this).val() + String.fromCharCode(event.keyCode);
-                if (!regex.test(value)) {
-                event.preventDefault();
-                return false;
-                }
-            });
-
-            $('#price').on('keypress keyup', function(event){
-                var regex = /^[0-9.]+$/;
-                var value = $(this).val() + String.fromCharCode(event.keyCode);
-                if (!regex.test(value)) {
-                event.preventDefault();
-                return false;
-                }
-                if ((event.keyCode == 46) && ($(this).val().indexOf('.') >= 0)) {
-                event.preventDefault();
-                return false;
-                }
-            });
-
-            $('.addButton').click(function(){
-                $('#quantity').val('');
-                $('#price').val('');
-                $('#quantity').focus();
-
-                var slug = $(this).data('slug');
-                var unit = $(this).data('unit');
-                $('#addSlug').val(slug);
-                $('#addUnit').html(unit);
-            });
-
-            $('.minusButton').click(function(){
-                $('#minQuantity').val('');
-                $('#remarks').val('');
-
-                var slug = $(this).data('slug');
-                var unit = $(this).data('unit');
-                $('#minSlug').val(slug);
-                $('#minUnit').html(unit);
             });
         });
      </script>

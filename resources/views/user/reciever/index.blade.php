@@ -85,6 +85,7 @@
                     <!-- Modal body -->
                     <div class="px-6 py-6">
                         <p class="text-xs md:text-base leading-relaxed text-gray-500">
+                            <h1 id="addName" class="pb-5 font-bold text-xl"></h1>
                             <input type="hidden" id="addSlug" name="addSlug">
                             <div class="mb-6">
                                 <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
@@ -132,7 +133,7 @@
                     <div class="px-6 py-6">
                         <p class="text-xs md:text-base leading-relaxed text-gray-500">
                             <input type="hidden" id="minSlug" name="minSlug">
-                            <h1 id="minName" class="pb-5 font-bold text-xl">Kalamansi</h1>
+                            <h1 id="minName" class="pb-5 font-bold text-xl"></h1>
                             <div class="mb-6">
                                 <label for="minQuantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
                                 <div class="flex items-center">
@@ -248,7 +249,7 @@
                                                 <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
                                                     <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="uil uil-minus-circle text-red-500 text-xl mr-2"></i></button>
                                                     {{ $inventory->quantity }}
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="uil uil-plus-circle text-blue-500 text-xl mx-2"></i></button>
+                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="uil uil-plus-circle text-blue-500 text-xl mx-2"></i></button>
                                                     {{ $inventory->unit }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
@@ -516,6 +517,8 @@
 
                 var slug = $(this).data('slug');
                 var unit = $(this).data('unit');
+                var name = $(this).data('name');
+                $('#addName').html(name);
                 $('#addSlug').val(slug);
                 $('#addUnit').html(unit);
             });

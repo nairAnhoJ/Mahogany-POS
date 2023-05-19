@@ -9,6 +9,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderedController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReceiverReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -132,6 +133,11 @@ Route::middleware('role:1,4')->group(function(){
     Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
     Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
     Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
+
+    Route::get('/report', [ReceiverReportController::class, 'index'])->name('report.index');
+    Route::get('/report/print', [ReceiverReportController::class, 'print'])->name('report.print');
+    Route::get('/report/{page}', [ReceiverReportController::class, 'paginate']);
+    Route::get('/report/{page}/{search}', [ReceiverReportController::class, 'search']);
 });
 
 
