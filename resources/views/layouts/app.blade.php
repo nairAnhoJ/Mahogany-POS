@@ -17,7 +17,8 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="{{asset('assets/js/jquery.js')}}"></script>
+        <script src="{{asset('assets/js/datepicker.js')}}"></script>
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script> --}}
 
         <style>

@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderedController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceiverReportController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,11 @@ Route::middleware("role:1")->group(function(){
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/dashboard/change-timeframe', [DashboardController::class, 'change'])->name('dashboard.change');
+
+    // REPORTS
+    Route::get('/reports', [ReportController::class, 'index'])->name('areport.index');
+    Route::post('/report/generate', [ReportController::class, 'generate'])->name('areport.generate');
+    Route::get('/report/print/{start}/{end}/{category}/{report}', [ReportController::class, 'print']);
 
     // USERS
     Route::get('/system-management/user', [UserController::class, 'index'])->name('user.index');
