@@ -38,62 +38,87 @@
                 <img src="{{ asset('storage/'.$settings->logo) }}" class="h-10" alt="">
             </div>
             <div class="mt-4 flex justify-between">
-                <h1 class="text-3xl">{{ ($category == 'sales') ? 'Sales' : 'Expenses' }} Transaction Logs</h1>
+                <h1 class="text-3xl">{{ ($category == 'sales') ? 'Sales' : 'Expenses' }} Summary Report</h1>
                 <h1 class="flex items-center">{{ $startDate.' - '.$endDate }}</h1>
             </div>
             <div class="mt-3 w-full">
                 <table class="w-full mt-4">
                     <thead>
                         <tr class="border-b">
-                            <th class="px-6">
+                            <th class="px-6 text-center">
                                 Date
                             </th>
-                            @if ($category == 'sales')
-                                <th class="px-6">
-                                    Transaction Number
-                                </th>
-                            @else
-                                <th class="px-6">
-                                    Item Name
-                                </th>
-                            @endif
-                            <th class="px-6">
-                                Amount
+                            <th class="px-6 text-center">
+                                Total Amount
                             </th>
+
                             @if ($category == 'sales')
-                                <th class="px-6">
-                                    Mode of Payment
+                                <th class="px-6 text-center">
+                                    Total Dine-In
+                                </th>
+                                <th class="px-6 text-center">
+                                    Total Take-Out
                                 </th>
                             @else
-                                <th class="px-6">
-                                    Quantity
+                                <th class="px-6 text-center">
+                                    Total Items
                                 </th>
                             @endif
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($results as $result)
+                        @php
+                            $feCDate = strtotime($startDate);
+                            $feEDate = strtotime($endDate);
+                        @endphp
+                        @while ($feCDate < $feEDate)
+                            @php
+                                $tAmount = 0;
+                                $tDinein = 0;
+                                $tTakeout = 0;
+                                $iCount = 0;
+                                foreach($results as $result){
+                                    $fResDate = date("Y-m-d", strtotime($result->date));
+                                    $fCurDate = date("Y-m-d", $feCDate);
+                                    if($fResDate == $fCurDate){
+                                        $tAmount += $result->amount;
+                                        $iCount++;
+                                        if($category == 'sales'){
+                                            if($result->type == 'DINE-IN'){
+                                                $tDinein++;
+                                            }else{
+                                                $tTakeout++;
+                                            }
+                                        }
+                                    }
+                                }
+                            @endphp
                             <tr class="border-b">
-                                <th class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                    {{ date('Y-m-d', strtotime($result->date)) }}
+                                <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                    {{ date('M d, Y', $feCDate) }}
                                 </th>
                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                    {{ $result->nn }}
+                                    ₱ {{ $tAmount }}.00
                                 </td>
-                                <td class="px-6 py-1 text-center whitespace-nowrap">
-                                    <span class="text-sm">₱</span> {{ $result->amount }}.00
-                                </td>
+
                                 @if ($category == 'sales')
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->mode_of_payment }}
+                                        {{ $tDinein }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $tTakeout }}
                                     </td>
                                 @else
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->quantity }}
+                                        {{ $iCount }}
                                     </td>
                                 @endif
+
                             </tr>
-                        @endforeach
+                            @php
+                                $feCDate = strtotime('+1 day', $feCDate);
+                            @endphp
+                        @endwhile
                     </tbody>
                 </table>
             </div>

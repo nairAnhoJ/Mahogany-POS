@@ -74,10 +74,11 @@
             <div class="w-[calc(33vh-20px)] ml-5 flex flex-col gap-5">
                 <div class="bg-white shadow-md rounded-lg w-full h-1/3 flex items-center p-4 flex-col">
                     <span class="font-bold text-xl mt-5">OCCUPIED TABLE</span>
-                    <span class="mt-5 text-8xl font-bold text-emerald-500">{{ $table->count() }}</span>
+                    <span class="mt-5 text-8xl font-bold text-emerald-600">{{ $table->count() }}</span>
                 </div>
                 <div class="bg-white shadow-md rounded-lg w-full h-1/3 flex items-center p-4 flex-col">
-                    <span class="font-bold text-xl mt-5"></span>
+                    <span class="font-bold text-xl mt-5">LOW STOCK ITEMS</span>
+                    <span class="mt-5 text-8xl font-bold text-red-700">{{ $LSICount }}</span>
                 </div>
                 <div class="bg-white shadow-md rounded-lg w-full h-1/3 flex items-center p-4 flex-col">
                     <span class="font-bold text-xl mt-5"></span>

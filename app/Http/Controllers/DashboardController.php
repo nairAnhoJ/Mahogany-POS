@@ -55,7 +55,10 @@ class DashboardController extends Controller
 
         $table = DB::table('tables')->where('status', 1)->get();
 
-        return view('admin.dashboard', compact('sales', 'expenses', 'profit', 'table', 'labels', 'salesArray', 'expensesArray', 'profitArray'));
+        $LSICount = DB::table('inventories')->whereColumn('inventories.quantity', '<', 'inventories.reorder_point')->count();
+
+
+        return view('admin.dashboard', compact('sales', 'expenses', 'profit', 'table', 'labels', 'salesArray', 'expensesArray', 'profitArray', 'LSICount'));
     }
 
     public function change(Request $request){
