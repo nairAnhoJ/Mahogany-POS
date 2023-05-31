@@ -104,7 +104,10 @@ class MenuController extends Controller
         $imagePath = null;
         if($image != null){
             $filename = $slug. '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = $request->file('image')->storeAs('images/menu',$filename , 'public');
+            $path = "images/menu/";
+            $imagePath = $path.$filename;
+            $request->file('image')->move(public_path('storage/'.$path), $filename);
+            // $imagePath = $request->file('image')->storeAs('images/menu',$filename , 'public');
         }
 
         $request->validate([
@@ -181,7 +184,10 @@ class MenuController extends Controller
         $imagePath = null;
         if($image != null){
             $filename = $slug. '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = $request->file('image')->storeAs('images/menu',$filename , 'public');
+            $path = "images/menu/";
+            $imagePath = $path.$filename;
+            $request->file('image')->move(public_path('storage/'.$path), $filename);
+            // $imagePath = $request->file('image')->storeAs('images/menu',$filename , 'public');
         }
 
         $request->validate([

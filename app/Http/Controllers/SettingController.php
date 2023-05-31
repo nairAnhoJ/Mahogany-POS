@@ -23,7 +23,10 @@ class SettingController extends Controller
         $imagePath = null;
         if($logo != null){
             $filename = 'logo.' . $request->file('logo')->getClientOriginalExtension();
-            $imagePath = $request->file('logo')->storeAs('images/ico',$filename , 'public');
+            $path = "images/ico/";
+            $imagePath = $path.$filename;
+            $request->file('logo')->move(public_path('storage/'.$path), $filename);
+            // $imagePath = $request->file('logo')->storeAs('images/ico',$filename , 'public');
 
             DB::table('settings')->where('id', 1)->update([
                 'name' => $name,
