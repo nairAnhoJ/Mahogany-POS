@@ -616,10 +616,9 @@
                 var amount = $(this).data('amount');
                 var amountInput = $('#amount').val();
                 var mop = $('#mop').val();
+                console.log(amountInput);
 
-                if(amountInput < amount){
-                    $('#amountError').addClass('text-red-500');
-                }else{
+                if(amountInput >= amount){
                     $('#loadingScreen').removeClass('hidden');
                     var change = amountInput - amount;
                     $('#payNowCancelButton').click();
@@ -639,8 +638,9 @@
                             $('#loadingScreen').addClass('hidden');
                         }
                     })
+                }else{
+                    $('#amountError').addClass('text-red-500');
                 }
-
             });
 
             $('.numpad-button').on('click', function() {
