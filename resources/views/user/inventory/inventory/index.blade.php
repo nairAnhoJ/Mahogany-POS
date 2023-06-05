@@ -114,9 +114,9 @@
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Quantity
                                             </th>
-                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                            {{-- <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Price
-                                            </th>
+                                            </th> --}}
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Action
                                             </th>
@@ -134,9 +134,9 @@
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ $inventory->quantity }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                {{-- <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ '₱ '.number_format($inventory->price, 2, '.', ',') }}
-                                                </td>
+                                                </td> --}}
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     <a href="{{ url('/inventory/edit/'.$inventory->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $inventory->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                 </td>

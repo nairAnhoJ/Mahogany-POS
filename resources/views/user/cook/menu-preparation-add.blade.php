@@ -2,7 +2,7 @@
     @section('page_title', 'MENU SETUP')
 
     <div class="">
-        <div style="height: calc(100vh - 48px);" class="flex">
+        <div style="height: calc(100vh - 48px);" class="flex {{ auth()->user()->role == 1 ? 'lg:ml-64 lg:pt-3' : '' }}">
             <div id="contentDiv" class="p-2 w-full h-full">
                 <div class="bg-white overflow-x-hidden overflow-y-scroll shadow-md rounded-lg py-3 px-5 h-full">
                     <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">

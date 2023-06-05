@@ -171,7 +171,7 @@
     {{-- QUANTITY CHANGING SIDEBAR END --}}
 
     <div class="">
-        <div style="height: calc(100vh - 48px);" class="flex">
+        <div style="height: calc(100vh - 48px);" class="flex {{ auth()->user()->role == 1 ? 'lg:ml-64 lg:pt-3' : '' }}">
             <div id="contentDiv" class="p-2 w-full">
                 <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                     {{-- CONTROLS --}}

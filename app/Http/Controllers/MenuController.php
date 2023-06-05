@@ -25,11 +25,7 @@ class MenuController extends Controller
         $page = 1;
         $search = "";
 
-        if(auth()->user()->role == 1){
-            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search', 'items'));
-        }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
-        }
+        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
     }
 
     public function paginate($page){
@@ -41,11 +37,7 @@ class MenuController extends Controller
         $menuCount = DB::table('menus')->get()->count();
         $search = "";
 
-        if(auth()->user()->role == 1){
-            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
-        }
+        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
     }
 
     public function search($page, $search){
@@ -63,12 +55,7 @@ class MenuController extends Controller
             ->orderBy('name', 'asc')
             ->count();
             
-
-        if(auth()->user()->role == 1){
-            return view('user.inventory.menu.index', compact('menus', 'menuCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
-        }
+        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
     }
 
     public function add(){
@@ -76,11 +63,11 @@ class MenuController extends Controller
         $items = DB::table('inventories')->get();
         $menus = DB::table('menus')->get();
 
-        if(auth()->user()->role == 1){
-            return view('user.inventory.menu.add', compact('categories', 'items', 'menus'));
-        }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation-add', compact('categories','items', 'menus'));
-        }
+        // if(auth()->user()->role == 1){
+            // return view('user.inventory.menu.add', compact('categories', 'items', 'menus'));
+        // }elseif(auth()->user()->role == 3){
+        return view('user.cook.menu-preparation-add', compact('categories','items', 'menus'));
+        // }
     }
 
     public function store(Request $request){
@@ -154,11 +141,11 @@ class MenuController extends Controller
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
         $items = DB::table('inventories')->get();
         
-        if(auth()->user()->role == 1){
-            return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
-        }elseif(auth()->user()->role == 3){
-            return view('user.cook.menu-preparation-edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
-        }
+        // if(auth()->user()->role == 1){
+        //     return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
+        // }elseif(auth()->user()->role == 3){
+        return view('user.cook.menu-preparation-edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
+        // }
     }
 
     public function update(Request $request){
@@ -275,11 +262,11 @@ class MenuController extends Controller
             'quantity' => $menu->quantity - $qty
         ]);
 
-        if(auth()->user()->role == 1){
+        // if(auth()->user()->role == 1){
             // return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Updated');
-        }elseif(auth()->user()->role == 3){
+        // }elseif(auth()->user()->role == 3){
             return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Moved');
-        }
+        // }
     }
 
     public function view(Request $request){
