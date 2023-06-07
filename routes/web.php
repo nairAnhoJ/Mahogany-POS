@@ -13,8 +13,10 @@ use App\Http\Controllers\ReceiverReportController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ValidateRole;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -170,6 +172,12 @@ Route::middleware('role:2')->group(function(){
     Route::post('/orders/get-menu', [OrderedController::class, 'getMenu'])->name('orders.getMenu');
     Route::post('/orders/get-amount', [OrderedController::class, 'getAmount'])->name('orders.getAmount');
     Route::get('/orders/print/{id}', [OrderedController::class, 'print']);
+
+    // TRANSACTIONS
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::post('/transactions/view', [TransactionController::class, 'view'])->name('transactions.view');
+    Route::post('/transactions', [TransactionController::class, 'generate'])->name('transactions.generate');
+    Route::get('/transactions/print/{id}', [TransactionController::class, 'print']);
 
 });
 
