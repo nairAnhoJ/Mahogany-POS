@@ -10,6 +10,7 @@ class TransactionController extends Controller
     public function index(){
         $startDate = date('Y-m-d');
         $endDate = date('Y-m-d');
+        $eendDate = date('Y-m-d', strtotime('+1 day'));
 
         $settings = DB::table('settings')->where('id', 1)->first();
 
@@ -17,14 +18,14 @@ class TransactionController extends Controller
         $results = DB::table('transactions')
             ->select('transactions.id', 'transactions.number as nn', 'transactions.total as amount', 'transactions.mode_of_payment', 'transactions.type', 'transactions.created_at as date', 'tables.name as table')
             ->join('tables', 'transactions.table', '=', 'tables.id')
-            ->whereBetween('transactions.created_at', [$startDate, $endDate])
+            ->whereBetween('transactions.created_at', [$startDate, $eendDate])
             ->where('transactions.status', 'PAID')
             ->where('transactions.order_status', '!=', 'CANCELLED')
             ->orderBy('transactions.id', 'desc')
             ->get();
 
         $resultsCount = DB::table('transactions')
-            ->whereBetween('created_at', [$startDate, $endDate])
+            ->whereBetween('created_at', [$startDate, $eendDate])
             ->where('status', 'PAID')
             ->where('order_status', '!=', 'CANCELLED')
             ->orderBy('id', 'desc')
@@ -35,21 +36,22 @@ class TransactionController extends Controller
 
     public function generate(Request $request){
         $startDate = date('Y-m-d', strtotime($request->startDate));
-        $endDate = date('Y-m-d', strtotime($request->endDate));;
+        $endDate = date('Y-m-d', strtotime($request->endDate));
+        $eendDate = date('Y-m-d', strtotime($request->endDate . '+1 day'));
 
         $settings = DB::table('settings')->where('id', 1)->first();
 
         $results = DB::table('transactions')
             ->select('transactions.id', 'transactions.number as nn', 'transactions.total as amount', 'transactions.mode_of_payment', 'transactions.type', 'transactions.created_at as date', 'tables.name as table')
             ->join('tables', 'transactions.table', '=', 'tables.id')
-            ->whereBetween('transactions.created_at', [$startDate, $endDate])
+            ->whereBetween('transactions.created_at', [$startDate, $eendDate])
             ->where('transactions.status', 'PAID')
             ->where('transactions.order_status', '!=', 'CANCELLED')
             ->orderBy('transactions.id', 'desc')
             ->get();
 
         $resultsCount = DB::table('transactions')
-            ->whereBetween('created_at', [$startDate, $endDate])
+            ->whereBetween('created_at', [$startDate, $eendDate])
             ->where('status', 'PAID')
             ->where('order_status', '!=', 'CANCELLED')
             ->orderBy('id', 'desc')
@@ -72,7 +74,10 @@ class TransactionController extends Controller
         $viewOrder = '';
 
         foreach($orders as $order){
-            $viewOrder .= '<div class="">'.$order->quantity.'x</div><div class="col-span-4">'.$order->name.'</div>';
+            $viewOrder .= '
+                <div class="flex w-full">
+                    <div class="w-1/5">'.$order->quantity.'x</div><div class="">'.$order->name.'</div>
+                </div>';
         }
 
         $printUrl = url('/transactions/print/'.$id);

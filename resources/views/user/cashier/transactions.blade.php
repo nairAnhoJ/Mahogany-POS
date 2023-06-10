@@ -23,7 +23,7 @@
                 <!-- Modal body -->
                 <div class="p-6 space-y-6">
                     <div>
-                        <div id="viewOrders" class="grid grid-cols-5 font-bold text-xl">
+                        <div id="viewOrders" class="font-bold text-xl">
                         </div>
                     </div>
                 </div>
