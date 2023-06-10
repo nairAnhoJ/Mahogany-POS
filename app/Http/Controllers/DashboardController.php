@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $sales = number_format(DB::table('transactions')
             ->where('order_status', '!=', 'CANCELLED')
             ->whereDate('created_at', $today)
-            ->sum('amount'), 2, '.', ',');
+            ->sum('total'), 2, '.', ',');
 
         $expenses = number_format(DB::table('inventory_transactions')
             ->where('type', 'INCOMING')
@@ -34,7 +34,7 @@ class DashboardController extends Controller
             
             $s = DB::table('transactions')
                     ->whereDate('created_at', $seDate)
-                    ->sum('amount');
+                    ->sum('total');
             
             $e = DB::table('inventory_transactions')
                     ->where('type', 'INCOMING')
@@ -69,7 +69,7 @@ class DashboardController extends Controller
             $sales = number_format(DB::table('transactions')
                 ->where('order_status', '!=', 'CANCELLED')
                 ->whereDate('created_at', $today)
-                ->sum('amount'), 2, '.', ',');
+                ->sum('total'), 2, '.', ',');
     
             $expenses = number_format(DB::table('inventory_transactions')
                 ->where('type', 'INCOMING')
@@ -88,7 +88,7 @@ class DashboardController extends Controller
                 
                 $s = DB::table('transactions')
                         ->whereDate('created_at', $seDate)
-                        ->sum('amount');
+                        ->sum('total');
                 
                 $e = DB::table('inventory_transactions')
                         ->where('type', 'INCOMING')
@@ -108,7 +108,7 @@ class DashboardController extends Controller
             $sales = number_format(DB::table('transactions')
                 ->where('order_status', '!=', 'CANCELLED')
                 ->whereRaw("WEEK(created_at) = WEEK(NOW()) AND YEAR(created_at) = YEAR(NOW())")
-                ->sum('amount'), 2, '.', ',');
+                ->sum('total'), 2, '.', ',');
 
             $expenses = number_format(DB::table('inventory_transactions')
                 ->whereRaw("WEEK(created_at) = WEEK(NOW()) AND YEAR(created_at) = YEAR(NOW())")
@@ -130,7 +130,7 @@ class DashboardController extends Controller
                 $s = DB::table('transactions')
                         ->where('order_status', '!=', 'CANCELLED')
                         ->whereBetween('created_at', [date('Y-m-d H:i:s', $weekStart), date('Y-m-d H:i:s', $weekEnd)])
-                        ->sum('amount');
+                        ->sum('total');
                 
                 $e = DB::table('inventory_transactions')
                         ->where('type', 'INCOMING')
@@ -153,7 +153,7 @@ class DashboardController extends Controller
             $sales = number_format(DB::table('transactions')
                 ->where('order_status', '!=', 'CANCELLED')
                 ->whereRaw("MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())")
-                ->sum('amount'), 2, '.', ',');
+                ->sum('total'), 2, '.', ',');
 
             $expenses = number_format(DB::table('inventory_transactions')
                 ->whereRaw("MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())")
@@ -174,7 +174,7 @@ class DashboardController extends Controller
                 $s = DB::table('transactions')
                         ->where('order_status', '!=', 'CANCELLED')
                         ->whereBetween('created_at', [$monthStart->format('Y-m-d'), $monthEnd->format('Y-m-d')])
-                        ->sum('amount');
+                        ->sum('total');
                 
                 $e = DB::table('inventory_transactions')
                         ->where('type', 'INCOMING')
