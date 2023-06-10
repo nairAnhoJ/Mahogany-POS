@@ -2,9 +2,9 @@
 
     <style>
 
-            .displayDiv0{
-                height: calc(100vh - 48px);
-            }
+        /* .displayDiv0{
+            height: calc(100vh - 110px);
+        }
 
         @media (min-width: 768px) {
 
@@ -20,7 +20,7 @@
             .displayDiv2{
                 max-height: calc(100vh - 96px);
             }
-        }
+        } */
     </style>
 
     @section('page_title', 'KITCHEN DISPLAY')
@@ -41,7 +41,19 @@
     
     <div class="">
         @csrf
-        <div style="" class="displayDiv0 flex">
+        <div class="h-12 flex w-screen">
+            <div class="w-full h-full">
+                <div class="w-full h-full grid grid-cols-5">
+                    <div class="text-center leading-10 pt-1 text-xl font-black bg-red-400 tracking-wider text-slate-800">DINE-IN</div>
+                    <div class="text-center leading-10 pt-1 text-xl font-black bg-amber-500 tracking-wider text-slate-800">TAKE-OUT</div>
+                    <div class="bg-slate-700 col-span-2"></div>
+                    <button id="serveButton" disabled class="disabled:pointer-events-none disabled:opacity-30 text-center leading-10 pt-1 text-xl font-black bg-emerald-400 hover:bg-emerald-500 tracking-wider text-slate-800">
+                            SERVE
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div style="" class="displayDiv0 flex h-[calc(100vh-96px)]">
             <div class="hidden lg:block h-full w-64 text-white font-black text-xl bg-gradient-to-r from-slate-800 to-slate-700 overflow-x-hidden overflow-y-auto">
                 <div class="flex justify-between p-2">
                     <h1>PRODUCT</h1>
@@ -81,10 +93,9 @@
             </div>
 
             <div style="" class="displayDiv h-full w-full overflow-y-auto bg-gray-200">
-                <div style="" class="displayDiv2 grid lg:grid-cols-3 gap-4 p-4">
+                <div style="" class="displayDiv2 grid lg:grid-cols-3 gap-4 p-4 max-h-[calc(100vh-100px)]">
 
                     @foreach ($trans as $tran)
-
                         <div class="bg-white shadow">
                             <div data-id="{{ $tran->id }}" class="{{ ($tran->table == 1) ? 'bg-amber-500' : 'bg-red-400'; }} tranButton grid grid-cols-2 h-14 text-xl content-center px-2 font-bold tracking-wider text-slate-700 cursor-pointer">
                                 <div>{{ $tran->table_name }}</div>
@@ -127,18 +138,6 @@
                             </div>
                         </div> --}}
                     {{--  --}}
-                </div>
-            </div>
-        </div>
-        <div class="hidden h-12 lg:flex w-screen">
-            <div class="w-full h-full">
-                <div class="w-full h-full grid grid-cols-5">
-                    <div class="text-center leading-10 pt-1 text-xl font-black bg-red-400 tracking-wider text-slate-800">DINE-IN</div>
-                    <div class="text-center leading-10 pt-1 text-xl font-black bg-amber-500 tracking-wider text-slate-800">TAKE-OUT</div>
-                    <div class="bg-slate-700 col-span-2"></div>
-                    <button id="serveButton" disabled class="disabled:pointer-events-none disabled:opacity-30 text-center leading-10 pt-1 text-xl font-black bg-emerald-400 hover:bg-emerald-500 tracking-wider text-slate-800">
-                            SERVE
-                    </button>
                 </div>
             </div>
         </div>
