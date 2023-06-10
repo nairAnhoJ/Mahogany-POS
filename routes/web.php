@@ -176,7 +176,7 @@ Route::middleware('role:2')->group(function(){
     // TRANSACTIONS
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::post('/transactions/view', [TransactionController::class, 'view'])->name('transactions.view');
-    Route::post('/transactions', [TransactionController::class, 'generate'])->name('transactions.generate');
+    Route::post('/transactions/generate', [TransactionController::class, 'generate'])->name('transactions.generate');
     Route::get('/transactions/print/{id}', [TransactionController::class, 'print']);
 
 });
