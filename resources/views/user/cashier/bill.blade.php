@@ -35,16 +35,16 @@
     <div class="flex flex-col items-center pt-14">
         <header class="flex flex-col items-center border-b border-dashed border-gray-600 w-[90%] pb-1">
             <img src="{{ asset('storage/'.$settings->logo) }}" class="w-1/2" alt="">
-            <h2 class="text-lg">{{ $settings->name }}</h2>
-            <p class="text-sm">{{ $settings->address }}</p>
-            <p class="text-sm">{{ $settings->number }}</p>
+            <h2 class="text-3xl">{{ $settings->name }}</h2>
+            <p class="text-2xl">{{ $settings->address }}</p>
+            <p class="text-2xl">{{ $settings->number }}</p>
             <div class="flex justify-between flex-row-reverse w-full mt-8">
-                <p class="text-sm font-bold">{{$trans->table_name}}</p>
-                <p class="text-sm font-bold">CASHIER: {{ Auth::user()->name }}</p>
+                <p class="text-2xl font-bold">{{$trans->table_name}}</p>
+                <p class="text-2xl font-bold">CASHIER: {{ Auth::user()->name }}</p>
             </div>
             <div class="flex justify-between w-full">
-                <p class="text-sm font-bold">{{$trans->number}}</p>
-                <p class="text-sm font-bold">{{ date('m/d/Y H:i:s') }}</p>
+                <p class="text-2xl font-bold">{{$trans->number}}</p>
+                <p class="text-2xl font-bold">{{ date('m/d/Y H:i:s') }}</p>
             </div>
         </header>
 
@@ -52,20 +52,20 @@
             <div class="w-full">
                 @foreach ($orders as $order)
                     <div class="w-full flex justify-between">
-                        <p class="text-sm">{{$order->quantity}}<i class="uil uil-times mr-1"></i>{{$order->name}}</p>
-                        <p class="whitespace-nowrap pl-3 text-sm">₱ {{number_format($order->amount, 2, '.', ',')}}</p>
+                        <p class="text-3xl">{{$order->quantity}}<i class="uil uil-times mr-1"></i>{{$order->name}}</p>
+                        <p class="whitespace-nowrap pl-3 text-3xl">₱ {{number_format($order->amount, 2, '.', ',')}}</p>
                     </div>
                 @endforeach
             </div>
             <div class="w-full mt-5 mb-3">
-                <div class="w-full flex justify-between text-lg font-bold">
+                <div class="w-full flex justify-between text-3xl font-bold">
                     <p>TOTAL</p>
                     <p class="whitespace-nowrap pl-3">₱ {{number_format($trans->total, 2, '.', ',')}}</p>
                 </div>
             </div>
         </div>
 
-        <footer class="font-semibold text mt-10">THANK YOU FOR DINING WITH US!!!</footer>
+        <footer class="font-semibold text-3xl mt-10">THANK YOU FOR DINING WITH US!!!</footer>
     </div>
     
 
