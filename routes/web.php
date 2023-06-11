@@ -106,7 +106,7 @@ Route::middleware("role:1")->group(function(){
 });
 
 
-Route::middleware("role:1,3")->group(function(){
+Route::middleware("role:1,3,2")->group(function(){
     // DASHBOARD
     Route::get('/kitchen-display', [KitchenController::class, 'index'])->name('kitchen.display');
     Route::post('/kitchen-display/change-status', [KitchenController::class, 'change'])->name('kitchen.change');

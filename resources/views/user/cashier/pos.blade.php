@@ -431,13 +431,17 @@
                             </div>
                             <div id="categoryTabsC" class="py-0.5 px-4 overflow-x-hidden w-[calc(100vw-920)]">
                                 <div id="menuTabs" data-tabs-toggle="#categoryTabContent" role="tablist" class="overflow-x-auto flex gap-x-2">
-                                        <button id="all-menu-tab" data-tabs-target="#all-menu" type="button" role="tab" aria-controls="all-menu" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
-                                            All
-                                        </button>
+                                    <button id="all-menu-tab" data-tabs-target="#all-menu" type="button" role="tab" aria-controls="all-menu" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                        All
+                                    </button>
                                     @foreach ($categories as $category)
-                                        <button id="{{$category->slug}}-tab" data-tabs-target="#{{$category->slug}}" type="button" role="tab" aria-controls="{{$category->slug}}" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                        <button id="{{$category->slug}}-tab" data-tabs-target="#{{$category->slug}}-menu" type="button" role="tab" aria-controls="{{$category->slug}}-menu" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
                                             {{$category->name}}
                                         </button>
+
+                                        {{-- <button id="{{$category->name}}-tab" data-tabs-target="#{{$category->slug}}" type="button" role="tab" aria-controls="{{$category->slug}}" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                            {{$category->name}}
+                                        </button> --}}
                                     @endforeach
                                 </div>
                             </div>
@@ -474,7 +478,7 @@
                                 </div>
                             </div>
                             @foreach ($categories as $category)
-                                <div class="hidden p-8" id="{{$category->slug}}" role="tabpanel" aria-labelledby="{{$category->slug}}-tab">
+                                <div class="p-8" id="{{$category->slug}}-menu" role="tabpanel" aria-labelledby="{{$category->slug}}-menu-tab">
                                     <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
                                         @foreach ($menus as $menu)
                                             @if ($menu->category_id == $category->id)
@@ -499,6 +503,39 @@
                                         @endforeach
                                     </div>
                                 </div>
+
+
+
+
+
+
+
+
+                                {{-- <div class="hidden p-8" id="{{$category->slug}}" role="tabpanel" aria-labelledby="{{$category->slug}}-tab">
+                                    <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
+                                        @foreach ($menus as $menu)
+                                            @if ($menu->category_id == $category->id)
+                                                <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                                    <div class="w-full aspect-square overflow-hidden">
+                                                        <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
+                                                    </div>
+                                                    <div class="h-[calc(100%-184px)] text-center">
+                                                        <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                            <p class="text-lg font-medium">
+                                                                {{$menu->name}}
+                                                            </p>
+                                                        </div>
+                                                        <div class="h-1/3 flex justify-center items-center">
+                                                            <p class="text-xl font-bold">
+                                                                ₱ {{number_format($menu->price, 2, '.', ',')}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div> --}}
                             @endforeach
                         </div>
                     </div>

@@ -50,9 +50,20 @@ class MenuCategoryController extends Controller
             'name' => ['required'],
         ]);
 
+        $slug = Str::slug($name, '-');
+        $check_slug = DB::table('menu_categories')->where('slug', $slug)->get();
+        $x = 1;
+        $nslug = $slug;
+        while(count($check_slug) > 0){
+            $nslug = $slug.'-'.$x;
+            $check_slug = DB::table('menu_categories')->where('slug', $nslug)->get();
+            $x++;
+        }
+        $slug = $nslug;
+
         $category = new MenuCategory();
-        $category->name = $name;
-        $category->slug = Str::random(60);
+        $category->name = strtoupper($name);
+        $category->slug = $slug;
         $category->save();
 
         return redirect()->route('menu.category.index')->withInput()->with('message', 'Successfully Added');
@@ -73,7 +84,7 @@ class MenuCategoryController extends Controller
 
         DB::table('menu_categories')->where('slug', $slug)
             ->update([
-                'name' => $name,
+                'name' => strtoupper($name),
             ]);
 
         return redirect()->route('menu.category.index')->withInput()->with('message', 'Successfully Updated');

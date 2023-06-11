@@ -13,13 +13,16 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
         <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/solid.css">
+        {{-- <link rel="stylesheet" href="{{asset('assets/css/flowbite.css')}}"> --}}
+        {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"  rel="stylesheet" /> --}}
         <link rel="shortcut icon" href="{{ url('logo.ico') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="{{asset('assets/js/jquery.js')}}"></script>
         <script src="{{asset('assets/js/datepicker.js')}}"></script>
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script> --}}
+        {{-- <script src="{{asset('assets/js/flowbite.js')}}"></script> --}}
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script> --}}
 
         <style>
             /* width */
