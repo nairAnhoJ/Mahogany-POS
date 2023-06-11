@@ -418,7 +418,7 @@
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                 </div>
-                                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search" required autocomplete="off">
+                                <input type="text" id="searchMenu" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search" required autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -457,7 +457,7 @@
                             <div class="p-8" id="all-menu" role="tabpanel" aria-labelledby="all-menu-tab">
                                 <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
                                     @foreach ($menus as $menu)
-                                        <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                        <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
                                             <div class="w-full aspect-square overflow-hidden">
                                                 <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
                                             </div>
@@ -473,7 +473,7 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     @endforeach
                                 </div>
                             </div>
@@ -911,6 +911,14 @@
                 var url = `{{ url('/pos/print/${table}') }}`;
                 window.open(url, '_blank');
                 window.location.reload()
+            });
+
+            $('#searchMenu').keyup(function(){
+                $('#all-menu-tab').click();
+                var value = $(this).val().toLowerCase();
+                $("#all-menu a").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         });
     </script>
