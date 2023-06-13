@@ -639,6 +639,18 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
+    public function updateDiscount(Request $request){
+        $customer_with_discount = $request->customer_with_discount;
+        $total_customer = $request->total_customer;
+
+        DB::table('discounts')->where('id', 1)->update([
+            'customer_with_discount' => $customer_with_discount,
+            'total_customer' => $total_customer,
+        ]);
+
+        return redirect()->route('pos.index');
+    }
+
     public function print($id){
         $trans = DB::table('transactions')
                     ->select('transactions.*', 'tables.name as table_name')

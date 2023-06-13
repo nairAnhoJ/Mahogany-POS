@@ -119,6 +119,44 @@
         </div>
     {{-- MOP MODAL END --}}
 
+    {{-- DISCOUNT MODAL --}}
+        <!-- Main modal -->
+        <div id="discountModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-3xl max-h-full">
+                <!-- Modal content -->
+                <form method="POST" action="{{ route('pos.updateDiscount') }}" class="relative bg-white rounded-lg shadow">
+                    @csrf
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-2xl font-semibold text-gray-900">
+                            Details
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="discountModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <input type="hidden" id="paymentMethod">
+                        <div class="mb-6">
+                            <label for="customer_with_discount" class="block mb-2 text-sm font-medium text-gray-900">Number Customer With Discount</label>
+                            <input type="text" id="customer_with_discount" name="customer_with_discount" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <div class="mb-6">
+                            <label for="total_customer" class="block mb-2 text-sm font-medium text-gray-900">Total Number of Customers</label>
+                            <input type="text" id="total_customer" name="total_customer" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
+                        <button data-modal-hide="discountModal" type="submit" class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none rounded-lg border border-blue-300 text-lg font-bold px-5 py-5 focus:z-10 w-1/2">SUBMIT</button>
+                        <button data-modal-hide="discountModal" type="button" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none rounded-lg border border-gray-300 text-lg font-bold px-5 py-5 focus:z-10 w-1/2">CANCEL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {{-- DISCOUNT MODAL END --}}
+
     {{-- NAME/NUMBER MODAL --}}
         <!-- Modal toggle -->
         <button data-modal-target="detailsModal" data-modal-toggle="detailsModal" id="openDetailsModal" class="hidden" type="button"></button>
@@ -405,22 +443,24 @@
         </div>
     {{-- SELECT TABLE MODAL END --}}
 
-    <div style="height: calc(100vh - 48px)" class="p-4 w-screen flex xl:grid xl:grid-cols-3 gap-4">
+    <div style="height: calc(100vh - 48px)" class="p-4 w-screen gap-4">
 
         {{-- LEFT CONTENT --}}
-            <div class="h-full w-[calc(100%-384px)] xl:w-auto xl:col-span-2 bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+            <div class="h-full w-full xl:w-auto xl:col-span-2 bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
                 <div>
-                    <div class="p-2 flex flex-row-reverse">
-                        <div class="flex items-center w-1/2">
-                            @csrf   
-                            <label for="simple-search" class="sr-only">Search</label>
-                            <div class="relative w-full">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                                </div>
-                                <input type="text" id="searchMenu" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search" required autocomplete="off">
+                    <div class="p-2 flex items-center justify-between">
+                        @csrf   
+                        <div class="relative w-1/2">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                             </div>
+                            <input type="text" id="searchMenu" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search" required autocomplete="off">
                         </div>
+                        <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="relative inline-flex items-center p-1.5 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30" fill="currentColor"><path d="M220-80q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h110v-10q0-63 43.5-106.5T480-880q63 0 106.5 43.5T630-730v10h110q24 0 42 18t18 42v520q0 24-18 42t-42 18H220Zm0-60h520v-520H630v90q0 12.75-8.675 21.375-8.676 8.625-21.5 8.625-12.825 0-21.325-8.625T570-570v-90H390v90q0 12.75-8.675 21.375-8.676 8.625-21.5 8.625-12.825 0-21.325-8.625T330-570v-90H220v520Zm170-580h180v-10q0-38-26-64t-64-26q-38 0-64 26t-26 64v10ZM220-140v-520 520Z"/></svg>
+                            <span class="sr-only">Notifications</span>
+                            <div id="ordersCount" class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2">{{ $orders->count() }}</div>
+                        </button>
                     </div>
                     <div class="p-2 border-b border-neutral-300">
                         <div class="flex justify-between w-full">
@@ -455,7 +495,7 @@
                     <div id="categoryAllContents" class="h-[calc(100vh-194px)] overflow-y-auto">
                         <div id="categoryTabContent" class="h-auto min-h-full bg-gray-100">
                             <div class="p-8" id="all-menu" role="tabpanel" aria-labelledby="all-menu-tab">
-                                <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
+                                <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                     @foreach ($menus as $menu)
                                         <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
                                             <div class="w-full aspect-square overflow-hidden">
@@ -479,7 +519,7 @@
                             </div>
                             @foreach ($categories as $category)
                                 <div class="p-8" id="{{$category->slug}}-menu" role="tabpanel" aria-labelledby="{{$category->slug}}-menu-tab">
-                                    <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
+                                    <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                         @foreach ($menus as $menu)
                                             @if ($menu->category_id == $category->id)
                                                 <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
@@ -503,39 +543,6 @@
                                         @endforeach
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
-                                {{-- <div class="hidden p-8" id="{{$category->slug}}" role="tabpanel" aria-labelledby="{{$category->slug}}-tab">
-                                    <div class="w-[432px] xl:w-[656px] 2xl:w-[880px] mx-auto grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center content-center">
-                                        @foreach ($menus as $menu)
-                                            @if ($menu->category_id == $category->id)
-                                                <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
-                                                    <div class="w-full aspect-square overflow-hidden">
-                                                        <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
-                                                    </div>
-                                                    <div class="h-[calc(100%-184px)] text-center">
-                                                        <div class="h-2/3 border-b border-neutral-400 flex items-center">
-                                                            <p class="text-lg font-medium">
-                                                                {{$menu->name}}
-                                                            </p>
-                                                        </div>
-                                                        <div class="h-1/3 flex justify-center items-center">
-                                                            <p class="text-xl font-bold">
-                                                                ₱ {{number_format($menu->price, 2, '.', ',')}}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                </div> --}}
                             @endforeach
                         </div>
                     </div>
@@ -544,84 +551,91 @@
         {{-- LEFT CONTENT --}}
 
         {{-- RIGHT CONTENT --}}
-            <div class="h-full w-96 xl:w-auto bg-white shadow-lg rounded-lg border border-gray-200">
-                <div class="border border-neutral-300 rounded-lg m-2">
-                    <div class="flex justify-between p-2 items-center">
-                        <input type="hidden" id="table" name="table">
-                        <h1 id="tableName" class="text-2xl font-black tracking-wide pl-2">
-                            - - -
-                        </h1>
-                        <button type="button" id="openTableModal" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 rounded-lg shadow border border-gray-100">
-                            <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="w-9 rounded-full">
-                        </button>
-                    </div>
-                </div>
-                <div class="mt-5">
-                    <div class="flex flex-col">
-                        <div id="ordersDiv" class="h-[calc(100vh-350px)] overflow-y-auto">
-                            @foreach ($orders as $order)
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        {{ $order->name }}
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
-                                    </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">{{ $order->quantity }}</p>
-                                        <input type="hidden" value="{{ $order->quantity }}">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        {{ number_format($order->total_price, 2, '.', ',') }}
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="{{ $order->slug }}" data-name="{{ $order->name }}" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
-                                    </div>
-                                </div>
-                            @endforeach
+            <aside id="default-sidebar" class="fixed top-0 left-1/2 z-40 w-1/2 h-screen transition-transform translate-x-full" aria-label="Sidebar">
+                <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+                    <div class="h-full w-full xl:w-auto bg-white shadow-lg rounded-lg border border-gray-200">
+                        <div class="border border-neutral-300 rounded-lg m-2">
+                            <div class="flex justify-between p-2 items-center">
+                                <input type="hidden" id="table" name="table">
+                                <h1 id="tableName" class="text-2xl font-black tracking-wide pl-2">
+                                    - - -
+                                </h1>
+                                <button type="button" id="openTableModal" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 rounded-lg shadow border border-gray-100">
+                                    <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="w-9 rounded-full">
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <div class="p-4">
-                                <div class="pt-2 grid w-full">
-                                    <div class="row-span-2">
-                                        <div class="grid grid-cols-2">
-                                            <div class="justify-self-start ">
-                                                <strong class="text-slate-600 text-xl font-medium ">Subtotal</strong>
+                        <div class="mt-5">
+                            <div class="flex flex-col">
+                                <div id="ordersDiv" class="h-[calc(100vh-320px)] overflow-y-auto">
+                                    @foreach ($orders as $order)
+                                        <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                            <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                                {{ $order->name }}
                                             </div>
-                                            <div class="justify-self-end ">
-                                                <strong class="text-slate-600 text-xl font-medium "><span class="text-2xl">₱ </span><span id="subTotal">{{ number_format($subTotal, 2, '.', ',') }}</span></strong>
+                                            <div class="flex items-center justify-center">
+                                                <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                             </div>
-                                        </div>
-                                        {{-- <div class="grid grid-cols-2">
-                                            <div class="justify-self-start ">
-                                                <strong class="text-slate-600 text-sm font-medium ">Tax</strong>
+                                            <div class="col-span-1 flex items-center justify-center">
+                                                <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">{{ $order->quantity }}</p>
+                                                <input type="hidden" value="{{ $order->quantity }}">
                                             </div>
-                                            <div class="justify-self-end ">
-                                                <strong class="text-slate-600 text-sm font-medium ">120.00</strong>
+                                            <div class="flex items-center justify-center">
+                                                <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
                                             </div>
-                                        </div> --}}
-                                        <div class="grid grid-cols-2">
-                                            <div class="justify-self-start">
-                                                <strong class="text-slate-600 text-2xl font-medium ">TOTAL</strong>
+                                            <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                                {{ number_format($order->total_price, 2, '.', ',') }}
                                             </div>
-                                            <div class="justify-self-end">
-                                                <strong class="text-slate-600 text-2xl font-medium"><span class="text-3xl">₱ </span><span id="total">{{ number_format($total, 2, '.', ',') }}</span></strong>
+                                            <div class="flex items-center justify-center">
+                                                <button data-slug="{{ $order->slug }}" data-name="{{ $order->name }}" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="p-auto row-span-1 flex items-center ">
-                                        <button disabled id="payButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
-                                        <button disabled id="payLaterButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                                    @endforeach
+                                </div>
+                                <div>
+                                    <div class="p-4">
+                                        <div class="pt-2 grid w-full">
+                                            <div class="row-span-2">
+                                                <div class="grid grid-cols-2">
+                                                    <div class="justify-self-start ">
+                                                        <strong class="text-slate-600 text-xl font-medium ">Subtotal</strong>
+                                                    </div>
+                                                    <div class="justify-self-end ">
+                                                        <strong class="text-slate-600 text-xl font-medium "><span class="text-2xl">₱ </span><span id="subTotal">{{ number_format($subTotal, 2, '.', ',') }}</span></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="grid grid-cols-2">
+                                                    <div class="justify-self-start flex gap-x-2 items-center">
+                                                        <strong class="text-slate-600 text-base font-medium w-full">Discount</strong>
+                                                        <button data-modal-target="discountModal" data-modal-toggle="discountModal" type="button" class="text-blue-600"><span><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg></span></button>
+                                                        <button type="button" class="text-red-600"><span><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"/></svg></span></button>
+                                                        
+                                                    </div>
+                                                    <div class="justify-self-end ">
+                                                        <strong class="text-slate-600 text-base font-medium "><span class="text-xl">₱ </span><span id="discountTotal">{{ number_format($subTotal, 2, '.', ',') }}</span></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="grid grid-cols-2">
+                                                    <div class="justify-self-start">
+                                                        <strong class="text-slate-600 text-2xl font-medium ">TOTAL</strong>
+                                                    </div>
+                                                    <div class="justify-self-end">
+                                                        <strong class="text-slate-600 text-2xl font-medium"><span class="text-3xl">₱ </span><span id="total">{{ number_format($total, 2, '.', ',') }}</span></strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="p-auto row-span-1 flex items-center ">
+                                                <button disabled id="payButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
+                                                <button disabled id="payLaterButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>  
+            </aside>
         {{-- RIGHT CONTENT --}}
 
     </div>

@@ -20,7 +20,7 @@ class ReceiverReportController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.report', compact('inventories', 'invCount', 'page', 'search'));
         }
     }
@@ -39,7 +39,7 @@ class ReceiverReportController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.report', compact('inventories', 'invCount', 'page', 'search'));
         }
     }
@@ -63,7 +63,7 @@ class ReceiverReportController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.report', compact('inventories', 'invCount', 'page', 'search'));
         }
     }

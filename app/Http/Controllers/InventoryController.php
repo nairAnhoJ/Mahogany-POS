@@ -23,7 +23,7 @@ class InventoryController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
         }
     }
@@ -41,7 +41,7 @@ class InventoryController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
         }
     }
@@ -63,7 +63,7 @@ class InventoryController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
         }
     }
@@ -75,7 +75,7 @@ class InventoryController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.add', compact('categories'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.add', compact('categories'));
         }
     }
@@ -135,7 +135,7 @@ class InventoryController extends Controller
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.edit', compact('item', 'categories'));
-        }elseif(auth()->user()->role == 4){
+        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.edit', compact('item', 'categories'));
         }
     }

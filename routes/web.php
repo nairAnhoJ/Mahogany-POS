@@ -129,7 +129,7 @@ Route::middleware("role:1,3,2")->group(function(){
 });
 
 
-Route::middleware('role:1,4')->group(function(){
+Route::middleware('role:1,4,2')->group(function(){
     // INVENTORY
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('/inventory/add', [InventoryController::class, 'add'])->name('inventory.add');
@@ -159,6 +159,7 @@ Route::middleware('role:2')->group(function(){
     Route::post('/pos/remove', [POSController::class, 'remove'])->name('pos.remove');
     Route::post('/pos/pay', [POSController::class, 'pay'])->name('pos.pay');
     Route::post('/pos/paylater', [POSController::class, 'paylater'])->name('pos.paylater');
+    Route::post('/pos/discount/update', [POSController::class, 'updateDiscount'])->name('pos.updateDiscount');
     Route::get('/pos/print/{id}', [POSController::class, 'print']);
 
     // ORDERS
