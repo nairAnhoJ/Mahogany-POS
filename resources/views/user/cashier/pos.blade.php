@@ -612,7 +612,7 @@
                                                         
                                                     </div>
                                                     <div class="justify-self-end ">
-                                                        <strong class="text-slate-600 text-base font-medium "><span class="text-xl">₱ </span><span id="discountTotal">{{ number_format($subTotal, 2, '.', ',') }}</span></strong>
+                                                        <strong class="text-slate-600 text-base font-medium "><span class="text-xl">₱ </span><span id="discountTotal">{{ number_format($discount, 2, '.', ',') }}</span></strong>
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
@@ -686,8 +686,10 @@
                         _token: _token
                     },
                     success:function(result){
+                        $('#ordersCount').html(result.ordersCount);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
@@ -710,8 +712,11 @@
                         _token: _token
                     },
                     success:function(result){
+                        $('#ordersCount').html(result.ordersCount);
+                        $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
@@ -733,8 +738,11 @@
                         _token: _token
                     },
                     success:function(result){
+                        $('#ordersCount').html(result.ordersCount);
+                        $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
@@ -767,8 +775,11 @@
                         _token: _token
                     },
                     success:function(result){
+                        $('#ordersCount').html(result.ordersCount);
+                        $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
@@ -860,8 +871,11 @@
                             _token: _token
                         },
                         success:function(result){
+                        $('#ordersCount').html(result.ordersCount);
+                        $('#ordersCount').html(result.orders.length);
                             $('#ordersDiv').html(result.orders);
                             $('#subTotal').html(result.subTotal);
+                        $('#discountTotal').html(result.discount);
                             $('#total').html(result.total);
                             $('#actualAmount').html(result.amount);
                             $('#payNowButton').data('amount', result.amount);
@@ -909,8 +923,11 @@
                         _token: _token
                     },
                     success:function(result){
+                        $('#ordersCount').html(result.ordersCount);
+                        $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);

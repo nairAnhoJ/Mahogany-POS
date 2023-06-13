@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('number');
             $table->string('logo');
+            $table->string('footer');
             // $table->integer('notification');
             $table->timestamps();
         });

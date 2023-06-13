@@ -19,12 +19,21 @@ class POSController extends Controller
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
-            $subTotal = $subTotal + $order->total_price;
-            $total = $total + $order->total_price;
+        $discountRow = DB::table('discounts')->where('id', 1)->first();
+        $discount = 0;
+        if($orders->count() > 0){
+            foreach($orders as $order){
+                $subTotal = $subTotal + $order->total_price;
+            }
+            if($discountRow->total_customer > 0){
+                $x = $subTotal / $discountRow->total_customer;
+                $y = 0.2 * $discountRow->customer_with_discount;
+                $discount = $x * $y;
+            }
+            $total = round($subTotal - $discount);
         }
 
-        return view('user.cashier.pos', compact('tables', 'orders', 'menus', 'categories', 'subTotal', 'total'));
+        return view('user.cashier.pos', compact('tables', 'orders', 'menus', 'categories', 'subTotal', 'total', 'discount'));
     }
 
     public function add(Request $request){
@@ -117,33 +126,41 @@ class POSController extends Controller
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
-            $orderResult .= '
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        '.$order->name.'
+        $discountRow = DB::table('discounts')->where('id', 1)->first();
+        $discount = 0;
+        if($orders->count() > 0){
+            foreach($orders as $order){
+                $orderResult .= '
+                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                            '.$order->name.'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                        </div>
+                                        <div class="col-span-1 flex items-center justify-center">
+                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
+                                            <input type="hidden" value="'.$order->quantity.'">
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                        </div>
                                     </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
-                                    </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                        <input type="hidden" value="'.$order->quantity.'">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        '.number_format($order->total_price, 2, ".", ",").'
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
-                                    </div>
-                                </div>
-                            ';
-            
-            $subTotal = $subTotal + $order->total_price;
-            $total = $total + $order->total_price;
+                                ';
+                $subTotal = $subTotal + $order->total_price;
+            }
+            if($discountRow->total_customer > 0){
+                $x = $subTotal / $discountRow->total_customer;
+                $y = 0.2 * $discountRow->customer_with_discount;
+                $discount = $x * $y;
+            }
+            $total = round($subTotal - $discount);
         }
 
         $amount = $total;
@@ -153,7 +170,9 @@ class POSController extends Controller
             'subTotal' => number_format($subTotal, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
             'thisNotif' => $notif,
-            'amount' => $amount
+            'amount' => $amount,
+            'discount' => number_format($discount, 2, '.', ','),
+            'ordersCount' => $orders->count()
         );
 
         echo json_encode($response);
@@ -196,33 +215,41 @@ class POSController extends Controller
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
-            $orderResult .= '
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        '.$order->name.'
+        $discountRow = DB::table('discounts')->where('id', 1)->first();
+        $discount = 0;
+        if($orders->count() > 0){
+            foreach($orders as $order){
+                $orderResult .= '
+                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                            '.$order->name.'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                        </div>
+                                        <div class="col-span-1 flex items-center justify-center">
+                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
+                                            <input type="hidden" value="'.$order->quantity.'">
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                        </div>
                                     </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
-                                    </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                        <input type="hidden" value="'.$order->quantity.'">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        '.number_format($order->total_price, 2, ".", ",").'
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
-                                    </div>
-                                </div>
-                            ';
-            
-            $subTotal = $subTotal + $order->total_price;
-            $total = $total + $order->total_price;
+                                ';
+                $subTotal = $subTotal + $order->total_price;
+            }
+            if($discountRow->total_customer > 0){
+                $x = $subTotal / $discountRow->total_customer;
+                $y = 0.2 * $discountRow->customer_with_discount;
+                $discount = $x * $y;
+            }
+            $total = round($subTotal - $discount);
         }
 
         $amount = $total;
@@ -232,7 +259,9 @@ class POSController extends Controller
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
-            'amount' => $amount
+            'amount' => $amount,
+            'discount' => number_format($discount, 2, '.', ','),
+            'ordersCount' => $orders->count()
         );
 
         echo json_encode($response);
@@ -261,33 +290,41 @@ class POSController extends Controller
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
-            $orderResult .= '
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        '.$order->name.'
+        $discountRow = DB::table('discounts')->where('id', 1)->first();
+        $discount = 0;
+        if($orders->count() > 0){
+            foreach($orders as $order){
+                $orderResult .= '
+                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                            '.$order->name.'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                        </div>
+                                        <div class="col-span-1 flex items-center justify-center">
+                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
+                                            <input type="hidden" value="'.$order->quantity.'">
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                        </div>
                                     </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
-                                    </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                        <input type="hidden" value="'.$order->quantity.'">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        '.number_format($order->total_price, 2, ".", ",").'
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
-                                    </div>
-                                </div>
-                            ';
-            
-            $subTotal = $subTotal + $order->total_price;
-            $total = $total + $order->total_price;
+                                ';
+                $subTotal = $subTotal + $order->total_price;
+            }
+            if($discountRow->total_customer > 0){
+                $x = $subTotal / $discountRow->total_customer;
+                $y = 0.2 * $discountRow->customer_with_discount;
+                $discount = $x * $y;
+            }
+            $total = round($subTotal - $discount);
         }
 
         $amount = $total;
@@ -296,7 +333,9 @@ class POSController extends Controller
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
-            'amount' => $amount
+            'amount' => $amount,
+            'discount' => number_format($discount, 2, '.', ','),
+            'ordersCount' => $orders->count()
         );
 
         echo json_encode($response);
@@ -320,34 +359,41 @@ class POSController extends Controller
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
-            $orderResult .= '
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        '.$order->name.'
+        $discountRow = DB::table('discounts')->where('id', 1)->first();
+        $discount = 0;
+        if($orders->count() > 0){
+            foreach($orders as $order){
+                $orderResult .= '
+                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
+                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                            '.$order->name.'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                        </div>
+                                        <div class="col-span-1 flex items-center justify-center">
+                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
+                                            <input type="hidden" value="'.$order->quantity.'">
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                        </div>
                                     </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
-                                    </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                        <input type="hidden" value="'.$order->quantity.'">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        '.number_format($order->total_price, 2, ".", ",").'
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
-                                    </div>
-                                </div>
-                            ';
-            
-            $subTotal = $subTotal + $order->total_price;
-            $total = $total + $order->total_price;
-            $amount = $total + $order->total_price;
+                                ';
+                $subTotal = $subTotal + $order->total_price;
+            }
+            if($discountRow->total_customer > 0){
+                $x = $subTotal / $discountRow->total_customer;
+                $y = 0.2 * $discountRow->customer_with_discount;
+                $discount = $x * $y;
+            }
+            $total = round($subTotal - $discount);
         }
 
         $amount = $total;
@@ -356,7 +402,9 @@ class POSController extends Controller
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
-            'amount' => $amount
+            'amount' => $amount,
+            'discount' => number_format($discount, 2, '.', ','),
+            'ordersCount' => $orders->count()
         );
 
         echo json_encode($response);
@@ -497,6 +545,11 @@ class POSController extends Controller
 
         $amount = $total;
 
+        DB::table('discounts')->where('id', 1)->update([
+            'customer_with_discount' => 0,
+            'total_customer' => 0,
+        ]);
+
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
@@ -628,6 +681,11 @@ class POSController extends Controller
         ]);
 
         $amount = $total;
+
+        DB::table('discounts')->where('id', 1)->update([
+            'customer_with_discount' => 0,
+            'total_customer' => 0,
+        ]);
 
         $response = array(
             'orders' => $orderResult,

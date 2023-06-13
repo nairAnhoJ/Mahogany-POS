@@ -145,11 +145,8 @@ class InventoryController extends Controller
         $item_code = $request->item_code;
         $name = $request->name;
         $category_id = $request->category_id;
-        // $quantity = $request->quantity;
         $reorder_point = $request->reorder_point;
         $unit = $request->unit;
-        $price = $request->price;
-        $image = $request->image;
 
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('inventories')->where('slug', $slug)->get();
@@ -162,38 +159,20 @@ class InventoryController extends Controller
         }
         $slug = $nslug;
 
-        $imagePath = null;
-        if($image != null){
-            $imagePath = $request->file('image')->storeAs('public/images/items/'.$slug. '.' . $request->file('image')->getClientOriginalExtension());
-        }
-
         $request->validate([
             'name' => 'required',
             'reorder_point' => 'required'
         ]);
 
-        if($image != null){
-            DB::table('inventories')->where('slug', $oldSlug)
-                ->update([
-                    'item_code' => $item_code,
-                    'name' => $name,
-                    'category_id' => $category_id,
-                    'reorder_point' => $reorder_point,
-                    'unit' => $unit,
-                    'price' => $price,
-                    'image' => $imagePath,
-                    'slug' => $slug,
-                ]);
-        }else{
-            DB::table('inventories')->where('slug', $oldSlug)
-                ->update([
-                    'item_code' => $item_code,
-                    'name' => $name,
-                    'category_id' => $category_id,
-                    'price' => $price,
-                    'slug' => $slug,
-                ]);
-        }
+        DB::table('inventories')->where('slug', $oldSlug)
+            ->update([
+                'item_code' => $item_code,
+                'name' => $name,
+                'category_id' => $category_id,
+                'reorder_point' => $reorder_point,
+                'unit' => $unit,
+                'slug' => $slug,
+            ]);
 
         return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Updated');
     }

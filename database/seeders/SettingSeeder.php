@@ -18,6 +18,7 @@ class SettingSeeder extends Seeder
             'address' => 'RESTAURANT ADDRESS',
             'number' => '0912 345 6789',
             'logo' => 'images/ico/logo.png',
+            'footer' => 'THANK YOU FOR DINING WITH US!!!',
         ]);
     }
 }

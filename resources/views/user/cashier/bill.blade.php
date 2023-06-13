@@ -50,14 +50,31 @@
 
         <div class="w-[90%] mt-5 border-b border-dashed border-gray-600">
             <div class="w-full">
+                @php
+                    $subtotal = 0;
+                @endphp
                 @foreach ($orders as $order)
                     <div class="w-full flex justify-between">
                         <p class="text-3xl">{{$order->quantity}}<i class="uil uil-times mr-1"></i>{{$order->name}}</p>
                         <p class="whitespace-nowrap pl-3 text-3xl">₱ {{number_format($order->amount, 2, '.', ',')}}</p>
                     </div>
+                    @php
+                        $subtotal = $subtotal + $order->amount;
+                    @endphp
                 @endforeach
+                @php
+                    $discount = $subtotal - $trans->total;
+                @endphp
             </div>
             <div class="w-full mt-5 mb-3">
+                <div class="w-full flex justify-between text-2xl font-bold">
+                    <p>Subtotal</p>
+                    <p class="whitespace-nowrap pl-3">₱ {{number_format($subtotal, 2, '.', ',')}}</p>
+                </div>
+                <div class="w-full flex justify-between text-2xl font-bold">
+                    <p>Discount</p>
+                    <p class="whitespace-nowrap pl-3">₱ {{number_format($discount, 2, '.', ',')}}</p>
+                </div>
                 <div class="w-full flex justify-between text-3xl font-bold">
                     <p>TOTAL</p>
                     <p class="whitespace-nowrap pl-3">₱ {{number_format($trans->total, 2, '.', ',')}}</p>
@@ -65,7 +82,7 @@
             </div>
         </div>
 
-        <footer class="font-semibold text-3xl mt-10">THANK YOU FOR DINING WITH US!!!</footer>
+        <div class="font-semibold text-3xl mt-10">{{ $settings->footer }}</div>
     </div>
     
 
