@@ -187,6 +187,7 @@ class InventoryController extends Controller
         $slug = $request->addSlug;
         $quantity = $request->quantity;
         $price = $request->price;
+        $dateAdd = $request->dateAdd;
         $inv = DB::table('inventories')->where('slug', $slug)->first();
         $qb = $inv->quantity;
         $qf = $qb + $quantity;
@@ -205,6 +206,7 @@ class InventoryController extends Controller
         $it->amount = $price;
         $it->remarks = 'N/A';
         $it->user_id = Auth::id();
+        $it->created_at = $dateAdd;
         $it->save();
 
         return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Increased');
@@ -214,6 +216,7 @@ class InventoryController extends Controller
         $slug = $request->minSlug;
         $quantity = $request->minQuantity;
         $remarks = $request->remarks;
+        $dateMinus = $request->dateMinus;
         $inv = DB::table('inventories')->where('slug', $slug)->first();
         $qb = $inv->quantity;
         $qf = $qb - $quantity;
@@ -233,6 +236,7 @@ class InventoryController extends Controller
             $it->quantity_after = $qf;
             $it->remarks = $remarks;
             $it->user_id = Auth::id();
+            $it->created_at = $dateMinus;
             $it->save();
     
             return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Decreased');
