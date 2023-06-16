@@ -30,7 +30,7 @@
                         <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option value="sales">Sales</option>
                             <option value="expenses">Expenses</option>
-                            {{-- <option value="both">Both</option> --}}
+                            <option value="both">Sales & Expenses</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -67,22 +67,22 @@
                 }
             });
 
-            // $('#category').on('change', function(){
-            //     var category = $(this).val();
+            $('#category').on('change', function(){
+                var category = $(this).val();
 
-            //     $('#report').empty();
+                $('#report').empty();
 
-            //     if(category != 'both'){
-            //         $('#report').html(`
-            //             <option value="list">Transaction Logs</option>
-            //             <option value="summary">Summary</option>
-            //         `);
-            //     }else{
-            //         $('#report').html(`
-            //             <option value="summary">Summary</option>
-            //         `);
-            //     }
-            // });
+                if(category != 'both'){
+                    $('#report').html(`
+                        <option value="list">Transaction Logs</option>
+                        <option value="summary">Summary</option>
+                    `);
+                }else{
+                    $('#report').html(`
+                        <option value="summary">Summary</option>
+                    `);
+                }
+            });
         });
     </script>
 </x-app-layout>

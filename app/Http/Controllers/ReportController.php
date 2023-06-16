@@ -64,9 +64,32 @@ class ReportController extends Controller
             }
 
         }else if($category == 'both'){
+            $salesQuery = DB::table('transactions')
+                ->select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('SUM(total) as stotal'),
+                    DB::raw('0 as etotal')
+                )
+                ->where('status', 'PAID')
+                ->where('order_status', '!=', 'CANCELLED')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->groupBy('date');
 
+            $expensesQuery = DB::table('inventory_transactions')
+                ->select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('0 as stotal'),
+                    DB::raw('SUM(amount) as etotal')
+                )
+                ->where('type', 'INCOMING')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->groupBy('date');
 
+            $results = $salesQuery->union($expensesQuery)->orderBy('date')->get();
 
+            if($report == 'summary'){
+                return view('admin.reports.summary_sec', compact('results', 'category', 'settings', 'startDate', 'endDate', 'report'));
+            }
         }
 
         return view('admin.reports.list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
@@ -120,12 +143,31 @@ class ReportController extends Controller
                 }
 
         }else if($category == 'both'){
+            $salesQuery = DB::table('transactions')
+                ->select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('SUM(total) as stotal'),
+                    DB::raw('0 as etotal')
+                )
+                ->where('status', 'PAID')
+                ->where('order_status', '!=', 'CANCELLED')
+                ->whereBetween('created_at', [$start, $end])
+                ->groupBy('date');
 
+            $expensesQuery = DB::table('inventory_transactions')
+                ->select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('0 as stotal'),
+                    DB::raw('SUM(amount) as etotal')
+                )
+                ->where('type', 'INCOMING')
+                ->whereBetween('created_at', [$start, $end])
+                ->groupBy('date');
 
+            $results = $salesQuery->union($expensesQuery)->orderBy('date')->get();
 
+            return view('admin.reports.print_summary_sec', compact('results', 'category', 'settings', 'startDate', 'endDate', 'report'));
         }
-
-        // dd($results);
 
         if($report == 'list'){
             return view('admin.reports.print_list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate'));
