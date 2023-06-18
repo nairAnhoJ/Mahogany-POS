@@ -33,7 +33,7 @@ class POSController extends Controller
             $total = round($subTotal - $discount);
         }
 
-        return view('user.cashier.pos', compact('tables', 'orders', 'menus', 'categories', 'subTotal', 'total', 'discount'));
+        return view('user.cashier.pos', compact('tables', 'orders', 'discountRow', 'menus', 'categories', 'subTotal', 'total', 'discount'));
     }
 
     public function add(Request $request){
@@ -698,12 +698,21 @@ class POSController extends Controller
     }
 
     public function updateDiscount(Request $request){
-        $customer_with_discount = $request->customer_with_discount;
-        $total_customer = $request->total_customer;
+        $customer_with_discount = ltrim($request->customer_with_discount, '0');
+        $total_customer = ltrim($request->total_customer, '0');
 
         DB::table('discounts')->where('id', 1)->update([
             'customer_with_discount' => $customer_with_discount,
             'total_customer' => $total_customer,
+        ]);
+
+        return redirect()->route('pos.index');
+    }
+
+    public function deleteDiscount(){
+        DB::table('discounts')->where('id', 1)->update([
+            'customer_with_discount' => 0,
+            'total_customer' => 0,
         ]);
 
         return redirect()->route('pos.index');

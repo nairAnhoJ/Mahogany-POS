@@ -160,6 +160,7 @@ Route::middleware('role:2')->group(function(){
     Route::post('/pos/pay', [POSController::class, 'pay'])->name('pos.pay');
     Route::post('/pos/paylater', [POSController::class, 'paylater'])->name('pos.paylater');
     Route::post('/pos/discount/update', [POSController::class, 'updateDiscount'])->name('pos.updateDiscount');
+    Route::get('/pos/discount/delete', [POSController::class, 'deleteDiscount'])->name('pos.deleteDiscount');
     Route::get('/pos/print/{id}', [POSController::class, 'print']);
 
     // ORDERS
