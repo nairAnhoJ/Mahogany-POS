@@ -208,7 +208,7 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                         <h3 class="text-2xl font-semibold text-gray-900">
-                            Pay Now
+                            Pay Now 
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="amountReceivedModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -216,6 +216,9 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-6 space-y-4">
+                        <div class="mb-2">
+                            <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span>
+                        </div>
                         <div class="mb-2">
                             <label for="amount" class="block mb-2 text-base font-medium text-gray-900">Amount Received</label>
                             <input type="text" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
@@ -692,6 +695,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
+                        $('#actualAmount2').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#notifDiv').html(result.thisNotif);
                     }
@@ -719,6 +723,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
+                        $('#actualAmount2').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#notifDiv').html(result.thisNotif);
                     }
@@ -745,6 +750,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
+                        $('#actualAmount2').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                     }
                 })
@@ -782,6 +788,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
+                        $('#actualAmount2').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         location.reload();
                     }
@@ -878,6 +885,7 @@
                         $('#discountTotal').html(result.discount);
                             $('#total').html(result.total);
                             $('#actualAmount').html(result.amount);
+                        $('#actualAmount2').html(result.amount);
                             $('#payNowButton').data('amount', result.amount);
                             $('#loadingScreen').addClass('hidden');
                         }
@@ -930,6 +938,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('#actualAmount').html(result.amount);
+                        $('#actualAmount2').html(result.amount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#loadingScreen').addClass('hidden');
                         location.reload();
@@ -951,6 +960,10 @@
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
+
+            $('#sendSSButton').click(function(){
+                $('#loadingScreen').removeClass('hidden');
+            })
         });
     </script>
 </x-app-layout>

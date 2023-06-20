@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNotify;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Ordered;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+
 
 class POSController extends Controller
 {
@@ -709,6 +713,37 @@ class POSController extends Controller
         return redirect()->route('pos.index');
     }
 
+    public function send(){
+        $startDate = date('Y-m-d');
+        $endDate = date('Y-m-d', strtotime('+1 day'));
+
+        $salesQuery = DB::table('transactions')
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(total) as stotal'),
+                DB::raw('0 as etotal')
+            )
+            ->where('status', 'PAID')
+            ->where('order_status', '!=', 'CANCELLED')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('date');
+
+        $expensesQuery = DB::table('inventory_transactions')
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('0 as stotal'),
+                DB::raw('SUM(amount) as etotal')
+            )
+            ->where('type', 'INCOMING')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('date');
+
+        $data = $salesQuery->union($expensesQuery)->orderBy('date')->get();
+
+        Mail::to('jam092196@gmail.com')
+            ->send(new MailNotify($data));
+    }
+
     public function print($id){
         $trans = DB::table('transactions')
                     ->select('transactions.*', 'tables.name as table_name')
@@ -731,4 +766,5 @@ class POSController extends Controller
 
         return view('user.cashier.bill', compact('orders', 'trans', 'settings'));
     }
+
 }
