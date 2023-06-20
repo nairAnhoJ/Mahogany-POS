@@ -723,6 +723,8 @@ class POSController extends Controller
     }
 
     public function send(){
+        $emailTo = (DB::table('settings')->where('id', 1)->first())->email;
+
         $startDate = date('Y-m-d');
         $endDate = date('Y-m-d', strtotime('+1 day'));
 
@@ -749,8 +751,10 @@ class POSController extends Controller
 
         $data = $salesQuery->union($expensesQuery)->orderBy('date')->get();
 
-        Mail::to('jam092196@gmail.com')
+        Mail::to($emailTo)
             ->send(new MailNotify($data));
+
+        return redirect()->route('pos.index');
     }
 
     public function print($id){

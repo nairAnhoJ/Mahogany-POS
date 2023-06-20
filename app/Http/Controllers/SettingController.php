@@ -20,6 +20,7 @@ class SettingController extends Controller
         $number = $request->number;
         $logo = $request->logo;
         $footer = $request->footer;
+        $email = $request->email;
 
         $imagePath = null;
         if($logo != null){
@@ -34,14 +35,16 @@ class SettingController extends Controller
                 'address' => $address,
                 'number' => $number,
                 'logo' => $imagePath,
-                'footer' => $footer
+                'footer' => $footer,
+                'email' => $email
             ]);
         }else{
             DB::table('settings')->where('id', 1)->update([
                 'name' => $name,
                 'address' => $address,
                 'number' => $number,
-                'footer' => $footer
+                'footer' => $footer,
+                'email' => $email
             ]);
         }
 
