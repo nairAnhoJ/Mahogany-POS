@@ -170,23 +170,27 @@
 
             $('.tranButton').click(function(){
                 id = $(this).data('id');
-                _token = $('input[name="_token"]').val();
+                $('.tranButton').removeClass('border-2 border-blue-400');
+                $(this).addClass('border-2 border-blue-400');
+                $('#serveButton').prop('disabled', false);
+                
+                // _token = $('input[name="_token"]').val();
 
-                $.ajax({
-                    url:"{{ route('kitchen.check') }}",
-                    method:"POST",
-                    data:{
-                        id: id,
-                        _token: _token
-                    },
-                    success:function(result){
-                        if(result == 1){
-                            $('#serveButton').prop('disabled', false);
-                        }else{
-                            $('#serveButton').prop('disabled', true);
-                        }
-                    }
-                })
+                // $.ajax({
+                //     url:"{{ route('kitchen.check') }}",
+                //     method:"POST",
+                //     data:{
+                //         id: id,
+                //         _token: _token
+                //     },
+                //     success:function(result){
+                //         if(result == 1){
+                //             $('#serveButton').prop('disabled', false);
+                //         }else{
+                //             $('#serveButton').prop('disabled', true);
+                //         }
+                //     }
+                // })
             });
 
             $('#serveButton').click(function(){

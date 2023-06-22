@@ -615,10 +615,10 @@
             $('#payNowButton').click(function(){
                 var amount = $(this).data('amount');
                 var amountInput = $('#amount').val();
+                var namountInput = parseInt(amountInput);
                 var mop = $('#mop').val();
-                console.log(amountInput);
 
-                if(amountInput >= amount){
+                if(namountInput >= amount){
                     $('#loadingScreen').removeClass('hidden');
                     var change = amountInput - amount;
                     $('#payNowCancelButton').click();
