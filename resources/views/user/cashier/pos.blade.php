@@ -140,11 +140,11 @@
                         <input type="hidden" id="paymentMethod">
                         <div class="mb-6">
                             <label for="customer_with_discount" class="block mb-2 text-sm font-medium text-gray-900">Number Customer With Discount</label>
-                            <input type="text" id="customer_with_discount" name="customer_with_discount" value="{{ $discountRow->customer_with_discount }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <input type="text" id="customer_with_discount" name="customer_with_discount" value="{{ ($discountRow->customer_with_discount) == 0 ? '' : $discountRow->customer_with_discount }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" autocomplete="off">
                         </div>
                         <div class="mb-6">
                             <label for="total_customer" class="block mb-2 text-sm font-medium text-gray-900">Total Number of Customers</label>
-                            <input type="text" id="total_customer" name="total_customer" value="{{ $discountRow->total_customer }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <input type="text" id="total_customer" name="total_customer" value="{{ ($discountRow->total_customer) == 0 ? '' : $discountRow->total_customer }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" autocomplete="off">
                         </div>
                     </div>
                     <!-- Modal footer -->
@@ -579,9 +579,9 @@
                                             <div class="flex items-center justify-center">
                                                 <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                             </div>
-                                            <div class="col-span-1 flex items-center justify-center">
-                                                <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">{{ $order->quantity }}</p>
-                                                <input type="hidden" value="{{ $order->quantity }}">
+                                            <div class="col-span-1 flex items-center justify-center px-1">
+                                                {{-- <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">{{ $order->quantity }}</p> --}}
+                                                <input type="text" class="w-full text-center text-sm font-semibold border-0 h-7 leading-7 focus:border-gray-500" value="{{ $order->quantity }}">
                                             </div>
                                             <div class="flex items-center justify-center">
                                                 <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
