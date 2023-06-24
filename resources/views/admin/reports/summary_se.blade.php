@@ -1,7 +1,7 @@
 <x-app-layout>
     @section('page_title', 'REPORTS')
     
-    <div class="p-3 lg:ml-64 lg:pt-3">
+    <div class="p-3 lg:pt-3 {{ (Auth::user()->role == 2) ? '' : ' lg:ml-64' }}">
         <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                 {{-- CONTROLS --}}

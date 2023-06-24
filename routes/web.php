@@ -49,7 +49,7 @@ Route::get('/', function () {
     }
 });
 
-Route::middleware("role:1")->group(function(){
+Route::middleware("role:1,2")->group(function(){
 
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
