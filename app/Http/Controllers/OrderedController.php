@@ -27,14 +27,18 @@ class OrderedController extends Controller
         }
 
         foreach($trans as $tran){
-            if($tran->status == 'UNPAID'){
+            if($tran->status == 'PAID'){
+                $sColor = 'rgb(16 185 129)';
+            }else{
+                $sColor = 'rgb(240 82 82)';
+                $co = 0;
                 $pd = 0;
             }
 
             $m = '';
             $orders = DB::table('ordered')
                 ->join('menus', 'ordered.menu_id', '=', 'menus.id')
-                ->select('ordered.tran_id', 'ordered.menu_id', 'menus.name', 'ordered.quantity', 'ordered.slug', 'ordered.status')
+                ->select('ordered.tran_id', 'ordered.menu_id', 'menus.name', 'ordered.quantity', 'ordered.amount', 'ordered.slug', 'ordered.status')
                 ->where('ordered.tran_id', $tran->id)
                 ->get();
 
@@ -42,11 +46,14 @@ class OrderedController extends Controller
                 if($order->quantity > 1){
                     if($order->status != 'SERVED'){
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
-                                <div>
+                            <div class="grid grid-cols-5 items-center mb-5">
+                                <div class="col-span-2">
                                     <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
-                                <div style="margin-right: 20px;" class="">
+                                <div class="justify-self-center">
+                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
+                                </div>
+                                <div style="margin-right: 20px;" class="justify-self-end col-span-2">
                                     <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="reduceButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50 mr-4"><i class="uil uil-minus text-xl text-red-500 hover:text-red-600 mr-2"></i>Reduce</button>
                                     <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
                                 </div>
@@ -54,9 +61,12 @@ class OrderedController extends Controller
                         ';
                     }else{
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
-                                <div>
+                            <div class="grid grid-cols-5 mb-5 items-center">
+                                <div class="col-span-2">
                                     <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                </div>
+                                <div class="justify-self-center">
+                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
                                 </div>
                             </div>
                         ';
@@ -65,32 +75,32 @@ class OrderedController extends Controller
                 }else{
                     if($order->status != 'SERVED'){
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
-                                <div>
+                            <div class="grid grid-cols-5 mb-5 items-center">
+                                <div class="col-span-2">
                                     <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
-                                <div style="margin-right: 20px;" class="">
+                                <div class="justify-self-center">
+                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
+                                </div>
+                                <div style="margin-right: 20px;" class="justify-self-end col-span-2">
                                     <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
                                 </div>
                             </div>
                         ';
                     }else{
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
-                                <div>
+                            <div class="grid grid-cols-5 mb-5 items-center">
+                                <div class="col-span-2 mb-5">
                                     <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                </div>
+                                <div class="justify-self-center">
+                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
                                 </div>
                             </div>
                         ';
                         $co = 1;
                     }
                 }
-            }
-
-            if($tran->status == 'PAID'){
-                $sColor = 'rgb(16 185 129)';
-            }else{
-                $sColor = 'rgb(240 82 82)';
             }
 
             $res .= '
