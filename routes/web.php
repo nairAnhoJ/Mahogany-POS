@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KitchenController;
 use App\Http\Controllers\MenuCategoryController;
@@ -141,6 +142,18 @@ Route::middleware('role:1,4,2')->group(function(){
     Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
     Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
     Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
+
+    // EXPENSES
+    Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/add', [ExpensesController::class, 'add'])->name('expenses.add');
+    Route::post('/expenses/store', [ExpensesController::class, 'store'])->name('expenses.store');
+    Route::post('/expenses/add-qty', [ExpensesController::class, 'addqty'])->name('expenses.addqty');
+    Route::post('/expenses/minus-qty', [ExpensesController::class, 'minusqty'])->name('expenses.minusqty');
+    Route::get('/expenses/edit/{slug}', [ExpensesController::class, 'edit']);
+    Route::post('/expenses/update', [ExpensesController::class, 'update'])->name('expenses.update');
+    Route::get('/expenses/delete/{slug}', [ExpensesController::class, 'delete'])->name('expenses.delete');
+    Route::get('/expenses/{page}', [ExpensesController::class, 'paginate']);
+    Route::get('/expenses/{page}/{search}', [ExpensesController::class, 'search']);
 
     Route::get('/report', [ReceiverReportController::class, 'index'])->name('report.index');
     Route::get('/report/print', [ReceiverReportController::class, 'print'])->name('report.print');

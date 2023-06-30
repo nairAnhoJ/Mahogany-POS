@@ -71,7 +71,7 @@ class MenuController extends Controller
     }
 
     public function store(Request $request){
-        $name = strtoupper($request->name);
+        $name = $request->name;
         $category_id = $request->category_id;
         $price = $request->price;
         $image = $request->image;
@@ -150,7 +150,7 @@ class MenuController extends Controller
 
     public function update(Request $request){
         $oldSlug = $request->slug;
-        $name = strtoupper($request->name);
+        $name = $request->name;
         $category_id = $request->category_id;
         $price = $request->price;
         $image = $request->image;

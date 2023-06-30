@@ -9,50 +9,40 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class InventoryController extends Controller
+class ExpensesController extends Controller
 {
     public function index(){
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
+            ->where('is_expenses', 1)
             ->orderBy('name', 'asc')
             ->paginate(100);
-        $invCount = DB::table('inventories')->where('is_expenses', 0)->get()->count();
+        $invCount = DB::table('inventories')->where('is_expenses', 1)->get()->count();
         $page = 1;
         $search = "";
 
-        if(auth()->user()->role == 1){
-            return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
-            return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
-        }
+        return view('user.inventory.expenses.index', compact('inventories', 'invCount', 'page', 'search'));
     }
 
     public function paginate($page){
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
+            ->where('is_expenses', 1)
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('inventories')->where('is_expenses', 0)->get()->count();
+        $invCount = DB::table('inventories')->where('is_expenses', 1)->get()->count();
         $search = "";
 
-
-
-        if(auth()->user()->role == 1){
-            return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
-            return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
-        }
+        return view('user.inventory.expenses.index', compact('inventories', 'invCount', 'page', 'search'));
     }
 
     public function search($page, $search){
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
+            ->where('is_expenses', 1)
             ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
@@ -60,28 +50,18 @@ class InventoryController extends Controller
         $invCount = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
+            ->where('is_expenses', 1)
             ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->count();
 
-        if(auth()->user()->role == 1){
-            return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
-        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
-            return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
-        }
+        return view('user.inventory.expenses.index', compact('inventories', 'invCount', 'page', 'search'));
     }
 
     public function add(){
         $categories = DB::table('categories')->orderBy('name', 'asc')->get();
 
-
-
-        if(auth()->user()->role == 1){
-            return view('user.inventory.inventory.add', compact('categories'));
-        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
-            return view('user.reciever.add', compact('categories'));
-        }
+        return view('user.inventory.expenses.add', compact('categories'));
     }
 
     public function store(Request $request){
@@ -127,21 +107,17 @@ class InventoryController extends Controller
             $item->image = $imagePath;
         }
         $item->slug = $slug;
+        $item->is_expenses = 1;
         $item->save();
 
-        return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Added');
+        return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Added');
     }
 
     public function edit($slug){
         $item = DB::table('inventories')->where('slug', $slug)->first();
         $categories = DB::table('categories')->orderBy('name', 'asc')->get();
 
-
-        if(auth()->user()->role == 1){
-            return view('user.inventory.inventory.edit', compact('item', 'categories'));
-        }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
-            return view('user.reciever.edit', compact('item', 'categories'));
-        }
+        return view('user.inventory.expenses.edit', compact('item', 'categories'));
     }
 
     public function update(Request $request){
@@ -178,13 +154,13 @@ class InventoryController extends Controller
                 'slug' => $slug,
             ]);
 
-        return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Updated');
+        return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Updated');
     }
 
     public function delete($slug){
         DB::table('inventories')->where('slug', $slug)->delete();
 
-        return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Deleted');
+        return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Deleted');
     }
 
     public function addqty(Request $request){
@@ -213,37 +189,37 @@ class InventoryController extends Controller
         $it->created_at = $dateAdd;
         $it->save();
 
-        return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Increased');
+        return redirect()->route('expenses.index')->withInput()->with('message', 'Quantity Successfully Increased');
     }
 
-    public function minusqty(Request $request){
-        $slug = $request->minSlug;
-        $quantity = $request->minQuantity;
-        $remarks = $request->remarks;
-        $dateMinus = $request->dateMinus;
-        $inv = DB::table('inventories')->where('slug', $slug)->first();
-        $qb = $inv->quantity;
-        $qf = $qb - $quantity;
+    // public function minusqty(Request $request){
+    //     $slug = $request->minSlug;
+    //     $quantity = $request->minQuantity;
+    //     $remarks = $request->remarks;
+    //     $dateMinus = $request->dateMinus;
+    //     $inv = DB::table('inventories')->where('slug', $slug)->first();
+    //     $qb = $inv->quantity;
+    //     $qf = $qb - $quantity;
 
-        if($qf < 0){
-            return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
-        }else{
-            DB::table('inventories')->where('slug', $slug)->update([
-                'quantity' => $qf,
-            ]);
+    //     if($qf < 0){
+    //         return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
+    //     }else{
+    //         DB::table('inventories')->where('slug', $slug)->update([
+    //             'quantity' => $qf,
+    //         ]);
     
-            $it = new InventoryTransaction();
-            $it->inv_id = $inv->id;
-            $it->type = 'OUTGOING';
-            $it->quantity_before = $qb;
-            $it->quantity = $quantity;
-            $it->quantity_after = $qf;
-            $it->remarks = $remarks;
-            $it->user_id = Auth::id();
-            $it->created_at = $dateMinus;
-            $it->save();
+    //         $it = new InventoryTransaction();
+    //         $it->inv_id = $inv->id;
+    //         $it->type = 'OUTGOING';
+    //         $it->quantity_before = $qb;
+    //         $it->quantity = $quantity;
+    //         $it->quantity_after = $qf;
+    //         $it->remarks = $remarks;
+    //         $it->user_id = Auth::id();
+    //         $it->created_at = $dateMinus;
+    //         $it->save();
     
-            return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Decreased');
-        }
-    }
+    //         return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Decreased');
+    //     }
+    // }
 }
