@@ -38,13 +38,64 @@
                 <img src="{{ asset('storage/'.$settings->logo) }}" class="h-10" alt="">
             </div>
             <div class="mt-4 flex justify-between">
-                <h1 class="text-3xl">{{ ($category == 'sales') ? 'Sales' : 'Expenses' }} Transaction Logs</h1>
+                @php
+                    if($category == 'sales'){
+                        $ncat = 'Sales Transaction';
+                    }else if($category == 'expenses'){
+                        $ncat = 'Expenses Transaction';
+                    }else if($category == 'inventory'){
+                        $ncat = 'Inventory Outgoing';
+                    }
+                @endphp
+                <h1 class="text-3xl">{{ $ncat }} Logs</h1>
                 <h1 class="flex items-center">{{ $startDate.' - '.$endDate }}</h1>
             </div>
             <div class="mt-3 w-full">
                 <table class="w-full mt-4">
                     <thead>
                         <tr class="border-b">
+                            <th class="px-6 text-center">
+                                Date
+                            </th>
+                            @if ($category == 'sales')
+
+                                <th class="px-6 text-center">
+                                    Transaction Number
+                                </th>
+                                <th class="px-6 text-center">
+                                    Amount
+                                </th>
+                                <th class="px-6 text-center">
+                                    Mode of Payment
+                                </th>
+
+                            @elseif($category == 'expenses')
+
+                                <th class="px-6 text-center">
+                                    Item Name
+                                </th>
+                                <th class="px-6 text-center">
+                                    Amount
+                                </th>
+                                <th class="px-6 text-center">
+                                    Quantity
+                                </th>
+
+                            @elseif($category == 'inventory')
+
+                                <th class="px-6 text-center">
+                                    Item Name
+                                </th>
+                                <th class="px-6 text-center">
+                                    Quantity
+                                </th>
+                                <th class="px-6 text-center">
+                                    Remarks
+                                </th>
+
+                            @endif
+                        </tr>
+                        {{-- <tr class="border-b">
                             <th class="px-6">
                                 Date
                             </th>
@@ -69,11 +120,50 @@
                                     Quantity
                                 </th>
                             @endif
-                        </tr>
+                        </tr> --}}
                     </thead>
                     <tbody>
                         @foreach ($results as $result)
                             <tr class="border-b">
+                                <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                    {{ date('Y-m-d', strtotime($result->date)) }}
+                                </th>
+
+
+                                @if ($category == 'sales')
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->nn }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        ₱ {{ $result->amount }}.00
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->mode_of_payment }}
+                                    </td>
+                                @elseif($category == 'expenses')
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->nn }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        ₱ {{ $result->amount }}.00
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->quantity }}
+                                    </td>
+                                @elseif($category == 'inventory')
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->nn }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->quantity }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->remarks }}
+                                    </td>
+                                @endif
+                            </tr>
+                            
+                            {{-- <tr class="border-b">
                                 <th class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
                                     {{ date('Y-m-d', strtotime($result->date)) }}
                                 </th>
@@ -92,7 +182,7 @@
                                         {{ $result->quantity }}
                                     </td>
                                 @endif
-                            </tr>
+                            </tr> --}}
                         @endforeach
                     </tbody>
                 </table>

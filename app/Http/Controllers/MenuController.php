@@ -60,7 +60,7 @@ class MenuController extends Controller
 
     public function add(){
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
-        $items = DB::table('inventories')->get();
+        $items = DB::table('inventories')->where('is_expenses', 0)->get();
         $menus = DB::table('menus')->get();
 
         // if(auth()->user()->role == 1){
@@ -139,7 +139,7 @@ class MenuController extends Controller
             ->join('inventories', 'ingredients.inventory_id', 'inventories.id')
             ->where('ingredients.menu_id', $item->id)->get();
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
-        $items = DB::table('inventories')->get();
+        $items = DB::table('inventories')->where('is_expenses', 0)->get();
         
         // if(auth()->user()->role == 1){
         //     return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));

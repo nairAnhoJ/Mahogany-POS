@@ -30,6 +30,7 @@
                             <option value="sales">Sales</option>
                             <option value="expenses">Expenses</option>
                             <option value="both">Sales & Expenses</option>
+                            <option value="inventory">Inventory</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -37,7 +38,6 @@
                         <select id="report" name="report" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option value="list">Transaction Logs</option>
                             <option value="summary">Summary</option>
-                            {{-- <option value="both">Both</option> --}}
                         </select>
                     </div>
                     <div class="mb-3">
@@ -72,10 +72,16 @@
                 $('#report').empty();
 
                 if(category != 'both'){
-                    $('#report').html(`
-                        <option value="list">Transaction Logs</option>
-                        <option value="summary">Summary</option>
-                    `);
+                    if(category == 'inventory'){
+                        $('#report').html(`
+                            <option value="logs">Logs</option>
+                        `);
+                    }else{
+                        $('#report').html(`
+                            <option value="list">Transaction Logs</option>
+                            <option value="summary">Summary</option>
+                        `);
+                    }
                 }else{
                     $('#report').html(`
                         <option value="summary">Summary</option>

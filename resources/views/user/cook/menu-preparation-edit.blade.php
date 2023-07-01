@@ -188,7 +188,7 @@
             });
 
             jQuery(document).on( "keyup", ".quantity", function(){
-                var val = $(this).val().replace(/[^0-9]/g, '');
+                var val = $(this).val().replace(/[^0-9.]/g, '');
                 $(this).val(val);
             });
 

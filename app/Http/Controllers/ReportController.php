@@ -90,6 +90,26 @@ class ReportController extends Controller
             if($report == 'summary'){
                 return view('admin.reports.summary_sec', compact('results', 'category', 'settings', 'startDate', 'endDate', 'report'));
             }
+        }else if($category == 'inventory'){
+
+            $results = DB::table('inventory_transactions')
+                ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
+                ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
+                ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                ->where('inventory_transactions.type', 'OUTGOING')
+                ->orderBy('inventory_transactions.id', 'desc')
+                ->get();
+            $resultsCount = DB::table('inventory_transactions')
+                ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity')
+                ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
+                ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                ->where('inventory_transactions.type', 'OUTGOING')
+                ->orderBy('inventory_transactions.id', 'desc')
+                ->get()->count();
+
+            if($report == 'summary'){
+                return view('admin.reports.summary_se', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
+            }
         }
 
         return view('admin.reports.list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
@@ -167,9 +187,25 @@ class ReportController extends Controller
             $results = $salesQuery->union($expensesQuery)->orderBy('date')->get();
 
             return view('admin.reports.print_summary_sec', compact('results', 'category', 'settings', 'startDate', 'endDate', 'report'));
+        }else if($category == 'inventory'){
+
+            $results = DB::table('inventory_transactions')
+                ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
+                ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
+                ->whereBetween('inventory_transactions.created_at', [$start, $end])
+                ->where('inventory_transactions.type', 'OUTGOING')
+                ->orderBy('inventory_transactions.id', 'desc')
+                ->get();
+            $resultsCount = DB::table('inventory_transactions')
+                ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity')
+                ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
+                ->whereBetween('inventory_transactions.created_at', [$start, $end])
+                ->where('inventory_transactions.type', 'OUTGOING')
+                ->orderBy('inventory_transactions.id', 'desc')
+                ->get()->count();
         }
 
-        if($report == 'list'){
+        if($report == 'list' || $report == 'logs'){
             return view('admin.reports.print_list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate'));
         }else if($report == 'summary'){
             return view('admin.reports.print_summary_se', compact('results', 'settings'));

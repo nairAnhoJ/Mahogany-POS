@@ -165,7 +165,7 @@ class ExpensesController extends Controller
 
     public function addqty(Request $request){
         $slug = $request->addSlug;
-        $quantity = $request->quantity;
+        $quantity = 1;
         $price = $request->price;
         $dateAdd = $request->dateAdd;
         $inv = DB::table('inventories')->where('slug', $slug)->first();

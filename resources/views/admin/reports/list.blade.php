@@ -19,7 +19,16 @@
 
                 <div>
                     <div class="mt-4 flex justify-between">
-                        <h1 class="text-3xl">{{ ($category == 'sales') ? 'Sales' : 'Expenses' }} Transaction Logs</h1>
+                        @php
+                            if($category == 'sales'){
+                                $ncat = 'Sales Transaction';
+                            }else if($category == 'expenses'){
+                                $ncat = 'Expenses Transaction';
+                            }else if($category == 'inventory'){
+                                $ncat = 'Inventory Outgoing';
+                            }
+                        @endphp
+                        <h1 class="text-3xl">{{ $ncat }} Logs</h1>
                         <h1 class="flex items-center">{{ date('M j, Y', strtotime($startDate)).' - '.date('M j, Y', strtotime('-1 day', strtotime($endDate))) }}</h1>
                     </div>
                     {{-- TABLE --}}
@@ -32,25 +41,41 @@
                                                 Date
                                             </th>
                                             @if ($category == 'sales')
+
                                                 <th class="px-6 text-center">
                                                     Transaction Number
                                                 </th>
-                                            @else
                                                 <th class="px-6 text-center">
-                                                    Item Name
+                                                    Amount
                                                 </th>
-                                            @endif
-                                            <th class="px-6 text-center">
-                                                Amount
-                                            </th>
-                                            @if ($category == 'sales')
                                                 <th class="px-6 text-center">
                                                     Mode of Payment
                                                 </th>
-                                            @else
+
+                                            @elseif($category == 'expenses')
+
+                                                <th class="px-6 text-center">
+                                                    Item Name
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Amount
+                                                </th>
                                                 <th class="px-6 text-center">
                                                     Quantity
                                                 </th>
+
+                                            @elseif($category == 'inventory')
+
+                                                <th class="px-6 text-center">
+                                                    Item Name
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Quantity
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Remarks
+                                                </th>
+
                                             @endif
                                         </tr>
                                     </thead>
@@ -60,19 +85,37 @@
                                                 <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
                                                     {{ date('Y-m-d', strtotime($result->date)) }}
                                                 </th>
-                                                <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    {{ $result->nn }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ $result->amount }}.00
-                                                </td>
+
+
                                                 @if ($category == 'sales')
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->nn }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        ₱ {{ $result->amount }}.00
+                                                    </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->mode_of_payment }}
                                                     </td>
-                                                @else
+                                                @elseif($category == 'expenses')
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->nn }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        ₱ {{ $result->amount }}.00
+                                                    </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->quantity }}
+                                                    </td>
+                                                @elseif($category == 'inventory')
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->nn }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->quantity }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->remarks }}
                                                     </td>
                                                 @endif
                                             </tr>
