@@ -35,9 +35,10 @@ class MenuController extends Controller
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
         $menuCount = DB::table('menus')->get()->count();
+        $items = DB::table('inventories')->get();
         $search = "";
 
-        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
+        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
     }
 
     public function search($page, $search){
@@ -54,8 +55,11 @@ class MenuController extends Controller
             ->whereRaw("CONCAT_WS(' ', menus.name, menu_categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->count();
+            $items = DB::table('inventories')->get();
+
+        // dd($menus);
             
-        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search'));
+        return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
     }
 
     public function add(){

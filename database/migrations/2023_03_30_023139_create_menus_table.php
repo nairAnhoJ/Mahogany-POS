@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('price')->nullable();
             $table->string('image')->nullable();
+            $table->string('servings');
             $table->string('slug')->unique();
             $table->timestamps();
         });
