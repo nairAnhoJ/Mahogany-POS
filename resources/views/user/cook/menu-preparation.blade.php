@@ -133,7 +133,6 @@
                 <div class="">
                     <h2 class="font-bold text-2xl tracking-wide">INGREDIENTS</h2>
                     <div id="ingredients" class="">
-                        
                     </div>
 
                     <div class="mt-5">

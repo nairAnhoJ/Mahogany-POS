@@ -266,7 +266,7 @@
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
                                                     <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="uil uil-minus-circle text-red-500 text-xl mr-2"></i></button>
-                                                    {{ $inventory->quantity }}
+                                                    {{ round($inventory->quantity, 2) }}
                                                     <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="uil uil-plus-circle text-blue-500 text-xl mx-2"></i></button>
                                                     {{ $inventory->unit }}
                                                 </td>

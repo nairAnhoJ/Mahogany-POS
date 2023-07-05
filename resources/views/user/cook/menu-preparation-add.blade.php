@@ -29,8 +29,8 @@
                             <input class="px-1 block w-full lg:w-2/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
                         </div>
                         <div class="mb-2">
-                            <label for="servings" class="block text-sm font-medium text-gray-900 lg:text-base">Servings<span class="text-red-500"> *</span></label>
-                            <input type="text" id="servings" name="servings" value="{{ old('price') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
+                            <label for="servings" class="block text-sm font-medium text-gray-900 lg:text-base">Servings<span class="text-red-500 text-sm italic"> *please base on ingredients</span></label>
+                            <input type="text" id="servings" name="servings" value="{{ old('servings') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
                         </div>
 
                         <div class="mt-7 mb-2 flex justify-between">

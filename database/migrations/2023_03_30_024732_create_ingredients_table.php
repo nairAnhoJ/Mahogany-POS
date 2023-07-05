@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('menu_id')->nullable();
             $table->bigInteger('inventory_id')->nullable();
-            $table->integer('quantity');
+            $table->decimal('quantity', 30,20);
+            $table->decimal('computed_quantity', 30,20);
             $table->string('unit');
             $table->timestamps();
         });

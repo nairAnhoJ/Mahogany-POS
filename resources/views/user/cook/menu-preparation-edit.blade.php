@@ -29,6 +29,10 @@
                             <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>
                             <input class="px-1 block w-full lg:w-2/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
                         </div>
+                        <div class="mb-2">
+                            <label for="servings" class="block text-sm font-medium text-gray-900 lg:text-base">Servings<span class="text-red-500 text-sm italic"> *please base on ingredients</span></label>
+                            <input type="text" id="servings" name="servings" value="{{ $item->servings }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
+                        </div>
 
                         <div class="mt-7 mb-2 flex justify-between">
                             <h2 class="font-bold text-2xl italic">Ingredients</h2>
@@ -79,7 +83,7 @@
                                                 </div>
                                             </div>
                                             <div class="w-2/5">
-                                                <input type="text" id="quantity'.$x.'" name="quantity'.$x.'" value="'.$ingredient->quantity.'" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                                                <input type="text" id="quantity'.$x.'" name="quantity'.$x.'" value="'.number_format($ingredient->quantity, 2, '.', '').'" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
                                             </div>
                                             <div class="w-1/5 flex">
                                                 <div id="unit'.$x.'" class="w-1/2 text-lg leading-9">'.$ingredient->unit.'</div>

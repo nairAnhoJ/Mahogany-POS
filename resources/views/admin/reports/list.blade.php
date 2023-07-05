@@ -70,7 +70,13 @@
                                                     Item Name
                                                 </th>
                                                 <th class="px-6 text-center">
+                                                    Quantity Before
+                                                </th>
+                                                <th class="px-6 text-center">
                                                     Quantity
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Quantity After
                                                 </th>
                                                 <th class="px-6 text-center">
                                                     Remarks
@@ -112,7 +118,13 @@
                                                         {{ $result->nn }}
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->quantity }}
+                                                        {{ round($result->quantity_before,2) }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ round($result->quantity,2) }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ round($result->quantity_after,2) }}
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->remarks }}

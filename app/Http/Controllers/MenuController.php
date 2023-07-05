@@ -79,6 +79,7 @@ class MenuController extends Controller
         $category_id = $request->category_id;
         $price = $request->price;
         $image = $request->image;
+        $servings = $request->servings;
         $Totalcounter = $request->counter;
 
         $slug = Str::slug($name, '-');
@@ -112,6 +113,7 @@ class MenuController extends Controller
         $item->price = $price;
         $item->quantity = 0;
         $item->current_quantity = 0;
+        $item->servings = $servings;
         if($image != null){
             $item->image = $imagePath;
         }
@@ -128,6 +130,7 @@ class MenuController extends Controller
                 $ingr->menu_id = $item->id;
                 $ingr->inventory_id = $request->$iname;
                 $ingr->quantity = $request->$qname;
+                $ingr->computed_quantity = $request->$qname / $servings;
                 $ingr->unit = $invUnit;
                 $ingr->save();
             }
@@ -158,6 +161,7 @@ class MenuController extends Controller
         $category_id = $request->category_id;
         $price = $request->price;
         $image = $request->image;
+        $servings = $request->servings;
         $Totalcounter = $request->counter;
         $menuID = (DB::table('menus')->where('slug', $oldSlug)->first())->id;
 
@@ -199,6 +203,7 @@ class MenuController extends Controller
                 $ingr->menu_id = $menuID;
                 $ingr->inventory_id = $request->$iname;
                 $ingr->quantity = $request->$qname;
+                $ingr->computed_quantity = $request->$qname / $servings;
                 $ingr->unit = $invUnit;
                 $ingr->save();
             }
@@ -211,6 +216,7 @@ class MenuController extends Controller
                     'category_id' => $category_id,
                     'price' => $price,
                     'image' => $imagePath,
+                    'servings' => $servings,
                     'slug' => $slug,
                 ]);
         }else{
@@ -219,6 +225,7 @@ class MenuController extends Controller
                     'name' => $name,
                     'category_id' => $category_id,
                     'price' => $price,
+                    'servings' => $servings,
                     'slug' => $slug,
                 ]);
         }
@@ -232,6 +239,8 @@ class MenuController extends Controller
 
         $inv = DB::table('inventories')->where('slug', $slug)->first();
         $menu = DB::table('menus')->where('slug', $slug)->first();
+
+        $nname = 'RW-'.$menu->name;
 
         if(!$inv){
             $cat = DB::table('categories')->where('slug', 'menu')->first();
@@ -248,7 +257,7 @@ class MenuController extends Controller
             }
 
             $ninv = new Inventory();
-            $ninv->name = $menu->name;
+            $ninv->name = $nname;
             $ninv->category_id = $catID;
             $ninv->quantity = $qty;
             $ninv->reorder_point = '0';
@@ -280,19 +289,27 @@ class MenuController extends Controller
         $id = $menu->id;
 
         $ings = DB::table('ingredients')
-            ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.unit')
+            ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.computed_quantity', 'ingredients.unit')
             ->join('inventories', 'ingredients.inventory_id', '=', 'inventories.id')
-            ->where('menu_id', $id)->get();
+            ->where('menu_id', $id)->orderBy('ingredients.id','asc')->get();
 
         $ingredients = '';
+        $x = 1;
 
         foreach($ings as $ing){
+            $nq = 'ingq'.$x;
             $ingredients .= '
-                <div class="px-4 text-xl font-semibold tracking-wide">
-                    <h1><span>'.$ing->quantity.'</span><span>'.$ing->unit.'</span><span style="margin-left: 32px;">'.$ing->name.'</span></h1>
+                <div class="px-4 text-xl font-semibold tracking-wide flex items-center">
+                    <input type="text" name="'.$nq.'" value="'.round($ing->computed_quantity, 2).'" class="quantity block w-52 h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                    <span style="margin-left: 10px;">'.$ing->unit.'</span>
+                    <span style="margin-left: 32px;">'.$ing->name.'</span>
                 </div>
             ';
+            $x++;
         }
+        // <div class="px-4 text-xl font-semibold tracking-wide">
+        //     <h1><span>'.$ing->quantity.'</span><span>'.$ing->unit.'</span><span style="margin-left: 32px;">'.$ing->name.'</span></h1>
+        // </div>
         
 
         $result = array(
@@ -312,19 +329,25 @@ class MenuController extends Controller
         $id = $menu->id;
 
         $ings = DB::table('ingredients')
-            ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.unit')
+            ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.computed_quantity', 'ingredients.unit')
             ->join('inventories', 'ingredients.inventory_id', '=', 'inventories.id')
-            ->where('menu_id', $id)->get();
+            ->where('menu_id', $id)->orderBy('ingredients.id','asc')->get();
 
         $ingredients = '';
+        $x = 1;
 
         foreach($ings as $ing){
-            $nqty = $ing->quantity * $qty;
+            $nq = 'ingq'.$x;
+            $nqty = round($ing->computed_quantity * $qty, 2);
+
             $ingredients .= '
-                <div class="px-4 text-xl font-semibold tracking-wide">
-                    <h1><span>'.$nqty.'</span><span>'.$ing->unit.'</span><span style="margin-left: 32px;">'.$ing->name.'</span></h1>
+                <div class="px-4 text-xl font-semibold tracking-wide flex items-center">
+                    <input type="text" name="'.$nq.'" value="'.$nqty.'" class="quantity block w-52 h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                    <span style="margin-left: 10px;">'.$ing->unit.'</span>
+                    <span style="margin-left: 32px;">'.$ing->name.'</span>
                 </div>
             ';
+            $x++;
         }
         
         $result = array(
@@ -345,32 +368,45 @@ class MenuController extends Controller
         $menu = DB::table('menus')->where('slug', $slug)->first();
         $menuID = $menu->id;
         $menuName = $menu->name;
-        $ings = DB::table('ingredients')->where('menu_id', $menuID)->get();
+        $ings = DB::table('ingredients')->where('menu_id', $menuID)->orderBy('id','asc')->get();
 
         if($ings->count() > 0){
+            $x = 1;
             foreach($ings as $ing){
-
+                $nq = 'ingq'.$x;
                 $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
-                $tqty = $ing->quantity * $quantity;
+                $tqty = $request->$nq;
                 $new_quantity = $old_quantity - $tqty;
 
                 if($new_quantity < 0){
                     return redirect()->route('menu.index')->withInput()->with('error', 'Insufficient Ingredients');
-                }else{
-                    DB::table('inventories')->where('id', $ing->inventory_id)->update([
-                        'quantity' => $new_quantity
-                    ]);
                 }
+
+                $x++;
+            }
+            $x = 1;
+            foreach($ings as $ing){
+                $nq = 'ingq'.$x;
+                $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
+                $tqty = $request->$nq;
+                // $tqty = $ing->quantity * $quantity;
+                $new_quantity = $old_quantity - $tqty;
+
+                DB::table('inventories')->where('id', $ing->inventory_id)->update([
+                    'quantity' => $new_quantity
+                ]);
 
                 $it = new InventoryTransaction();
                 $it->inv_id = $ing->inventory_id;
                 $it->type = 'OUTGOING';
-                $it->quantity_before = $old_quantity;
+                $it->quantity_before = round($old_quantity,2);
                 $it->quantity = $tqty;
                 $it->quantity_after = $new_quantity;
                 $it->remarks = $menuName;
                 $it->user_id = Auth::id();
                 $it->save();
+
+                $x++;
             }
         }
         
