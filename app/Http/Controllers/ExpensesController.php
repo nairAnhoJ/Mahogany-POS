@@ -8,17 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ExpensesController extends Controller
 {
     public function index(){
-        $inventories = DB::table('inventories')
-            ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
-            ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 1)
-            ->orderBy('name', 'asc')
-            ->paginate(100);
-        $invCount = DB::table('inventories')->where('is_expenses', 1)->get()->count();
+        $today = Carbon::today();
+        $inventories = DB::table('inventory_transactions')->whereDate('created_at', $today)->where('inv_id', 0)->paginate(100);
+
+        // $inventories = DB::table('inventories')
+        //     ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
+        //     ->join('categories', 'inventories.category_id', 'categories.id')
+        //     ->where('is_expenses', 1)
+        //     ->orderBy('name', 'asc')
+        //     ->paginate(100);
+        $invCount = DB::table('inventory_transactions')->whereDate('created_at', $today)->where('inv_id', 0)->get()->count();
+        // $invCount = DB::table('inventories')->where('is_expenses', 1)->get()->count();
         $page = 1;
         $search = "";
 
@@ -26,139 +31,122 @@ class ExpensesController extends Controller
     }
 
     public function paginate($page){
-        $inventories = DB::table('inventories')
-            ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
-            ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 1)
-            ->orderBy('name', 'asc')
-            ->paginate(100,'*','page',$page);
-        $invCount = DB::table('inventories')->where('is_expenses', 1)->get()->count();
+        $today = Carbon::today();
+        $inventories = DB::table('inventory_transactions')->whereDate('created_at', $today)->where('inv_id', 0)->paginate(100,'*','page',$page);
+
+        // $inventories = DB::table('inventories')
+        //     ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
+        //     ->join('categories', 'inventories.category_id', 'categories.id')
+        //     ->where('is_expenses', 1)
+        //     ->orderBy('name', 'asc')
+        //     ->paginate(100,'*','page',$page);
+
+        $invCount = DB::table('inventory_transactions')->whereDate('created_at', $today)->where('inv_id', 0)->get()->count();
+        // $invCount = DB::table('inventories')->where('is_expenses', 1)->get()->count();
+
         $search = "";
 
         return view('user.inventory.expenses.index', compact('inventories', 'invCount', 'page', 'search'));
     }
 
     public function search($page, $search){
-        $inventories = DB::table('inventories')
-            ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
-            ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 1)
-            ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
+        $today = Carbon::today();
+        $inventories = DB::table('inventory_transactions')
+            ->whereDate('created_at', $today)
+            ->whereRaw("CONCAT_WS(' ', remarks) LIKE '%{$search}%'")
+            ->where('inv_id', 0)
             ->paginate(100,'*','page',$page);
 
-        $invCount = DB::table('inventories')
-            ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
-            ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 1)
-            ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
+        $invCount = DB::table('inventory_transactions')
+            ->whereDate('created_at', $today)
+            ->whereRaw("CONCAT_WS(' ', remarks) LIKE '%{$search}%'")
+            ->where('inv_id', 0)
             ->count();
+
+        // $inventories = DB::table('inventories')
+        //     ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
+        //     ->join('categories', 'inventories.category_id', 'categories.id')
+        //     ->where('is_expenses', 1)
+        //     ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
+        //     ->orderBy('name', 'asc')
+        //     ->paginate(100,'*','page',$page);
+
+        // $invCount = DB::table('inventories')
+        //     ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
+        //     ->join('categories', 'inventories.category_id', 'categories.id')
+        //     ->where('is_expenses', 1)
+        //     ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
+        //     ->orderBy('name', 'asc')
+        //     ->count();
 
         return view('user.inventory.expenses.index', compact('inventories', 'invCount', 'page', 'search'));
     }
 
     public function add(){
-        $categories = DB::table('categories')->orderBy('name', 'asc')->get();
-
-        return view('user.inventory.expenses.add', compact('categories'));
+        return view('user.inventory.expenses.add');
     }
 
     public function store(Request $request){
-        $item_code = $request->item_code;
+        // $item_code = $request->item_code;
         $name = $request->name;
-        $category_id = $request->category_id;
+        // $category_id = $request->category_id;
         // $quantity = $request->quantity;
-        $reorder_point = $request->reorder_point;
-        $unit = $request->unit;
+        // $reorder_point = $request->reorder_point;
+        // $unit = $request->unit;
+        $quantity = $request->quantity;
         $price = $request->price;
-        $image = $request->image;
-
-        $slug = Str::slug($name, '-');
-        $check_slug = DB::table('inventories')->where('slug', $slug)->get();
-        $x = 1;
-        $nslug = $slug;
-        while(count($check_slug) > 0){
-            $nslug = $slug.'-'.$x;
-            $check_slug = DB::table('inventories')->where('slug', $nslug)->get();
-            $x++;
-        }
-        $slug = $nslug;
-
-        $imagePath = null;
-        if($image != null){
-            $imagePath = $request->file('image')->storeAs('images/items/'.$slug. '.' . $request->file('image')->getClientOriginalExtension(), 'public');
-        }
+        // $image = $request->image;
 
         $request->validate([
             'name' => 'required',
-            'reorder_point' => 'required'
+            'quantity' => 'required',
+            'price' => 'required'
         ]);
 
-        $item = new Inventory();
-        $item->item_code = $item_code;
-        $item->name = $name;
-        $item->category_id = $category_id;
-        $item->quantity = 0;
-        $item->reorder_point = $reorder_point;
-        $item->unit = $unit;
-        $item->price = $price;
-        if($image != null){
-            $item->image = $imagePath;
-        }
-        $item->slug = $slug;
-        $item->is_expenses = 1;
+        $item = new InventoryTransaction();
+        $item->inv_id = 0;
+        $item->type = 'OUTGOING';
+        $item->quantity_before = 0;
+        $item->quantity = $quantity;
+        $item->quantity_after = 0;
+        $item->amount = $price;
+        $item->remarks = $name;
+        $item->user_id = Auth::user()->id;
         $item->save();
 
         return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Added');
     }
 
-    public function edit($slug){
-        $item = DB::table('inventories')->where('slug', $slug)->first();
-        $categories = DB::table('categories')->orderBy('name', 'asc')->get();
+    public function edit($id){
+        $item = DB::table('inventory_transactions')->where('id', $id)->first();
 
-        return view('user.inventory.expenses.edit', compact('item', 'categories'));
+        return view('user.inventory.expenses.edit', compact('item'));
     }
 
     public function update(Request $request){
-        $oldSlug = $request->slug;
-        $item_code = $request->item_code;
+        $id = $request->id;
         $name = $request->name;
-        $category_id = $request->category_id;
-        $reorder_point = $request->reorder_point;
-        $unit = $request->unit;
-
-        $slug = Str::slug($name, '-');
-        $check_slug = DB::table('inventories')->where('slug', $slug)->get();
-        $x = 1;
-        $nslug = $slug;
-        while(count($check_slug) > 0){
-            $nslug = $slug.'-'.$x;
-            $check_slug = DB::table('inventories')->where('slug', $nslug)->get();
-            $x++;
-        }
-        $slug = $nslug;
+        $quantity = $request->quantity;
+        $price = $request->price;
 
         $request->validate([
             'name' => 'required',
-            'reorder_point' => 'required'
+            'quantity' => 'required',
+            'price' => 'required',
         ]);
 
-        DB::table('inventories')->where('slug', $oldSlug)
+        DB::table('inventory_transactions')->where('id', $id)
             ->update([
-                'item_code' => $item_code,
-                'name' => $name,
-                'category_id' => $category_id,
-                'reorder_point' => $reorder_point,
-                'unit' => $unit,
-                'slug' => $slug,
+                'remarks' => $name,
+                'quantity' => $quantity,
+                'amount' => $price,
             ]);
 
         return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Updated');
     }
 
-    public function delete($slug){
-        DB::table('inventories')->where('slug', $slug)->delete();
+    public function delete($id){
+        DB::table('inventory_transactions')->where('id', $id)->delete();
 
         return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Deleted');
     }

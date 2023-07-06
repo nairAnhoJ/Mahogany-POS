@@ -120,7 +120,7 @@
                                                     {{ $inventory->cat_name }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    {{ $inventory->quantity.' '.$inventory->unit }}
+                                                    {{ round($inventory->quantity, 2).' '.$inventory->unit }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ $inventory->reorder_point.' '.$inventory->unit }}

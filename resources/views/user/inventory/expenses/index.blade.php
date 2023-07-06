@@ -17,7 +17,7 @@
         }
     </style>
 
-    @section('page_title', 'EXPENSES')
+    @section('page_title', "TODAY'S EXPENSES")
 
     {{-- LOADING --}}
         <div wire:loading id="loadingScreen" class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[60] overflow-hidden bg-gray-900 opacity-75 opa flex flex-col items-center justify-center">
@@ -189,10 +189,10 @@
                                                 Item Name
                                             </th>
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                Category
+                                                Quantity
                                             </th>
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                In
+                                                Price
                                             </th>
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Action
@@ -203,19 +203,16 @@
                                         @foreach ($inventories as $inventory)
                                             <tr class="bg-white border-b">
                                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $inventory->name }}
+                                                    {{ $inventory->remarks }}
                                                 </th>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    {{ $inventory->cat_name }}
-                                                </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap flex justify-center items-center">
-                                                    {{-- <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="uil uil-minus-circle text-red-500 text-xl mr-2"></i></button> --}}
-                                                    {{-- {{ $inventory->quantity }} --}}
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="uil uil-plus-circle text-blue-500 text-xl mx-2"></i></button>
-                                                    {{-- {{ $inventory->unit }} --}}
+                                                    {{ $inventory->quantity }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    <a href="{{ url('/expenses/edit/'.$inventory->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $inventory->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                    ₱ {{ number_format($inventory->amount, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    <a href="{{ url('/expenses/edit/'.$inventory->id) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $inventory->id }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -235,18 +232,12 @@
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
+                                                        <span>'.$inventory->remarks.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
@@ -254,10 +245,16 @@
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Price</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                ₱ '.number_format($inventory->amount, 2, '.', ',').'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                <a href="'.url('/inventory/edit/'.$inventory->id).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->id.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -267,29 +264,29 @@
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
+                                                        <span>'.$inventory->remarks.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
                                                         <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
                                                                 '.$inventory->quantity.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Price</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                ₱ '.number_format($inventory->amount, 2, '.', ',').'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
                                                             <div>Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                <a href="'.url('/inventory/edit/'.$inventory->id).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->id.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -299,22 +296,22 @@
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
+                                                        <span>'.$inventory->remarks.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
                                                         <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
                                                                 '.$inventory->quantity.'
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Price</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                ₱ '.number_format($inventory->amount, 2, '.', ',').'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">

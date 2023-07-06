@@ -8,35 +8,35 @@
                 <div class="">
                     <form action="{{ route('expenses.update') }}" method="POST" enctype="multipart/form-data" class="grid" class="">
                         @csrf
-                        <input type="hidden" name="slug" value="{{ $item->slug }}">
-                        <div class="mb-2">
+                        <input type="hidden" name="id" value="{{ $item->id }}">
+                        {{-- <div class="mb-2">
                             <label for="item_code" class="block text-sm font-medium text-gray-900 lg:text-base">Item Code</label>
                             <input type="text" id="item_code" name="item_code" value="{{ $item->item_code }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
-                        </div>
+                        </div> --}}
                         <div class="mb-2">
                             <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Item Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="name" name="name" value="{{ $item->name }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
+                            <input type="text" id="name" name="name" value="{{ $item->remarks }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
                         </div>
-                        <div class="mb-2">
+                        {{-- <div class="mb-2">
                             <label for="category_id" class="block text-sm font-medium text-gray-900 lg:text-base">Category <span class="text-red-500">*</span></label>
                             <select id="category_id" name="category_id" value="{{ $item->category_id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
                                 @foreach ($categories as $category)
                                     <option {{ ($item->category_id == $category->id) ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        {{-- <div class="mb-2">
-                            <label for="quantity" class="block text-sm font-medium text-gray-900 lg:text-base">Quantity <span class="text-red-500">*</span></label>
-                            <input type="text" id="quantity" name="quantity" value="{{ $item->quantity }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
                         </div> --}}
 
                         <div class="mb-2">
+                            <label for="quantity" class="block text-sm font-medium text-gray-900 lg:text-base">Quantity <span class="text-red-500">*</span></label>
+                            <input type="text" id="quantity" name="quantity" value="{{ $item->quantity }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
+                        </div>
+
+                        {{-- <div class="mb-2">
                             <label for="reorder_point" class="block text-sm font-medium text-gray-900 lg:text-base">Reorder Point<span class="text-red-500">*</span></label>
                             <input type="text" id="reorder_point" name="reorder_point" value="{{ $item->reorder_point }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
-                        </div>
+                        </div> --}}
     
-                        <div class="mb-5">
+                        {{-- <div class="mb-5">
                             <label for="unit" class="block text-sm font-medium text-gray-900 lg:text-base">Unit <span class="text-red-500">*</span></label>
                             <select id="unit" name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
                                 <option {{ ($item->unit == 'tsp') ? 'selected' : '' }} value="tsp">teaspoon (tsp)</option>
@@ -53,12 +53,12 @@
                                 <option {{ ($item->unit == 'ea') ? 'selected' : '' }} value="ea">each (ea)</option>
                                 <option {{ ($item->unit == 'doz') ? 'selected' : '' }} value="doz">dozen (doz)</option>
                             </select>
-                        </div>
-
-                        {{-- <div class="mb-2">
-                            <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price</label>
-                            <input type="text" id="price" name="price" value="{{ $item->price }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
                         </div> --}}
+
+                        <div class="mb-2">
+                            <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price</label>
+                            <input type="text" id="price" name="price" value="{{ $item->amount }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
+                        </div>
                         
                         {{-- <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>

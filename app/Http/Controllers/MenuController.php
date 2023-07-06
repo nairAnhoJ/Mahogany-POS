@@ -240,7 +240,7 @@ class MenuController extends Controller
         $inv = DB::table('inventories')->where('slug', $slug)->first();
         $menu = DB::table('menus')->where('slug', $slug)->first();
 
-        $nname = 'RW-'.$menu->name;
+        $nname = $menu->name;
 
         if(!$inv){
             $cat = DB::table('categories')->where('slug', 'menu')->first();
@@ -287,6 +287,7 @@ class MenuController extends Controller
         $menu = DB::table('menus')->where('slug', $slug)->first();
         $name = $menu->name;
         $id = $menu->id;
+        $servings = $menu->servings;
 
         $ings = DB::table('ingredients')
             ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.computed_quantity', 'ingredients.unit')
@@ -297,11 +298,18 @@ class MenuController extends Controller
         $x = 1;
 
         foreach($ings as $ing){
+            $availq = DB::table('inventories')->where('id', $ing->inventory_id)->first();
+
             $nq = 'ingq'.$x;
             $ingredients .= '
                 <div class="px-4 text-xl font-semibold tracking-wide flex items-center">
-                    <input type="text" name="'.$nq.'" value="'.round($ing->computed_quantity, 2).'" class="quantity block w-52 h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                    <input type="text" name="'.$nq.'" value="'.round($ing->computed_quantity * $servings, 2).'" class="quantity block w-52 h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
                     <span style="margin-left: 10px;">'.$ing->unit.'</span>
+
+                    <span style="margin-left: 30px;">/</span>
+
+                    <span style="margin-left: 10px; width: 100px; text-align: right;">'.round($availq->quantity,2).'</span>
+                    <span style="margin-left: 10px;">'.$availq->unit.'</span>
                     <span style="margin-left: 32px;">'.$ing->name.'</span>
                 </div>
             ';
@@ -315,6 +323,7 @@ class MenuController extends Controller
         $result = array(
             'name' => $name,
             'ingredients' => $ingredients,
+            'servings' => $servings,
         );
         
         echo json_encode($result);
@@ -337,6 +346,7 @@ class MenuController extends Controller
         $x = 1;
 
         foreach($ings as $ing){
+            $availq = DB::table('inventories')->where('id', $ing->inventory_id)->first();
             $nq = 'ingq'.$x;
             $nqty = round($ing->computed_quantity * $qty, 2);
 
@@ -344,6 +354,11 @@ class MenuController extends Controller
                 <div class="px-4 text-xl font-semibold tracking-wide flex items-center">
                     <input type="text" name="'.$nq.'" value="'.$nqty.'" class="quantity block w-52 h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
                     <span style="margin-left: 10px;">'.$ing->unit.'</span>
+
+                    <span style="margin-left: 30px;">/</span>
+
+                    <span style="margin-left: 10px; width: 100px; text-align: right;">'.round($availq->quantity,2).'</span>
+                    <span style="margin-left: 10px;">'.$availq->unit.'</span>
                     <span style="margin-left: 32px;">'.$ing->name.'</span>
                 </div>
             ';

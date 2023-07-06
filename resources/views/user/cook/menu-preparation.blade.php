@@ -243,7 +243,7 @@
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         <a type="button" data-modal-target="moveMenuModal" data-modal-toggle="moveMenuModal" data-slug="{{ $menu->slug }}" data-quantity="{{ $menu->quantity }}" class="moveButton text-teal-600 hover:underline font-semibold text-sm">Move</a> | 
-                                                        <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="editButton text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                        <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="editButton text-blue-600 hover:underline font-semibold text-sm">Setup</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -290,7 +290,7 @@
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Action</div>
                                                                 <div class="col-span-2">
-                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
                                                                     <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                                 </div>
                                                             </div>
@@ -328,7 +328,7 @@
                                                             <div class="grid grid-cols-3">
                                                                 <div>Action</div>
                                                                 <div class="col-span-2">
-                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
                                                                     <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                                 </div>
                                                             </div>
@@ -366,7 +366,7 @@
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Action</div>
                                                                 <div class="col-span-2">
-                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
+                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
                                                                     <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
                                                                 </div>
                                                             </div>
@@ -620,7 +620,7 @@
                         success:function(result){
                             $('#menuName').html(result.name);
                             $('#ingredients').html(result.ingredients);
-                            $('#servings').val(1);
+                            $('#servings').val(result.servings);
                             $('#slug').val(slug);
                             $('#addServingButton').click();
                             $('#addDiv').html(`

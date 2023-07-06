@@ -149,9 +149,9 @@ Route::middleware('role:1,4,2')->group(function(){
     Route::post('/expenses/store', [ExpensesController::class, 'store'])->name('expenses.store');
     Route::post('/expenses/add-qty', [ExpensesController::class, 'addqty'])->name('expenses.addqty');
     Route::post('/expenses/minus-qty', [ExpensesController::class, 'minusqty'])->name('expenses.minusqty');
-    Route::get('/expenses/edit/{slug}', [ExpensesController::class, 'edit']);
+    Route::get('/expenses/edit/{id}', [ExpensesController::class, 'edit']);
     Route::post('/expenses/update', [ExpensesController::class, 'update'])->name('expenses.update');
-    Route::get('/expenses/delete/{slug}', [ExpensesController::class, 'delete'])->name('expenses.delete');
+    Route::get('/expenses/delete/{id}', [ExpensesController::class, 'delete'])->name('expenses.delete');
     Route::get('/expenses/{page}', [ExpensesController::class, 'paginate']);
     Route::get('/expenses/{page}/{search}', [ExpensesController::class, 'search']);
 

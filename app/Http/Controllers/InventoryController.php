@@ -86,7 +86,7 @@ class InventoryController extends Controller
 
     public function store(Request $request){
         $item_code = $request->item_code;
-        $name = $request->name;
+        $name = 'RW-'.$request->name;
         $category_id = $request->category_id;
         // $quantity = $request->quantity;
         $reorder_point = $request->reorder_point;
