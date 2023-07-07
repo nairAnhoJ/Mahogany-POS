@@ -124,7 +124,11 @@
                                                         {{ date('F j, Y h:i A', strtotime($result->date)) }}
                                                     </th>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->nn }}
+                                                        @if ($result->inv_id != 0)
+                                                            {{ $result->nn }}
+                                                        @else
+                                                            {{ $result->remarks }}
+                                                        @endif
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         ₱ {{ $result->amount }}.00

@@ -54,11 +54,10 @@
                 <table class="w-full mt-4">
                     <thead>
                         <tr class="border-b">
+                            @if ($category == 'sales')
                             <th class="px-6 text-center">
                                 Date
                             </th>
-                            @if ($category == 'sales')
-
                                 <th class="px-6 text-center">
                                     Transaction Number
                                 </th>
@@ -70,7 +69,9 @@
                                 </th>
 
                             @elseif($category == 'expenses')
-
+                            <th class="px-6 text-center">
+                                Date
+                            </th>
                                 <th class="px-6 text-center">
                                     Item Name
                                 </th>
@@ -82,17 +83,36 @@
                                 </th>
 
                             @elseif($category == 'inventory')
-
-                                <th class="px-6 text-center">
-                                    Item Name
-                                </th>
-                                <th class="px-6 text-center">
-                                    Quantity
-                                </th>
-                                <th class="px-6 text-center">
-                                    Remarks
-                                </th>
-
+                                @if ($report == 'logs')
+                                    <th class="px-6 text-center">
+                                        Date
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Item Name
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Quantity Before
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Quantity
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Quantity After
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Remarks
+                                    </th>
+                                @else
+                                    <th class="px-6 text-left">
+                                        Item Name
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Category
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Quantity
+                                    </th>
+                                @endif
                             @endif
                         </tr>
                         {{-- <tr class="border-b">
@@ -125,12 +145,10 @@
                     <tbody>
                         @foreach ($results as $result)
                             <tr class="border-b">
-                                <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                    {{ date('Y-m-d', strtotime($result->date)) }}
-                                </th>
-
-
                                 @if ($category == 'sales')
+                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                        {{ date('Y-m-d', strtotime($result->date)) }}
+                                    </th>
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                         {{ $result->nn }}
                                     </td>
@@ -141,8 +159,15 @@
                                         {{ $result->mode_of_payment }}
                                     </td>
                                 @elseif($category == 'expenses')
+                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                        {{ date('Y-m-d', strtotime($result->date)) }}
+                                    </th>
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->nn }}
+                                        @if ($result->inv_id != 0)
+                                            {{ $result->nn }}
+                                        @else
+                                            {{ $result->remarks }}
+                                        @endif
                                     </td>
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                         ₱ {{ $result->amount }}.00
@@ -151,15 +176,36 @@
                                         {{ $result->quantity }}
                                     </td>
                                 @elseif($category == 'inventory')
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->nn }}
-                                    </td>
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->quantity }}
-                                    </td>
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->remarks }}
-                                    </td>
+                                    @if ($report == 'logs')
+                                        <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                            {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                        </th>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $result->nn }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ round($result->quantity_before,2) }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ round($result->quantity,2) }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ round($result->quantity_after,2) }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $result->remarks }}
+                                        </td>
+                                    @else
+                                        <td class="px-6 py-1 text-left whitespace-nowrap">
+                                            {{ $result->nn }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $result->cn }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ round($result->quantity,2) }}
+                                        </td>
+                                    @endif
                                 @endif
                             </tr>
                             

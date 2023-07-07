@@ -105,7 +105,7 @@ class ExpensesController extends Controller
 
         $item = new InventoryTransaction();
         $item->inv_id = 0;
-        $item->type = 'OUTGOING';
+        $item->type = 'INCOMING';
         $item->quantity_before = 0;
         $item->quantity = $quantity;
         $item->quantity_after = 0;
