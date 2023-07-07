@@ -75,6 +75,7 @@
                     if(category == 'inventory'){
                         $('#report').html(`
                             <option value="logs">Logs</option>
+                            <option value="stock">Stocks</option>
                         `);
                     }else{
                         $('#report').html(`

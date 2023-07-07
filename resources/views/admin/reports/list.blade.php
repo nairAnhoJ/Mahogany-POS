@@ -21,14 +21,18 @@
                     <div class="mt-4 flex justify-between">
                         @php
                             if($category == 'sales'){
-                                $ncat = 'Sales Transaction';
+                                $ncat = 'Sales Transaction Logs';
                             }else if($category == 'expenses'){
-                                $ncat = 'Expenses Transaction';
+                                $ncat = 'Expenses Transaction Logs';
                             }else if($category == 'inventory'){
-                                $ncat = 'Inventory Outgoing';
+                                if ($report == 'logs') {
+                                    $ncat = 'Inventory Outgoing Logs';
+                                }else{
+                                    $ncat = 'Inventory Stocks Report';
+                                }
                             }
                         @endphp
-                        <h1 class="text-3xl">{{ $ncat }} Logs</h1>
+                        <h1 class="text-xl lg:text-3xl">{{ $ncat }}</h1>
                         <h1 class="flex items-center">{{ date('M j, Y', strtotime($startDate)).' - '.date('M j, Y', strtotime('-1 day', strtotime($endDate))) }}</h1>
                     </div>
                     {{-- TABLE --}}
@@ -37,11 +41,10 @@
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr class="border-b">
-                                            <th class="px-6 text-center">
-                                                Date
-                                            </th>
                                             @if ($category == 'sales')
-
+                                                <th class="px-6 text-center">
+                                                    Date
+                                                </th>
                                                 <th class="px-6 text-center">
                                                     Transaction Number
                                                 </th>
@@ -53,7 +56,9 @@
                                                 </th>
 
                                             @elseif($category == 'expenses')
-
+                                                <th class="px-6 text-center">
+                                                    Date
+                                                </th>
                                                 <th class="px-6 text-center">
                                                     Item Name
                                                 </th>
@@ -65,35 +70,46 @@
                                                 </th>
 
                                             @elseif($category == 'inventory')
-
-                                                <th class="px-6 text-center">
-                                                    Item Name
-                                                </th>
-                                                <th class="px-6 text-center">
-                                                    Quantity Before
-                                                </th>
-                                                <th class="px-6 text-center">
-                                                    Quantity
-                                                </th>
-                                                <th class="px-6 text-center">
-                                                    Quantity After
-                                                </th>
-                                                <th class="px-6 text-center">
-                                                    Remarks
-                                                </th>
-
+                                                @if ($report == 'logs')
+                                                    <th class="px-6 text-center">
+                                                        Date
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Item Name
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Quantity Before
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Quantity
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Quantity After
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Remarks
+                                                    </th>
+                                                @else
+                                                    <th class="px-6 text-left">
+                                                        Item Name
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Category
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Quantity
+                                                    </th>
+                                                @endif
                                             @endif
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($results as $result)
                                             <tr class="border-b">
-                                                <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ date('Y-m-d', strtotime($result->date)) }}
-                                                </th>
-
-
                                                 @if ($category == 'sales')
+                                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                                        {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                                    </th>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->nn }}
                                                     </td>
@@ -104,6 +120,9 @@
                                                         {{ $result->mode_of_payment }}
                                                     </td>
                                                 @elseif($category == 'expenses')
+                                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                                        {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                                    </th>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->nn }}
                                                     </td>
@@ -114,21 +133,36 @@
                                                         {{ $result->quantity }}
                                                     </td>
                                                 @elseif($category == 'inventory')
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->nn }}
-                                                    </td>
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ round($result->quantity_before,2) }}
-                                                    </td>
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ round($result->quantity,2) }}
-                                                    </td>
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ round($result->quantity_after,2) }}
-                                                    </td>
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->remarks }}
-                                                    </td>
+                                                    @if ($report == 'logs')
+                                                        <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                                            {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                                        </th>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->nn }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity_before,2) }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity,2) }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity_after,2) }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->remarks }}
+                                                        </td>
+                                                    @else
+                                                        <td class="px-6 py-1 text-left whitespace-nowrap">
+                                                            {{ $result->nn }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->cn }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity,2) }}
+                                                        </td>
+                                                    @endif
                                                 @endif
                                             </tr>
                                         @endforeach
@@ -145,13 +179,6 @@
                                     $x = 1;
                                     foreach ($results as $result) {
                                         if($category == 'sales'){
-                                            $mqt = 'Mode of Payment';
-                                            $mq = $result->mode_of_payment;
-                                        }else{
-                                            $mqt = 'Quantity';
-                                            $mq = $result->quantity;
-                                        }
-                                        if($x == 1){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
@@ -170,60 +197,29 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Amount</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                ₱ '.$result->amount.'.00
+                                                                ₱ '.round($result->amount, 2).'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">'.$mqt.'</div>
+                                                            <div class="text-xs leading-5">Mode of Payment</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$mq.'
+                                                                '.$result->mode_of_payment.'
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ';
-                                        }else if($x == $results->count()){
+                                        }else if($category == 'expenses'){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$result->nn.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
-                                                        <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Date</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.date('Y-m-d', strtotime($result->date)).'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Amount</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                ₱ '.$result->amount.'.00
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">'.$mqt.'</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$mq.'
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }else{
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
                                                         <span>'.$result->nn.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3 content-center">
+                                                        <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Date</div>
                                                             <div class="col-span-2 font-semibold text-sm">
                                                                 '.date('Y-m-d', strtotime($result->date)).'
@@ -232,20 +228,90 @@
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Amount</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                ₱ '.$result->amount.'.00
+                                                                ₱ '.round($result->amount, 2).'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">'.$mqt.'</div>
+                                                            <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
-                                                                '.$mq.'
+                                                                '.$result->quantity.'
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ';
+                                        }else if($category == 'inventory'){
+                                            if($report == 'logs'){
+                                                echo '
+                                                    <h2 id="accordion-collapse-heading-'.$x.'">
+                                                        <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                            <span>'.$result->nn.'</span>
+                                                            <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
+                                                        <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Date</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.date('F j, Y h:i A', strtotime($result->date)).'
+                                                                </div>
+                                                            </div>
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Quantity Before</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.round($result->quantity_before, 2).'
+                                                                </div>
+                                                            </div>
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Quantity</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.round($result->quantity, 2).'
+                                                                </div>
+                                                            </div>
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Quantity After</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.round($result->quantity_after, 2).'
+                                                                </div>
+                                                            </div>
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Remarks</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.$result->remarks.'
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ';
+                                            }else{
+                                                echo '
+                                                    <h2 id="accordion-collapse-heading-'.$x.'">
+                                                        <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                            <span>'.$result->nn.'</span>
+                                                            <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
+                                                        <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Category</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.$result->cn.'
+                                                                </div>
+                                                            </div>
+                                                            <div class="grid grid-cols-3">
+                                                                <div class="text-xs leading-5">Quantity</div>
+                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                    '.round($result->quantity, 2).'
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ';
+                                            }
                                         }
-                                        $x++;
+                                    $x++;
                                     }
                                 @endphp
                             </div>
