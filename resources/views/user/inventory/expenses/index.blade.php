@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <style>
         #inventoryMobile{

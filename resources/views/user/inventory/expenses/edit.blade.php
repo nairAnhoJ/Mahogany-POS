@@ -28,7 +28,7 @@
 
                         <div class="mb-2">
                             <label for="quantity" class="block text-sm font-medium text-gray-900 lg:text-base">Quantity <span class="text-red-500">*</span></label>
-                            <input type="text" id="quantity" name="quantity" value="{{ $item->quantity }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
+                            <input type="text" id="quantity" name="quantity" value="{{ $item->quantity }}" class="inputNumber block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
                         </div>
 
                         {{-- <div class="mb-2">
@@ -57,7 +57,7 @@
 
                         <div class="mb-2">
                             <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price</label>
-                            <input type="text" id="price" name="price" value="{{ $item->amount }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
+                            <input type="text" id="price" name="price" value="{{ $item->amount }}" class="inputNumber block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
                         </div>
                         
                         {{-- <div class="mb-3">
@@ -77,13 +77,17 @@
 
      <script>
         $(document).ready(function() {
-            $('#price').on('input', function() {
-                var val = $(this).val().replace(/[^0-9]/g, '');
-                $(this).val(val);
-            });
-            $('#quantity').on('input', function() {
-                var val = $(this).val().replace(/[^0-9]/g, '');
-                $(this).val(val);
+            $('.inputNumber').on('keypress keyup', function(event){
+                var regex = /^[0-9.]+$/;
+                var value = $(this).val() + String.fromCharCode(event.keyCode);
+                if (!regex.test(value)) {
+                event.preventDefault();
+                return false;
+                }
+                if ((event.keyCode == 46) && ($(this).val().indexOf('.') >= 0)) {
+                event.preventDefault();
+                return false;
+                }
             });
             
             $('#navButton').click(function(){

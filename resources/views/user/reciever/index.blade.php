@@ -90,7 +90,7 @@
                             <div class="mb-6">
                                 <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
                                 <div class="flex items-center">
-                                    <input type="text" id="quantity" name="quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                    <input type="text" id="quantity" name="quantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
                                     <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
                                 <div class="flex items-center">
                                     <span class="px-3 text-base font-bold text-gray-600">₱</span>
-                                    <input type="text" id="price" name="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                    <input type="text" id="price" name="price" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-6">
@@ -146,7 +146,7 @@
                             <div class="mb-6">
                                 <label for="minQuantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
                                 <div class="flex items-center">
-                                    <input type="text" id="minQuantity" name="minQuantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                    <input type="text" id="minQuantity" name="minQuantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
                                     <span id="minUnit" class="px-3 text-base font-bold text-gray-600"></span>
                                 </div>
                             </div>
@@ -319,70 +319,6 @@
                                                     </div>
                                                 </div>
                                             ';
-                                        }else if($x == $inventories->count()){
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
-                                                        <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->quantity.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div>Action</div>
-                                                            <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }else{
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->quantity.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Action</div>
-                                                            <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
                                         }
                                         $x++;
                                     }
@@ -498,24 +434,7 @@
             //     }
             // });
 
-            $('#quantity').on('keypress keyup', function(event){
-                var regex = /^[0-9.]+$/;
-                var value = $(this).val() + String.fromCharCode(event.keyCode);
-                if (!regex.test(value)) {
-                event.preventDefault();
-                return false;
-                }
-            });
-            $('#minQuantity').on('keypress keyup', function(event){
-                var regex = /^[0-9.]+$/;
-                var value = $(this).val() + String.fromCharCode(event.keyCode);
-                if (!regex.test(value)) {
-                event.preventDefault();
-                return false;
-                }
-            });
-
-            $('#price').on('keypress keyup', function(event){
+            $('.inputNumber').on('keypress keyup', function(event){
                 var regex = /^[0-9.]+$/;
                 var value = $(this).val() + String.fromCharCode(event.keyCode);
                 if (!regex.test(value)) {
