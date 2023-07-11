@@ -8,6 +8,11 @@
                     <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" id="counter" name="counter" value="1">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="combo" id="combo" value="1" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span class="ml-3 text-sm font-medium text-gray-900">Combo Meal</span>
+                        </label>
                         <div class="mb-2">
                             <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Menu name<span class="text-red-500"> *</span></label>
                             <input type="text" id="name" name="name" value="{{ old('name') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
@@ -22,15 +27,15 @@
                         </div>
                         <div class="mb-2">
                             <label for="price" class="block text-sm font-medium text-gray-900 lg:text-base">Price<span class="text-red-500"> *</span></label>
-                            <input type="text" id="price" name="price" value="{{ old('price') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
+                            <input type="text" id="price" name="price" value="{{ old('price') }}" class="inputNumber block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
                         </div>
                         <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>
+                            <label class="block text-sm font-medium text-gray-900 lg:text-base" for="">Image</label>
                             <input class="px-1 block w-full lg:w-2/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
                         </div>
                         <div class="mb-2">
                             <label for="servings" class="block text-sm font-medium text-gray-900 lg:text-base">Servings<span class="text-red-500 text-sm italic"> *please base on ingredients</span></label>
-                            <input type="text" id="servings" name="servings" value="{{ old('servings') }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
+                            <input type="text" id="servings" name="servings" value="{{ old('servings') }}" class="inputNumber block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
                         </div>
 
                         <div class="mt-7 mb-2 flex justify-between">
@@ -65,9 +70,9 @@
                                                 <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
                                             </div>
                                             <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                                <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                                <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
                                                 @foreach ($items as $item)
-                                                    <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
+                                                    <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-is_menu="{{ $item->is_menu }}" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ ($item->is_menu == 1) ? 'MENU-'.$item->name : $item->name }}</li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -75,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="w-2/5">
-                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="inputNumber block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
                                 </div>
                                 <div class="w-1/5 flex">
                                     <div id="unit1" class="w-1/2 text-lg leading-9"></div>
@@ -96,6 +101,19 @@
 
     <script>
         $(document).ready(function() {
+
+            jQuery(document).on( "keypress keyup", ".inputNumber", function(event){
+                var regex = /^[0-9.]+$/;
+                var value = $(this).val() + String.fromCharCode(event.keyCode);
+                if (!regex.test(value)) {
+                    event.preventDefault();
+                    return false;
+                }
+                if ((event.keyCode == 46) && ($(this).val().indexOf('.') >= 0)) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
 
             var counter = 2;
 
@@ -125,10 +143,17 @@
                 var id = $(this).data('id');
                 var name = $(this).data('name');
                 var unit = $(this).data('unit');
+                var is_menu = $(this).data('is_menu');
                 var unitid = 'unit' + $(this).data('idnum');
                 var qtyid = 'quantity' + $(this).data('idnum');
-                $(this).closest('.wrapper').find('input').val(id);
-                $(this).closest('.wrapper').find('.select-btn span').html(name);
+
+                if(id != ""){
+                    $(this).closest('.wrapper').find('input').val(is_menu+','+id);
+                    $(this).closest('.wrapper').find('.select-btn span').html(name);
+                }else{
+                    $(this).closest('.wrapper').find('input').val('');
+                    $(this).closest('.wrapper').find('.select-btn span').html('');
+                }
                 $('.content').addClass('hidden');
                 $('.selectSearch').val('');
                 var value = $(".selectSearch").val().toLowerCase();
@@ -151,45 +176,85 @@
             });
 
             $('#addButton').click(function(){
-                $('#counter').val(counter);
-                $('#ingredientsDiv').append(`
-                    <div id="ing${counter}" class="mb-5 flex flex-row gap-x-3">
-                        <div class="w-2/5">
-                            <div class="wrapper w-full relative">
-                                <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
-                                    <span></span>
-                                    <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
-                                </div>
-                                <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
-                                    <div class="search relative">
-                                        <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
-                                        <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
-                                    </div>
-                                    <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                        <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
-                                        @foreach ($items as $item)
-                                            <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="${counter}" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                <input type="hidden" name="item${counter}" value="">
-                            </div>
-                        </div>
-                        <div class="w-2/5">
-                            <input type="text" id="quantity${counter}" name="quantity${counter}" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center">
-                        </div>
-                        <div class="w-1/5 flex">
-                            <div id="unit${counter}" class="w-1/2 text-lg leading-9"></div>
-                            <button type="button" data-thisid="ing${counter}" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
-                        </div>
-                    </div>
-                `);
+                if($('#combo').is(":checked")){
+                    var combo = true;
+                }else{
+                    var combo = false;
+                }
+                _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('menu.addIng') }}",
+                    method:"POST",
+                    data:{
+                        combo: combo,
+                        counter : counter,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#ingredientsDiv').append(result);
+                        $('#counter').val(counter);
+                    }
+                })
+                // $('#ingredientsDiv').append(`
+                //     <div id="ing${counter}" class="mb-5 flex flex-row gap-x-3">
+                //         <div class="w-2/5">
+                //             <div class="wrapper w-full relative">
+                //                 <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                //                     <span></span>
+                //                     <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                //                 </div>
+                //                 <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                //                     <div class="search relative">
+                //                         <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                //                         <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                //                     </div>
+                //                     <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                //                         <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                //                         @foreach ($items as $item)
+                //                             <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-is_menu="{{ $item->is_menu }}" data-idnum="${counter}" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
+                //                         @endforeach
+                //                     </ul>
+                //                 </div>
+                //                 <input type="hidden" name="item${counter}" value="">
+                //             </div>
+                //         </div>
+                //         <div class="w-2/5">
+                //             <input type="text" id="quantity${counter}" name="quantity${counter}" value="{{ old('quantity') }}" class="inputNumber block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center">
+                //         </div>
+                //         <div class="w-1/5 flex">
+                //             <div id="unit${counter}" class="w-1/2 text-lg leading-9"></div>
+                //             <button type="button" data-thisid="ing${counter}" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                //         </div>
+                //     </div>
+                // `);
                 counter++;
             });
 
             jQuery(document).on( "click", ".removeButton", function(){
                 var thisid = $(this).data('thisid');
                 $('#'+thisid).remove();
+            });
+
+            jQuery(document).on( "click", "#combo", function(){
+                if($(this).is(":checked")){
+                    var combo = true;
+                }else{
+                    var combo = false;
+                }
+                _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('menu.changeIng') }}",
+                    method:"POST",
+                    data:{
+                        combo: combo,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#ingredientsDiv').html(result);
+                    }
+                })
             });
         });
     </script>

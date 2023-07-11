@@ -117,6 +117,8 @@ Route::middleware("role:1,3,2")->group(function(){
     // MENU
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
     Route::get('/menu/add', [MenuController::class, 'add'])->name('menu.add');
+    Route::POST('/menu/add/change-ing', [MenuController::class, 'changeIng'])->name('menu.changeIng');
+    Route::POST('/menu/add/add-ing', [MenuController::class, 'addIng'])->name('menu.addIng');
     Route::post('/menu/store', [MenuController::class, 'store'])->name('menu.store');
     Route::get('/menu/edit/{slug}', [MenuController::class, 'edit']);
     Route::post('/menu/update', [MenuController::class, 'update'])->name('menu.update');

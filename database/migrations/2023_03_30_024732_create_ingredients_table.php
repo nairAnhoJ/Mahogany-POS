@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('quantity', 30,20);
             $table->decimal('computed_quantity', 30,20);
             $table->string('unit');
+            $table->string('is_menu')->default(0);
             $table->timestamps();
         });
     }

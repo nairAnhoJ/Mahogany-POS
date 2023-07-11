@@ -16,7 +16,7 @@ class MenuController extends Controller
 {
     public function index(){
         $menus = DB::table('menus')
-            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
+            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.is_combo', 'menus.slug')
             ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
             ->orderBy('name', 'asc')
             ->paginate(100);
@@ -64,14 +64,140 @@ class MenuController extends Controller
 
     public function add(){
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
-        $items = DB::table('inventories')->where('is_expenses', 0)->get();
+        $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
         $menus = DB::table('menus')->get();
+
+        // $menuQuery = DB::table('menus')
+        //     ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'));
+        
+        // $inventoryQuery = DB::table('inventories')
+        //     ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
+        
+        // $items = $menuQuery->union($inventoryQuery)->get();
 
         // if(auth()->user()->role == 1){
             // return view('user.inventory.menu.add', compact('categories', 'items', 'menus'));
         // }elseif(auth()->user()->role == 3){
         return view('user.cook.menu-preparation-add', compact('categories','items', 'menus'));
         // }
+    }
+
+    public function changeIng(Request $request){
+        if($request->combo == 'true'){
+            $menuQuery = DB::table('menus')
+                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'));
+            
+            $inventoryQuery = DB::table('inventories')
+                ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
+            
+            $items = $menuQuery->union($inventoryQuery)->get();
+        }else{
+            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
+        }
+        $li = '';
+
+
+        foreach ($items as $item){
+            if($item->is_menu == 1){
+                $itemName = 'MENU-'.$item->name;
+            }else{
+                $itemName = $item->name;
+            }
+            $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$itemName.'</li>';
+        }
+
+        $result = '
+            <div id="ing1" class="mb-5 flex flex-row gap-x-3">
+                <div class="w-2/5">
+                    <div class="wrapper w-full relative">
+                        <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                            <span></span>
+                            <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                        </div>
+                        <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                            <div class="search relative">
+                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                            </div>
+                            <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                                <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                '.$li.'
+                            </ul>
+                        </div>
+                        <input type="hidden" name="item1" value="">
+                    </div>
+                </div>
+                <div class="w-2/5">
+                    <input type="text" id="quantity1" name="quantity1" value="" class="inputNumber block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                </div>
+                <div class="w-1/5 flex">
+                    <div id="unit1" class="w-1/2 text-lg leading-9"></div>
+                    <button type="button" data-thisid="ing1" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                </div>
+            </div>
+        ';
+
+        echo $result;
+    }
+
+    public function addIng(Request $request){
+        $counter = $request->counter;
+
+        if($request->combo == 'true'){
+            $menuQuery = DB::table('menus')
+                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'));
+            
+            $inventoryQuery = DB::table('inventories')
+                ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
+            
+            $items = $menuQuery->union($inventoryQuery)->get();
+        }else{
+            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
+        }
+        $li = '';
+
+
+        foreach ($items as $item){
+            if($item->is_menu == 1){
+                $itemName = 'MENU-'.$item->name;
+            }else{
+                $itemName = $item->name;
+            }
+            $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$counter.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$itemName.'</li>';
+        }
+
+        $result = '
+            <div id="ing'.$counter.'" class="mb-5 flex flex-row gap-x-3">
+                <div class="w-2/5">
+                    <div class="wrapper w-full relative">
+                        <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                            <span></span>
+                            <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                        </div>
+                        <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
+                            <div class="search relative">
+                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                            </div>
+                            <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
+                                <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                '.$li.'
+                            </ul>
+                        </div>
+                        <input type="hidden" name="item'.$counter.'" value="">
+                    </div>
+                </div>
+                <div class="w-2/5">
+                    <input type="text" id="quantity'.$counter.'" name="quantity'.$counter.'" value="" class="inputNumber block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                </div>
+                <div class="w-1/5 flex">
+                    <div id="unit'.$counter.'" class="w-1/2 text-lg leading-9"></div>
+                    <button type="button" data-thisid="ing'.$counter.'" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                </div>
+            </div>
+        ';
+
+        echo $result;
     }
 
     public function store(Request $request){
@@ -81,6 +207,11 @@ class MenuController extends Controller
         $image = $request->image;
         $servings = $request->servings;
         $Totalcounter = $request->counter;
+        if($request->combo != null){
+            $combo = 1;
+        }else{
+            $combo = 0;
+        }
 
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('menus')->where('slug', $slug)->get();
@@ -114,6 +245,7 @@ class MenuController extends Controller
         $item->quantity = 0;
         $item->current_quantity = 0;
         $item->servings = $servings;
+        $item->is_combo = $combo;
         if($image != null){
             $item->image = $imagePath;
         }
@@ -125,13 +257,17 @@ class MenuController extends Controller
             $qname = 'quantity'.$counter;
 
             if($request->$iname != null){
-                $invUnit = (DB::table('inventories')->where('id', $request->$iname)->first())->unit;
+                $itemsArray = explode(",", $request->$iname);
+                $is_menu = $itemsArray[0];
+                $item_id = $itemsArray[1];
+                $invUnit = (DB::table('inventories')->where('id', $item_id)->first())->unit;
                 $ingr = new Ingredient();
                 $ingr->menu_id = $item->id;
-                $ingr->inventory_id = $request->$iname;
+                $ingr->inventory_id = $item_id;
                 $ingr->quantity = $request->$qname;
                 $ingr->computed_quantity = $request->$qname / $servings;
                 $ingr->unit = $invUnit;
+                $ingr->is_menu = $is_menu;
                 $ingr->save();
             }
         }
@@ -145,8 +281,34 @@ class MenuController extends Controller
             ->select('ingredients.id', 'ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name AS name', 'ingredients.quantity', 'ingredients.unit')
             ->join('inventories', 'ingredients.inventory_id', 'inventories.id')
             ->where('ingredients.menu_id', $item->id)->get();
+
+        $ingredients = DB::table('ingredients')
+            ->select('ingredients.*', DB::raw('CASE WHEN ingredients.is_menu = 1 THEN menus.name WHEN ingredients.is_menu = 0 THEN inventories.name END AS name'))
+            ->leftJoin('menus', function ($join) {
+                $join->on('ingredients.inventory_id', '=', 'menus.id')
+                    ->where('ingredients.is_menu', '=', 1);
+            })
+            ->leftJoin('inventories', function ($join) {
+                $join->on('ingredients.inventory_id', '=', 'inventories.id')
+                    ->where('ingredients.is_menu', '=', 0);
+            })
+            ->where('ingredients.menu_id', $item->id)
+            ->get();
+
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
-        $items = DB::table('inventories')->where('is_expenses', 0)->get();
+
+        if($item->is_combo == 1){
+            $menuQuery = DB::table('menus')
+                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'));
+            
+            $inventoryQuery = DB::table('inventories')
+                ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
+            
+            $items = $menuQuery->union($inventoryQuery)->get();
+        }else{
+            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
+        }
+
         
         // if(auth()->user()->role == 1){
         //     return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
@@ -197,14 +359,18 @@ class MenuController extends Controller
             $qname = 'quantity'.$counter;
 
             if($request->$iname != null){
-                $invUnit = (DB::table('inventories')->where('id', $request->$iname)->first())->unit;
+                $itemsArray = explode(",", $request->$iname);
+                $is_menu = $itemsArray[0];
+                $item_id = $itemsArray[1];
+                $invUnit = (DB::table('inventories')->where('id', $item_id)->first())->unit;
 
                 $ingr = new Ingredient();
                 $ingr->menu_id = $menuID;
-                $ingr->inventory_id = $request->$iname;
+                $ingr->inventory_id = $item_id;
                 $ingr->quantity = $request->$qname;
                 $ingr->computed_quantity = $request->$qname / $servings;
                 $ingr->unit = $invUnit;
+                $ingr->is_menu = $is_menu;
                 $ingr->save();
             }
         }

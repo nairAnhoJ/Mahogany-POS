@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('price')->nullable();
             $table->string('image')->nullable();
             $table->integer('servings');
+            $table->integer('is_combo')->default(0);
+            $table->string('unit')->default('pc/s');
             $table->string('slug')->unique();
             $table->timestamps();
         });

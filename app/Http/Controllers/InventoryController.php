@@ -15,10 +15,9 @@ class InventoryController extends Controller
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
             ->orderBy('name', 'asc')
             ->paginate(100);
-        $invCount = DB::table('inventories')->where('is_expenses', 0)->get()->count();
+        $invCount = DB::table('inventories')->get()->count();
         $page = 1;
         $search = "";
 
@@ -33,10 +32,9 @@ class InventoryController extends Controller
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('inventories')->where('is_expenses', 0)->get()->count();
+        $invCount = DB::table('inventories')->get()->count();
         $search = "";
 
 
@@ -52,7 +50,6 @@ class InventoryController extends Controller
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
             ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
@@ -60,7 +57,6 @@ class InventoryController extends Controller
         $invCount = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
-            ->where('is_expenses', 0)
             ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->count();

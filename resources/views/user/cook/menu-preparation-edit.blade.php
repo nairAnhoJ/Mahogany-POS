@@ -9,6 +9,11 @@
                         @csrf
                         <input type="hidden" id="counter" name="counter" value="{{ ($ingredients->count() == 0) ? 1 : $ingredients->count(); }}">
                         <input type="hidden" name="slug" value="{{$slug}}">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input disabled {{ ($item->is_combo == 1) ? 'checked' : '' }} type="checkbox" name="combo" id="combo" value="1" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span class="ml-3 text-sm font-medium text-gray-900">Combo Meal</span>
+                        </label>
                         <div class="mb-2">
                             <label for="name" class="block text-sm font-medium text-gray-900 lg:text-base">Menu name<span class="text-red-500"> *</span></label>
                             <input type="text" id="name" name="name" value="{{ $item->name }}" class="block w-full lg:w-2/5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required autocomplete="off">
@@ -73,13 +78,13 @@
                                                             <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
                                                         </div>
                                                         <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                                            <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                                            <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
                                                             ';foreach ($items as $item){
-                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
+                                                                echo '<li data-id="'.$item->id.'" data-name="MENU-'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">MENU-'.$item->name.'</li>';
                                                             }
                                                         echo '</ul>
                                                     </div>
-                                                    <input type="hidden" name="item'.$x.'" value="'.$ingredient->inventory_id.'">
+                                                    <input type="hidden" name="item'.$x.'" value="'.$ingredient->is_menu.','.$ingredient->inventory_id.'">
                                                 </div>
                                             </div>
                                             <div class="w-2/5">
@@ -106,13 +111,13 @@
                                                             <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
                                                         </div>
                                                         <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                                            <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                                            <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
                                                             ';foreach ($items as $item){
-                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
+                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">MENU-'.$item->name.'</li>';
                                                             }
                                                         echo '</ul>
                                                     </div>
-                                                    <input type="hidden" name="item'.$x.'" value="">
+                                                    <input type="hidden" name="item'.$x.'" value="'.$item->is_menu.','.$item->id.'">
                                                 </div>
                                             </div>
                                             <div class="w-2/5">
@@ -171,10 +176,18 @@
                 var id = $(this).data('id');
                 var name = $(this).data('name');
                 var unit = $(this).data('unit');
+                var is_menu = $(this).data('is_menu');
                 var unitid = 'unit' + $(this).data('idnum');
                 var qtyid = 'quantity' + $(this).data('idnum');
-                $(this).closest('.wrapper').find('input').val(id);
-                $(this).closest('.wrapper').find('.select-btn span').html(name);
+
+                if(id != ""){
+                    $(this).closest('.wrapper').find('input').val(is_menu+','+id);
+                    $(this).closest('.wrapper').find('.select-btn span').html(name);
+                }else{
+                    $(this).closest('.wrapper').find('input').val('');
+                    $(this).closest('.wrapper').find('.select-btn span').html('');
+                }
+
                 $('.content').addClass('hidden');
                 $('.selectSearch').val('');
                 var value = $(".selectSearch").val().toLowerCase();

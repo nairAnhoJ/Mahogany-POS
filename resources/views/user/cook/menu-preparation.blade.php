@@ -224,7 +224,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($menus as $menu)
-                                                <tr class="addServing bg-white border-b cursor-pointer hover:bg-slate-50">
+                                                <tr data-is_combo="{{ $menu->is_combo }}" class="addServing bg-white border-b cursor-pointer hover:bg-slate-50">
                                                     <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
                                                         {{ $menu->name }}
                                                     </th>
@@ -233,9 +233,7 @@
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap flex justify-center items-center">
                                                         {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button> --}}
-                                                        
                                                         <span data-slug="{{$menu->slug}}" class="flex">{{ $menu->quantity }}</span>
-
                                                         {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="reduceQuantity ml-2"><i class="uil uil-minus-circle text-xl text-red-500 flex"></i></button> --}}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
@@ -605,7 +603,8 @@
             });
 
             $('.addServing').click(function(){
-                if (!$(event.target).is('.deleteButton') && !$(event.target).is('.editButton') && !$(event.target).is('.moveButton')) {
+                $is_combo = $(this).data('is_combo');
+                if (!$(event.target).is('.deleteButton') && !$(event.target).is('.editButton') && !$(event.target).is('.moveButton') && ($is_combo == 0)) {
                     var slug = $(this).find('span').data('slug');
                     var _token = $('input[name="_token"]').val();
 
