@@ -80,7 +80,7 @@
                                                         <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
                                                             <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
                                                             ';foreach ($items as $item){
-                                                                echo '<li data-id="'.$item->id.'" data-name="MENU-'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">MENU-'.$item->name.'</li>';
+                                                                echo '<li data-id="'.$item->id.'" data-name="MENU-'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
                                                             }
                                                         echo '</ul>
                                                     </div>
@@ -113,7 +113,7 @@
                                                         <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
                                                             <li data-id="" data-name="" data-unit="" data-is_menu="" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
                                                             ';foreach ($items as $item){
-                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">MENU-'.$item->name.'</li>';
+                                                                echo '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$x.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
                                                             }
                                                         echo '</ul>
                                                     </div>

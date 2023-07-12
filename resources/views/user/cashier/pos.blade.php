@@ -500,7 +500,7 @@
                             <div class="p-8" id="all-menu" role="tabpanel" aria-labelledby="all-menu-tab">
                                 <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                     @foreach ($menus as $menu)
-                                        <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                        <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > 5) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }}  rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
                                             <div class="w-full aspect-square overflow-hidden">
                                                 <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
                                             </div>
@@ -525,7 +525,7 @@
                                     <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                         @foreach ($menus as $menu)
                                             @if ($menu->category_id == $category->id)
-                                                <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border border-neutral-200 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                                <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > 5) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }} rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
                                                     <div class="w-full aspect-square overflow-hidden">
                                                         <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
                                                     </div>
@@ -577,20 +577,20 @@
                                                 {{ $order->name }}
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                                <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                             </div>
                                             <div class="col-span-1 flex items-center justify-center px-1">
                                                 {{-- <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">{{ $order->quantity }}</p> --}}
                                                 <input type="text" class="w-full text-center text-sm font-semibold border-0 h-7 leading-7 focus:border-gray-500" value="{{ $order->quantity }}">
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                                <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
                                             </div>
                                             <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
                                                 {{ number_format($order->total_price, 2, '.', ',') }}
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <button data-slug="{{ $order->slug }}" data-name="{{ $order->name }}" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                                <button data-slug="{{ $order->slug }}" data-name="{{ $order->name }}" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                                             </div>
                                         </div>
                                     @endforeach

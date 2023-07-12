@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Mail;
 class POSController extends Controller
 {
     public function index(){
+        $this->updateCurrentQuantity();
         $tables = DB::table('tables')->orderBy('id', 'asc')->get();
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $menus = DB::table('menus')->where('current_quantity', '>', 0)->orderBy('name', 'asc')->get();
+
         $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
         $subTotal = 0;
         $total = 0;
@@ -41,9 +43,10 @@ class POSController extends Controller
     }
 
     public function add(Request $request){
+        $this->updateCurrentQuantity();
         $slug = $request->slug;
         $menu = DB::table('menus')->where('slug', $slug)->first();
-        $ord = DB::table('orders')->where('menu_id', $menu->id)->first();
+        $ord = DB::table('orders')->where('menu_id', $menu->id)->where('cashier', auth()->id())->first();
         $notif = '';
 
         $orderSlug = Str::random(60);
@@ -74,9 +77,23 @@ class POSController extends Controller
                     $order->slug = $orderSlug;
                     $order->save();
 
-                    DB::table('menus')->where('id', $menu->id)->update([
-                        'current_quantity' => $current_quantity,
-                    ]);
+
+                    if($menu->is_combo == 1){
+                        $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+                        foreach($ings as $ing){
+                            DB::table('menus')
+                                ->where('id', $ing->inventory_id)
+                                ->decrement('current_quantity', 1);
+                        }
+                    }else{
+                        DB::table('menus')->where('id', $menu->id)->update([
+                            'current_quantity' => $current_quantity,
+                        ]);
+                    }
+
+                    // DB::table('menus')->where('id', $menu->id)->update([
+                    //     'current_quantity' => $current_quantity,
+                    // ]);
                 }else{
                     $notif .= '
                     <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
@@ -107,9 +124,22 @@ class POSController extends Controller
                 $order->slug = $orderSlug;
                 $order->save();
 
-                DB::table('menus')->where('id', $menu->id)->update([
-                    'current_quantity' => $current_quantity,
-                ]);
+                if($menu->is_combo == 1){
+                    $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+                    foreach($ings as $ing){
+                        DB::table('menus')
+                            ->where('id', $ing->inventory_id)
+                            ->decrement('current_quantity', 1);
+                    }
+                }else{
+                    DB::table('menus')->where('id', $menu->id)->update([
+                        'current_quantity' => $current_quantity,
+                    ]);
+                }
+
+                // DB::table('menus')->where('id', $menu->id)->update([
+                //     'current_quantity' => $current_quantity,
+                // ]);
             }
         }else{
             $notif = '
@@ -140,20 +170,20 @@ class POSController extends Controller
                                             '.$order->name.'
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                         </div>
                                         <div class="col-span-1 flex items-center justify-center">
                                             <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
                                             <input type="hidden" value="'.$order->quantity.'">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
                                         </div>
                                         <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
                                             '.number_format($order->total_price, 2, ".", ",").'
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                                         </div>
                                     </div>
                                 ';
@@ -168,6 +198,7 @@ class POSController extends Controller
         }
 
         $amount = $total;
+        $this->updateCurrentQuantity();
 
         $response = array(
             'orders' => $orderResult,
@@ -183,24 +214,36 @@ class POSController extends Controller
     }
 
     public function inc(Request $request){
+        $this->updateCurrentQuantity();
         $slug = $request->slug;
         $corder = DB::table('orders')->where('slug', $slug)->first();
-        $menu_qty = (DB::table('menus')->where('id', $corder->menu_id)->first())->current_quantity;
+        
+        $menu = DB::table('menus')->where('id', $corder->menu_id)->first();
         $notif = '';
 
-        if($menu_qty > 0){
+        if($menu->current_quantity > 0){
             $quantity = $corder->quantity + 1;
             $total_price = $corder->price * $quantity;
-            $current_quantity = $corder->current_stock - 1;
+            $current_stock = $menu->current_quantity - 1;
             DB::table('orders')->where('slug', $slug)->update([
                 'quantity' => $quantity,
                 'total_price' => $total_price,
-                'current_stock' => $current_quantity,
+                'current_stock' => $current_stock,
             ]);
+
+            if($menu->is_combo == 1){
+                $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+                foreach($ings as $ing){
+                    DB::table('menus')
+                        ->where('id', $ing->inventory_id)
+                        ->decrement('current_quantity', 1);
+                }
+            }else{
+                DB::table('menus')->where('id', $corder->menu_id)->update([
+                    'current_quantity' => $current_stock,
+                ]);
+            }
     
-            DB::table('menus')->where('id', $corder->menu_id)->update([
-                'current_quantity' => $current_quantity,
-            ]);
         }else{
             $notif = '<div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
                         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
@@ -229,20 +272,20 @@ class POSController extends Controller
                                             '.$order->name.'
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                         </div>
                                         <div class="col-span-1 flex items-center justify-center">
                                             <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
                                             <input type="hidden" value="'.$order->quantity.'">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
                                         </div>
                                         <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
                                             '.number_format($order->total_price, 2, ".", ",").'
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                                         </div>
                                     </div>
                                 ';
@@ -258,6 +301,8 @@ class POSController extends Controller
 
         $amount = $total;
 
+        $this->updateCurrentQuantity();
+
         $response = array(
             'thisNotif' => $notif,
             'orders' => $orderResult,
@@ -272,8 +317,10 @@ class POSController extends Controller
     }
 
     public function desc(Request $request){
+        $this->updateCurrentQuantity();
         $slug = $request->slug;
         $corder = DB::table('orders')->where('slug', $slug)->first();
+        $menu = DB::table('menus')->where('id', $corder->menu_id)->first();
 
         if($corder->quantity > 1){
             $quantity = $corder->quantity - 1;
@@ -284,10 +331,19 @@ class POSController extends Controller
                 'total_price' => $total_price,
                 'current_stock' => $current_quantity,
             ]);
-    
-            DB::table('menus')->where('id', $corder->menu_id)->update([
-                'current_quantity' => $current_quantity,
-            ]);
+
+            if($menu->is_combo == 1){
+                $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+                foreach($ings as $ing){
+                    DB::table('menus')
+                        ->where('id', $ing->inventory_id)
+                        ->increment('current_quantity', 1);
+                }
+            }else{
+                DB::table('menus')->where('id', $corder->menu_id)->update([
+                    'current_quantity' => $current_quantity,
+                ]);
+            }
         }
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
@@ -304,20 +360,20 @@ class POSController extends Controller
                                             '.$order->name.'
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
                                         </div>
                                         <div class="col-span-1 flex items-center justify-center">
                                             <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
                                             <input type="hidden" value="'.$order->quantity.'">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
                                         </div>
                                         <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
                                             '.number_format($order->total_price, 2, ".", ",").'
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
                                         </div>
                                     </div>
                                 ';
@@ -333,6 +389,8 @@ class POSController extends Controller
 
         $amount = $total;
 
+        $this->updateCurrentQuantity();
+
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
@@ -346,16 +404,32 @@ class POSController extends Controller
     }
 
     public function remove(Request $request){
+        $this->updateCurrentQuantity();
         $slug = $request->slug;
         $ord = DB::table('orders')->where('slug', $slug)->first();
         $mid = $ord->menu_id;
+        $menu = DB::table('menus')->where('id', $mid)->first();
         $qty = $ord->quantity;
-        $oqty = (DB::table('menus')->where('id', $mid)->first())->current_quantity;
-        $nqty = $oqty + $qty;
 
-        DB::table('menus')->where('id', $mid)->update([
-            'current_quantity' => $nqty,
-        ]);
+        if($menu->is_combo == 1){
+            $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+            foreach($ings as $ing){
+                DB::table('menus')
+                    ->where('id', $ing->inventory_id)
+                    ->increment('current_quantity', $qty);
+            }
+        }else{
+            DB::table('menus')
+                ->where('id', $mid)
+                ->increment('current_quantity', $qty);
+        }
+
+        // $oqty = $menu->current_quantity;
+        // $nqty = $oqty + $qty;
+
+        // DB::table('menus')->where('id', $mid)->update([
+        //     'current_quantity' => $nqty,
+        // ]);
 
         DB::table('orders')->where('slug', $slug)->delete();
 
@@ -401,6 +475,7 @@ class POSController extends Controller
         }
 
         $amount = $total;
+        $this->updateCurrentQuantity();
 
         $response = array(
             'orders' => $orderResult,
@@ -497,12 +572,26 @@ class POSController extends Controller
                 'updated_at' => date('Y-m-d h:i:s')
             ]);
 
-            $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;
-            $nqty = $oqty - $order->quantity;
+            // $oqty = $menu->quantity;
+            // $nqty = $oqty - $order->quantity;
+            $menu = DB::table('menus')->where('id', $order->menu_id)->first();
 
-            DB::table('menus')->where('id', $order->menu_id)->update([
-                'quantity' => $nqty
-            ]);
+            if($menu->is_combo == 1){
+                $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+                foreach($ings as $ing){
+                    DB::table('menus')
+                        ->where('id', $ing->inventory_id)
+                        ->decrement('quantity', $order->quantity);
+                }
+            }else{
+                DB::table('menus')
+                    ->where('id', $order->menu_id)
+                    ->decrement('quantity', $order->quantity);
+            }
+
+            // DB::table('menus')->where('id', $order->menu_id)->update([
+            //     'quantity' => $nqty
+            // ]);
 
             DB::table('orders')->where('id', $order->id)->delete();
         }
@@ -636,12 +725,27 @@ class POSController extends Controller
                 'updated_at' => date('Y-m-d h:i:s')
             ]);
 
-            $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;
-            $nqty = $oqty - $order->quantity;
+            // $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;
+            // $nqty = $oqty - $order->quantity;
 
-            DB::table('menus')->where('id', $order->menu_id)->update([
-                'quantity' => $nqty
-            ]);
+            // DB::table('menus')->where('id', $order->menu_id)->update([
+            //     'quantity' => $nqty
+            // ]);
+
+            $menu = DB::table('menus')->where('id', $order->menu_id)->first();
+
+            if($menu->is_combo == 1){
+                $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
+                foreach($ings as $ing){
+                    DB::table('menus')
+                        ->where('id', $ing->inventory_id)
+                        ->decrement('quantity', $order->quantity);
+                }
+            }else{
+                DB::table('menus')
+                    ->where('id', $order->menu_id)
+                    ->decrement('quantity', $order->quantity);
+            }
 
             DB::table('orders')->where('id', $order->id)->delete();
         }
@@ -778,6 +882,50 @@ class POSController extends Controller
 
 
         return view('user.cashier.bill', compact('orders', 'trans', 'settings'));
+    }
+
+    public function updateCurrentQuantity(){
+        $menus = DB::table('menus')
+            ->select(
+                'menus.id',
+                'menus.name',
+                'menus.category_id',
+                'menu_categories.name AS category',
+                'menus.price',
+                'menus.is_combo',
+                'menus.slug',
+                'menus.image',
+                DB::raw('
+                    CASE
+                        WHEN menus.is_combo = 1 THEN (
+                            SELECT
+                                MIN(
+                                    CASE
+                                        WHEN is_menu = 1 THEN (
+                                            SELECT menus.current_quantity FROM menus WHERE menus.id = ingredients.inventory_id
+                                        )
+                                        ELSE (
+                                            SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
+                                        )
+                                    END
+                                )
+                            FROM ingredients
+                            WHERE menu_id = menus.id
+                        )
+                        ELSE menus.quantity
+                    END AS new_current_quantity
+                ')
+            )
+            ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
+            ->where('is_combo', 1)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        foreach($menus as $menu){
+            DB::table('menus')->where('id', $menu->id)->update([
+                'current_quantity' => $menu->new_current_quantity
+            ]);
+        }
     }
 
 }
