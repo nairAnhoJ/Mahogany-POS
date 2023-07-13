@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\InventoryTransaction;
+use App\Models\Waste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -181,6 +182,27 @@ class InventoryController extends Controller
         DB::table('inventories')->where('slug', $slug)->delete();
 
         return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Deleted');
+    }
+
+    public function dispose(Request $request){
+        $inv = DB::table('inventories')->where('slug', $request->disposeSlug)->first();
+        $quantity = $request->quantity;
+        $date = date('Y-m-d H:i:s', strtotime($request->disposeDate));
+
+        if($inv->quantity < $quantity){
+            return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
+        }
+
+        $waste = new Waste();
+        $waste->on = 'INVENTORY';
+        $waste->iid = $inv->id;
+        $waste->quantity = $quantity;
+        $waste->created_at = $date;
+        $waste->save();
+
+        DB::table('inventories')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);
+
+        return redirect()->route('inventory.index')->withInput()->with('message', 'Item Successfully Disposed');
     }
 
     public function addqty(Request $request){

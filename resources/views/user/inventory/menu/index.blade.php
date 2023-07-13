@@ -132,7 +132,7 @@
                                                     {{ $menu->category }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    {{ $menu->quantity }}
+                                                    {{ number_format($menu->quantity, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ '₱ '.number_format($menu->price, 2, '.', ',') }}

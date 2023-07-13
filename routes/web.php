@@ -16,6 +16,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WasteController;
 use App\Http\Middleware\ValidateRole;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -127,6 +128,7 @@ Route::middleware("role:1,3,2")->group(function(){
     Route::post('/menu/compute-quantity', [MenuController::class, 'computeqty'])->name('menu.computeqty');
     Route::post('/menu/change-quantity', [MenuController::class, 'changeqty'])->name('menu.changeqty');
     Route::get('/menu/delete/{slug}', [MenuController::class, 'delete'])->name('menu.delete');
+    Route::post('/menu/dispose', [MenuController::class, 'dispose'])->name('menu.dispose');
     Route::get('/menu/{page}', [MenuController::class, 'paginate']);
     Route::get('/menu/{page}/{search}', [MenuController::class, 'search']);
 });
@@ -142,6 +144,7 @@ Route::middleware('role:1,4,2')->group(function(){
     Route::get('/inventory/edit/{slug}', [InventoryController::class, 'edit']);
     Route::post('/inventory/update', [InventoryController::class, 'update'])->name('inventory.update');
     Route::get('/inventory/delete/{slug}', [InventoryController::class, 'delete'])->name('inventory.delete');
+    Route::post('/inventory/dispose', [InventoryController::class, 'dispose'])->name('inventory.dispose');
     Route::get('/inventory/{page}', [InventoryController::class, 'paginate']);
     Route::get('/inventory/{page}/{search}', [InventoryController::class, 'search']);
 
@@ -156,6 +159,8 @@ Route::middleware('role:1,4,2')->group(function(){
     Route::get('/expenses/delete/{id}', [ExpensesController::class, 'delete'])->name('expenses.delete');
     Route::get('/expenses/{page}', [ExpensesController::class, 'paginate']);
     Route::get('/expenses/{page}/{search}', [ExpensesController::class, 'search']);
+
+
 
     Route::get('/report', [ReceiverReportController::class, 'index'])->name('report.index');
     Route::get('/report/print', [ReceiverReportController::class, 'print'])->name('report.print');
@@ -196,6 +201,22 @@ Route::middleware('role:2')->group(function(){
     Route::post('/transactions/view', [TransactionController::class, 'view'])->name('transactions.view');
     Route::post('/transactions/generate', [TransactionController::class, 'generate'])->name('transactions.generate');
     Route::get('/transactions/print/{id}', [TransactionController::class, 'print']);
+
+    // WASTE
+
+        // INVENTORY
+        Route::get('/waste/inventory', [WasteController::class, 'inventoryIndex'])->name('waste.inventory.index');
+        Route::get('/waste/inventory/restore/{id}', [WasteController::class, 'inventoryRestore'])->name('waste.inventory.restore');
+        Route::get('/waste/inventory/{page}', [WasteController::class, 'inventoryPaginate']);
+        Route::get('/waste/inventory/{page}/{search}', [WasteController::class, 'inventorySearch']);
+
+        // MENU
+        Route::get('/waste/menu', [WasteController::class, 'menuIndex'])->name('waste.menu.index');
+        Route::get('/waste/menu/restore/{id}', [WasteController::class, 'menuRestore'])->name('waste.menu.restore');
+        Route::get('/waste/menu/{page}', [WasteController::class, 'menuPaginate']);
+        Route::get('/waste/menu/{page}/{search}', [WasteController::class, 'menuSearch']);
+
+    // WASTE END
 
 });
 

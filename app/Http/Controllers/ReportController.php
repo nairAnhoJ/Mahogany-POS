@@ -91,6 +91,18 @@ class ReportController extends Controller
 
             $results = $salesQuery->union($expensesQuery)->orderBy('date')->get();
 
+            $results = $results->groupBy('date')->map(function ($item) {
+                return [
+                    'date' => $item[0]->date,
+                    'stotal' => $item->sum('stotal'),
+                    'etotal' => $item->sum('etotal'),
+                ];
+            })->values();
+            
+
+            // dd($results);
+            
+
             if($report == 'summary'){
                 return view('admin.reports.summary_sec', compact('results', 'category', 'settings', 'startDate', 'endDate', 'report'));
             }

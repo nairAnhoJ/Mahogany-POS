@@ -57,7 +57,7 @@
                                             @endphp
                                             @foreach ($results as $result)
                                                 @php
-                                                    $fResDate = date("Y-m-d", strtotime($result->date));
+                                                    $fResDate = date("Y-m-d", strtotime($result['date']));
                                                 @endphp
                                                 @if ($fResDate == $fCurDate)
                                                     <tr class="border-b">
@@ -65,13 +65,13 @@
                                                             {{ date('M d, Y', $feCDate) }}
                                                         </th>
                                                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                            ₱ {{ $result->stotal }}.00
+                                                            ₱ {{ $result['stotal'] }}.00
                                                         </td>
                                                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                            ₱ {{ $result->etotal }}.00
+                                                            ₱ {{ $result['etotal'] }}.00
                                                         </td>
-                                                        <td class="px-6 py-1 text-center whitespace-nowrap font-semibold {{ ($result->stotal - $result->etotal) < 0 ? 'text-red-500' : 'text-emerald-500' }}">
-                                                            ₱ {{ $result->stotal - $result->etotal }}.00
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap font-semibold {{ ($result['stotal'] - $result['etotal']) < 0 ? 'text-red-500' : 'text-emerald-500' }}">
+                                                            ₱ {{ $result['stotal'] - $result['etotal'] }}.00
                                                         </td>
                                                     </tr>
                                                     @php

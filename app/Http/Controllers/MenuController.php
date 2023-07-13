@@ -7,6 +7,7 @@ use App\Models\Ingredient;
 use App\Models\Inventory;
 use App\Models\InventoryTransaction;
 use App\Models\Menu;
+use App\Models\Waste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -728,5 +729,27 @@ class MenuController extends Controller
         DB::table('menus')->where('slug', $slug)->delete();
 
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Deleted');
+    }
+
+    public function dispose(Request $request){
+        $menu = DB::table('menus')->where('slug', $request->disposeSlug)->first();
+        $quantity = $request->quantity;
+        $date = date('Y-m-d H:i:s', strtotime($request->disposeDate));
+
+        if($menu->current_quantity < $quantity){
+            return redirect()->route('menu.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
+        }
+
+        $waste = new Waste();
+        $waste->on = 'MENU';
+        $waste->iid = $menu->id;
+        $waste->quantity = $quantity;
+        $waste->created_at = $date;
+        $waste->save();
+
+        DB::table('menus')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);
+        DB::table('menus')->where('slug', $request->disposeSlug)->decrement('current_quantity', $quantity);
+
+        return redirect()->route('menu.index')->withInput()->with('message', 'Menu Successfully Disposed');
     }
 }

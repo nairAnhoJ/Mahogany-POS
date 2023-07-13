@@ -93,8 +93,8 @@ class ExpensesController extends Controller
         // $quantity = $request->quantity;
         // $reorder_point = $request->reorder_point;
         // $unit = $request->unit;
-        $quantity = $request->quantity;
-        $price = $request->price;
+        $quantity = str_replace(',', '', $request->quantity);
+        $price = str_replace(',', '', $request->price);
         // $image = $request->image;
 
         $request->validate([
@@ -126,8 +126,8 @@ class ExpensesController extends Controller
     public function update(Request $request){
         $id = $request->id;
         $name = $request->name;
-        $quantity = $request->quantity;
-        $price = $request->price;
+        $quantity = str_replace(',', '', $request->quantity);
+        $price = str_replace(',', '', $request->price);
 
         $request->validate([
             'name' => 'required',
