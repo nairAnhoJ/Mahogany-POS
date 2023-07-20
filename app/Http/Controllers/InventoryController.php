@@ -91,6 +91,11 @@ class InventoryController extends Controller
         $price = $request->price;
         $image = $request->image;
 
+        $nameExist = Inventory::where('name', $name)->first();
+        if($nameExist){
+            return back()->withInput()->with('error', 'Item already exist!');
+        }
+
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('inventories')->where('slug', $slug)->get();
         $x = 1;

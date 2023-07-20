@@ -81,7 +81,7 @@
                                                     {{ date('M d, Y', $feCDate) }}
                                                 </th>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ $tAmount }}.00
+                                                    ₱ {{ number_format($tAmount, 2, '.', ',') }}
                                                 </td>
 
                                                 @if ($category == 'sales')

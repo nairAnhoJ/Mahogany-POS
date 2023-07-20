@@ -2,6 +2,20 @@
 
     @section('page_title', 'INVENTORY - ADD')
 
+    {{-- ERROR NOTIFICATION --}}
+        @if (session('error'))
+            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-red-200 rounded-lg z-50 shadow-md shadow-red-800 flex flex-row justify-between px-2">
+                <div class="flex">
+                    <i class="self-center uil uil-cloud-check text-red-800 text-2xl"></i>
+                    <h1 class="self-center text-red-800 font-semibold ml-1">{{ session('error') }}</h1>
+                </div>
+                <button class="notifButton self-center">
+                    <i class="uil uil-times text-2xl text-red-800"></i>
+                </button>
+            </div>
+        @endif
+    {{-- ERROR NOTIFICATION END --}}
+
     <div class="p-3 lg:pt-3">
         <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
@@ -21,7 +35,7 @@
                         <label for="category_id" class="block text-sm font-medium text-gray-900 lg:text-base">Category <span class="text-red-500">*</span></label>
                         <select id="category_id" name="category_id" value="{{ old('category_id') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option {{ old('category_id') == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -39,19 +53,19 @@
                     <div class="mb-5">
                         <label for="unit" class="block text-sm font-medium text-gray-900 lg:text-base">Unit<span class="text-red-500">*</span></label>
                         <select id="unit" name="unit" value="{{ old('unit') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
-                            <option value="tsp">teaspoon (tsp)</option>
-                            <option value="tbsp">tablespoon (tbsp)</option>
-                            <option value="kg">kilogram (kg)</option>
-                            <option value="g">gram (g)</option>
-                            <option value="mg">milligram (mg)</option>
-                            <option value="oz">ounce (oz)</option>
-                            <option value="lb">pound (lb)</option>
-                            <option value="gal">gallon (gal)</option>
-                            <option value="L">liter (L)</option>
-                            <option value="mL">milliliter (mL)</option>
-                            <option value="c">cup (c)</option>
-                            <option value="ea">each (ea)</option>
-                            <option value="doz">dozen (doz)</option>
+                            <option {{ old('unit') == 'tsp' ? 'selected' : '' }} value="tsp">teaspoon (tsp)</option>
+                            <option {{ old('unit') == 'tbsp' ? 'selected' : '' }} value="tbsp">tablespoon (tbsp)</option>
+                            <option {{ old('unit') == 'kg' ? 'selected' : '' }} value="kg">kilogram (kg)</option>
+                            <option {{ old('unit') == 'g' ? 'selected' : '' }} value="g">gram (g)</option>
+                            <option {{ old('unit') == 'mg' ? 'selected' : '' }} value="mg">milligram (mg)</option>
+                            <option {{ old('unit') == 'oz' ? 'selected' : '' }} value="oz">ounce (oz)</option>
+                            <option {{ old('unit') == 'lb' ? 'selected' : '' }} value="lb">pound (lb)</option>
+                            <option {{ old('unit') == 'gal' ? 'selected' : '' }} value="gal">gallon (gal)</option>
+                            <option {{ old('unit') == 'L' ? 'selected' : '' }} value="L">liter (L)</option>
+                            <option {{ old('unit') == 'mL' ? 'selected' : '' }} value="mL">milliliter (mL)</option>
+                            <option {{ old('unit') == 'c' ? 'selected' : '' }} value="c">cup (c)</option>
+                            <option {{ old('unit') == 'ea' ? 'selected' : '' }} value="ea">each (ea)</option>
+                            <option {{ old('unit') == 'doz' ? 'selected' : '' }} value="doz">dozen (doz)</option>
                         </select>
                     </div>
 
@@ -101,6 +115,10 @@
                     $('#topNav').addClass('z-50');
                 $('#contentDiv').removeClass('pt-14');
                 }
+            });
+
+            $('.notifButton').click(function(){
+                $('.notif').addClass('hidden');
             });
         });      
      </script>

@@ -320,7 +320,7 @@
                                                     {{ $inventory->unit }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" data-slug="{{ $inventory->slug }}"data-name="{{ $inventory->name }}"  class="disposeButton text-orange-500 hover:underline font-semibold text-sm cursor-pointer">Dispose</a> | <a href="{{ url('/inventory/edit/'.$inventory->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $inventory->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                    <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" data-slug="{{ $inventory->slug }}"data-name="{{ $inventory->name }}"  class="disposeButton text-orange-500 hover:underline font-semibold text-sm cursor-pointer">Waste</a> | <a href="{{ url('/inventory/edit/'.$inventory->slug) }}" class="text-blue-600 hover:underline font-semibold text-sm">Edit</a> | <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $inventory->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach
