@@ -282,7 +282,7 @@
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap flex justify-center items-center">
                                                         {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button> --}}
-                                                        <span data-slug="{{$menu->slug}}" class="flex">{{ $menu->quantity }}</span>
+                                                        <span data-slug="{{$menu->slug}}" class="flex">{{ number_format($menu->quantity, 2, '.', ',') }}</span>
                                                         {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="reduceQuantity ml-2"><i class="uil uil-minus-circle text-xl text-red-500 flex"></i></button> --}}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
@@ -331,7 +331,7 @@
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Quantity</div>
                                                                 <div class="col-span-2 font-semibold text-sm">
-                                                                    '.$menu->quantity.'
+                                                                    '.number_format($menu->quantity, 2, '.', ',').'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
