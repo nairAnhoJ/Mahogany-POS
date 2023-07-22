@@ -409,6 +409,8 @@ class MenuController extends Controller
             $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
         }
 
+        // dd($ingredients->count());
+
         
         // if(auth()->user()->role == 1){
         //     return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));

@@ -61,8 +61,8 @@
                             @php
                                 $counter = $ingredients->count() + 1;
                                 $x = 1;
-
-                                if ($counter != 1) {
+                                
+                                if ($ingredients->count() > 0) {
                                     foreach ($ingredients as $ingredient){
                                         echo
                                         '<div id="ing'.$x.'" class="mb-5 flex flex-row gap-x-3">
@@ -117,7 +117,7 @@
                                                             }
                                                         echo '</ul>
                                                     </div>
-                                                    <input type="hidden" name="item'.$x.'" value="'.$item->is_menu.','.$item->id.'">
+                                                    <input type="hidden" name="item'.$x.'" value="">
                                                 </div>
                                             </div>
                                             <div class="w-2/5">
