@@ -14,9 +14,9 @@ class ReportController extends Controller
 
     public function generate(Request $request){
         $start = $request->start;
-        $startDate = date('Y-m-d', strtotime($start));
         $end = $request->end;
-        $endDate = date('Y-m-d', strtotime('+1 day', strtotime($end)));
+        $startDate = date('Y-m-d H:i:s', strtotime($start));
+        $endDate = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($end)));
         $category = $request->category;
         $report = $request->report;
 
@@ -26,13 +26,17 @@ class ReportController extends Controller
 
             $results = DB::table('transactions')
                 ->select('id', 'number as nn', 'total as amount', 'mode_of_payment', 'type', 'created_at as date')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                // ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->where('status', 'PAID')
                 ->where('order_status', '!=', 'CANCELLED')
                 ->orderBy('id', 'desc')
                 ->get();
             $resultsCount = DB::table('transactions')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                // ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->where('status', 'PAID')
                 ->where('order_status', '!=', 'CANCELLED')
                 ->orderBy('id', 'desc')
@@ -48,7 +52,9 @@ class ReportController extends Controller
             $results = DB::table('inventory_transactions')
                 ->select('inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
                 ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                ->where('inventory_transactions.created_at', '>=', $startDate)
+                ->where('inventory_transactions.created_at', '<', $endDate)
                 ->where('inventory_transactions.type', 'INCOMING')
                 ->orderBy('inventory_transactions.id', 'desc')
                 ->get();
@@ -56,7 +62,9 @@ class ReportController extends Controller
             $resultsCount = DB::table('inventory_transactions')
                 ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity')
                 ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                ->where('inventory_transactions.created_at', '>=', $startDate)
+                ->where('inventory_transactions.created_at', '<', $endDate)
                 ->where('inventory_transactions.type', 'INCOMING')
                 ->orderBy('inventory_transactions.id', 'desc')
                 ->get()->count();
@@ -76,7 +84,9 @@ class ReportController extends Controller
                 )
                 ->where('status', 'PAID')
                 ->where('order_status', '!=', 'CANCELLED')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                // ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->groupBy('date');
 
             $expensesQuery = DB::table('inventory_transactions')
@@ -86,7 +96,9 @@ class ReportController extends Controller
                     DB::raw('SUM(amount) as etotal')
                 )
                 ->where('type', 'INCOMING')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                // ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->groupBy('date');
 
             $results = $salesQuery->union($expensesQuery)->orderBy('date')->get();
@@ -112,14 +124,18 @@ class ReportController extends Controller
                 $results = DB::table('inventory_transactions')
                     ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.quantity_before as quantity_before', 'inventory_transactions.quantity_after as quantity_after', 'inventory_transactions.remarks as remarks')
                     ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                    ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                    // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                    ->where('inventory_transactions.created_at', '>=', $startDate)
+                    ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'OUTGOING')
                     ->orderBy('inventory_transactions.id', 'desc')
                     ->get();
                 $resultsCount = DB::table('inventory_transactions')
                     ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity')
                     ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                    ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                    // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                    ->where('inventory_transactions.created_at', '>=', $startDate)
+                    ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'OUTGOING')
                     ->orderBy('inventory_transactions.id', 'desc')
                     ->get()->count();

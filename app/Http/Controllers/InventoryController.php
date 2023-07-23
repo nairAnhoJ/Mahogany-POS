@@ -233,7 +233,7 @@ class InventoryController extends Controller
         $it->amount = $price;
         $it->remarks = 'N/A';
         $it->user_id = Auth::id();
-        $it->created_at = $dateAdd;
+        $it->created_at = $dateAdd . ' ' . date('H:i:s');
         $it->save();
 
         return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Increased');
