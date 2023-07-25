@@ -31,6 +31,7 @@
                             <option value="expenses">Expenses</option>
                             <option value="both">Sales & Expenses</option>
                             <option value="inventory">Inventory</option>
+                            <option value="menu">Menu</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -76,6 +77,10 @@
                         $('#report').html(`
                             <option value="logs">Logs</option>
                             <option value="stock">Stocks</option>
+                        `);
+                    }else if(category == 'menu'){
+                        $('#report').html(`
+                            <option value="rank">Rankings</option>
                         `);
                     }else{
                         $('#report').html(`

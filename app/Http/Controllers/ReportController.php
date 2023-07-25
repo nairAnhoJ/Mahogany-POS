@@ -151,6 +151,17 @@ class ReportController extends Controller
                     ->orderBy('inventories.name', 'asc')
                     ->get()->count();
             }
+        }else if($category == 'menu'){
+            $results = DB::table('ordered')
+                ->select('ordered.menu_id', 'menus.name', DB::raw('SUM(ordered.quantity) as quantity'))
+                ->join('menus', 'ordered.menu_id', '=', 'menus.id')
+                ->groupBy('ordered.menu_id', 'menus.name')
+                ->where('ordered.created_at', '>=', $startDate)
+                ->where('ordered.created_at', '<', $endDate)
+                ->orderBy('quantity', 'desc')
+                ->get();
+
+            $resultsCount = $results->count();
         }
 
         return view('admin.reports.list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
@@ -158,25 +169,25 @@ class ReportController extends Controller
 
     public function print($start, $end, $category, $report){
         $settings = DB::table('settings')->where('id', 1)->first();
+        $startDate = date('Y-m-d H:i:s', strtotime($start));
+        $endDate = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($end)));
 
-        $startDate = date('M j, Y', strtotime($start));
-        $endDate = date('M j, Y', strtotime($end));
+        // $startDate = date('M j, Y', strtotime($start));
+        // $endDate = date('M j, Y', strtotime($end));
 
         if($category == 'sales'){
 
             $results = DB::table('transactions')
                 ->select('id', 'number as nn', 'total as amount', 'mode_of_payment', 'type', 'created_at as date')
-                ->whereBetween('created_at', [$start, $end])
+                // ->whereBetween('created_at', [$start, $end])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->where('status', 'PAID')
                 ->where('order_status', '!=', 'CANCELLED')
                 ->orderBy('id', 'desc')
                 ->get();
-            $resultsCount = DB::table('transactions')
-                ->whereBetween('created_at', [$start, $end])
-                ->where('status', 'PAID')
-                ->where('order_status', '!=', 'CANCELLED')
-                ->orderBy('id', 'desc')
-                ->get()->count();
+            
+            $resultsCount = $results->count();
 
             if($report == 'summary'){
                 return view('admin.reports.print_summary_se', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
@@ -187,17 +198,14 @@ class ReportController extends Controller
             $results = DB::table('inventory_transactions')
                 ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.inv_id as inv_id', 'inventory_transactions.remarks as remarks')
                 ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                ->whereBetween('inventory_transactions.created_at', [$start, $end])
+                // ->whereBetween('inventory_transactions.created_at', [$start, $end])
+                ->where('inventory_transactions.created_at', '>=', $startDate)
+                ->where('inventory_transactions.created_at', '<', $endDate)
                 ->where('inventory_transactions.type', 'INCOMING')
                 ->orderBy('inventory_transactions.id', 'desc')
                 ->get();
-            $resultsCount = DB::table('inventory_transactions')
-                ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity')
-                ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                ->whereBetween('inventory_transactions.created_at', [$start, $end])
-                ->where('inventory_transactions.type', 'INCOMING')
-                ->orderBy('inventory_transactions.id', 'desc')
-                ->get()->count();
+            
+            $resultsCount = $results->count();
 
                 if($report == 'summary'){
                     return view('admin.reports.print_summary_se', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
@@ -212,7 +220,9 @@ class ReportController extends Controller
                 )
                 ->where('status', 'PAID')
                 ->where('order_status', '!=', 'CANCELLED')
-                ->whereBetween('created_at', [$start, $end])
+                // ->whereBetween('created_at', [$start, $end])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->groupBy('date');
 
             $expensesQuery = DB::table('inventory_transactions')
@@ -222,7 +232,9 @@ class ReportController extends Controller
                     DB::raw('SUM(amount) as etotal')
                 )
                 ->where('type', 'INCOMING')
-                ->whereBetween('created_at', [$start, $end])
+                // ->whereBetween('created_at', [$start, $end])
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<', $endDate)
                 ->groupBy('date');
 
             $results = $salesQuery->union($expensesQuery)->orderBy('date')->get();
@@ -234,32 +246,37 @@ class ReportController extends Controller
                 $results = DB::table('inventory_transactions')
                     ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.quantity_before as quantity_before', 'inventory_transactions.quantity_after as quantity_after', 'inventory_transactions.remarks as remarks')
                     ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                    ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                    // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
+                    ->where('inventory_transactions.created_at', '>=', $startDate)
+                    ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'OUTGOING')
                     ->orderBy('inventory_transactions.id', 'desc')
                     ->get();
-                $resultsCount = DB::table('inventory_transactions')
-                    ->select('inventory_transactions.created_at as date', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity')
-                    ->join('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
-                    ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
-                    ->where('inventory_transactions.type', 'OUTGOING')
-                    ->orderBy('inventory_transactions.id', 'desc')
-                    ->get()->count();
+                
+                $resultsCount = $results->count();
             }else{
                 $results = DB::table('inventories')
                     ->select('inventories.created_at as date', 'inventories.name as nn', 'categories.name as cn', 'inventories.quantity as quantity')
                     ->join('categories', 'inventories.category_id', '=', 'categories.id')
                     ->orderBy('inventories.name', 'asc')
                     ->get();
-                $resultsCount = DB::table('inventories')
-                    ->select('inventories.created_at as date', 'inventories.name as nn', 'categories.name as cn', 'inventories.quantity as quantity')
-                    ->join('categories', 'inventories.category_id', '=', 'categories.id')
-                    ->orderBy('inventories.name', 'asc')
-                    ->get()->count();
+
+                $resultsCount = $results->count();
             }
+        }else if($category == 'menu'){
+            $results = DB::table('ordered')
+                ->select('ordered.menu_id', 'menus.name', DB::raw('SUM(ordered.quantity) as quantity'))
+                ->join('menus', 'ordered.menu_id', '=', 'menus.id')
+                ->groupBy('ordered.menu_id', 'menus.name')
+                ->where('ordered.created_at', '>=', $startDate)
+                ->where('ordered.created_at', '<', $endDate)
+                ->orderBy('quantity', 'desc')
+                ->get();
+
+            $resultsCount = $results->count();
         }
 
-        if($report == 'list' || $report == 'logs' || $report == 'stock'){
+        if($report == 'list' || $report == 'logs' || $report == 'stock' || $report == 'rank'){
             return view('admin.reports.print_list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
         }else if($report == 'summary'){
             return view('admin.reports.print_summary_se', compact('results', 'settings'));

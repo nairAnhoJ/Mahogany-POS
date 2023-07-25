@@ -28,13 +28,13 @@
          <li>
             <a href="{{ route('pos.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                <i class="uil uil-monitor text-2xl text-gray-500"></i>
-               <span class="ml-3">POS</span>
+               <span class="ml-3">Orders</span>
             </a>
          </li>
          <li>
             <a href="{{ route('orders.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                <i class="uil uil-utensils-alt text-2xl text-gray-500"></i>
-               <span class="ml-3">Orders</span>
+               <span class="ml-3">Tables</span>
             </a>
          </li>
          <li>

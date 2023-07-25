@@ -45,6 +45,8 @@
                         $ncat = 'Expenses Transaction';
                     }else if($category == 'inventory'){
                         $ncat = 'Inventory Outgoing';
+                    }else if($category == 'menu'){
+                        $ncat = 'Menu Rankings';
                     }
                 @endphp
                 <h1 class="text-3xl">{{ $ncat }} Logs</h1>
@@ -113,6 +115,16 @@
                                         Quantity
                                     </th>
                                 @endif
+                            @elseif($category == 'menu')
+                                <th class="px-6 text-center">
+                                    #
+                                </th>
+                                <th class="px-6 text-center">
+                                    Menu
+                                </th>
+                                <th class="px-6 text-center">
+                                    Total Served
+                                </th>
                             @endif
                         </tr>
                         {{-- <tr class="border-b">
@@ -143,6 +155,9 @@
                         </tr> --}}
                     </thead>
                     <tbody>
+                        @php
+                            $x = 1;
+                        @endphp
                         @foreach ($results as $result)
                             <tr class="border-b">
                                 @if ($category == 'sales')
@@ -206,6 +221,16 @@
                                             {{ round($result->quantity,2) }}
                                         </td>
                                     @endif
+                                @elseif($category == 'menu')
+                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                        {{ $x++ }}
+                                    </th>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->name }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ round($result->quantity, 0) }}
+                                    </td>
                                 @endif
                             </tr>
                             
