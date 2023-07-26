@@ -92,7 +92,7 @@ class ExpensesController extends Controller
         // $category_id = $request->category_id;
         // $quantity = $request->quantity;
         // $reorder_point = $request->reorder_point;
-        // $unit = $request->unit;
+        $dateAdd = $request->dateAdd.' '.date('H:i:s');
         $quantity = str_replace(',', '', $request->quantity);
         $price = str_replace(',', '', $request->price);
         // $image = $request->image;
@@ -112,6 +112,7 @@ class ExpensesController extends Controller
         $item->amount = $price;
         $item->remarks = $name;
         $item->user_id = Auth::user()->id;
+        $item->created_at = date('Y/m/d H:i:s', strtotime($dateAdd));
         $item->save();
 
         return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Added');
