@@ -127,6 +127,7 @@ class ExpensesController extends Controller
     public function update(Request $request){
         $id = $request->id;
         $name = $request->name;
+        $dateAdd = $request->dateAdd.' '.date('H:i:s');
         $quantity = str_replace(',', '', $request->quantity);
         $price = str_replace(',', '', $request->price);
 
@@ -141,6 +142,7 @@ class ExpensesController extends Controller
                 'remarks' => $name,
                 'quantity' => $quantity,
                 'amount' => $price,
+                'created_at' => date('Y/m/d H:i:s', strtotime($dateAdd))
             ]);
 
         return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Updated');
