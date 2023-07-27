@@ -736,16 +736,24 @@ class MenuController extends Controller
     public function dispose(Request $request){
         $menu = DB::table('menus')->where('slug', $request->disposeSlug)->first();
         $quantity = $request->quantity;
-        $date = date('Y-m-d H:i:s', strtotime($request->disposeDate));
+        $date = date('Y-m-d H:i:s', strtotime($request->disposeDate.' '.date('H:i:s')));
 
         if($menu->current_quantity < $quantity){
             return redirect()->route('menu.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
         }
 
+        $menuPrice = DB::table('menus')
+            ->select('price')
+            ->where('id', $menu->id)
+            ->first();
+
+        $cost = $menuPrice->price * $quantity;
+
         $waste = new Waste();
         $waste->on = 'MENU';
         $waste->iid = $menu->id;
         $waste->quantity = $quantity;
+        $waste->cost = $cost;
         $waste->created_at = $date;
         $waste->save();
 

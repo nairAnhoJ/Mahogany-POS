@@ -192,17 +192,27 @@ class InventoryController extends Controller
     public function dispose(Request $request){
         $inv = DB::table('inventories')->where('slug', $request->disposeSlug)->first();
         $quantity = $request->quantity;
-        $date = date('Y-m-d H:i:s', strtotime($request->disposeDate));
+        $date = date('Y-m-d H:i:s', strtotime($request->disposeDate.' '.date('H:i:s')));
 
         if($inv->quantity < $quantity){
             return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
         }
+
+        $inv_tran = DB::table('inventory_transactions')
+            ->select('amount', 'quantity')
+            ->where('type', 'INCOMING')
+            ->where('inv_id', $inv->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $cost = ($inv_tran->amount * $quantity) / $inv_tran->quantity;
 
         $waste = new Waste();
         $waste->on = 'INVENTORY';
         $waste->iid = $inv->id;
         $waste->quantity = $quantity;
         $waste->created_at = $date;
+        $waste->cost = $cost;
         $waste->save();
 
         DB::table('inventories')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);

@@ -32,6 +32,7 @@
                             <option value="both">Sales & Expenses</option>
                             <option value="inventory">Inventory</option>
                             <option value="menu">Menu</option>
+                            <option value="waste">Waste</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -81,6 +82,11 @@
                     }else if(category == 'menu'){
                         $('#report').html(`
                             <option value="rank">Rankings</option>
+                        `);
+                    }else if(category == 'waste'){
+                        $('#report').html(`
+                            <option value="raw">Raw Inventory</option>
+                            <option value="menu">Menu</option>
                         `);
                     }else{
                         $('#report').html(`

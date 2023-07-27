@@ -47,6 +47,12 @@
                         $ncat = 'Inventory Outgoing';
                     }else if($category == 'menu'){
                         $ncat = 'Menu Rankings';
+                    }else if($category == 'waste'){
+                        if ($report == 'raw') {
+                            $ncat = 'Raw Inventory Waste';
+                        }else{
+                            $ncat = 'Menu Waste';
+                        }
                     }
                 @endphp
                 <h1 class="text-3xl">{{ $ncat }} Logs</h1>
@@ -125,6 +131,20 @@
                                 <th class="px-6 text-center">
                                     Total Served
                                 </th>
+                            @elseif($category == 'waste')
+                                <th class="px-6 text-center">
+                                    Date
+                                </th>
+                                <th class="px-6 text-center">
+                                    Name
+                                </th>
+                                <th class="px-6 text-center">
+                                    Quantity
+                                </th>
+                                <th class="px-6 text-center">
+                                    Cost
+                                </th>
+
                             @endif
                         </tr>
                         {{-- <tr class="border-b">
@@ -158,7 +178,15 @@
                         @php
                             $x = 1;
                         @endphp
+                            @php
+                                $total = 0;
+                            @endphp
                         @foreach ($results as $result)
+                            @php
+                                if($category == 'waste'){
+                                    $total = $total +  $result->cost;
+                                }
+                            @endphp
                             <tr class="border-b">
                                 @if ($category == 'sales')
                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
@@ -231,6 +259,19 @@
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                         {{ round($result->quantity, 0) }}
                                     </td>
+                                @elseif($category == 'waste')
+                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                        {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
+                                    </th>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->name }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->quantity }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        ₱ {{ number_format($result->cost, 2, '.', ',') }}
+                                    </td>
                                 @endif
                             </tr>
                             
@@ -257,6 +298,20 @@
                         @endforeach
                     </tbody>
                 </table>
+                @if($category == 'waste')
+                    <div class="w-full">
+                        <table class="w-full">
+                            <tr>
+                                <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                    Total
+                                </th>
+                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                    ₱ {{ number_format($total, 2, '.', ',') }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

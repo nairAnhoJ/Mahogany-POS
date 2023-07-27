@@ -162,6 +162,28 @@ class ReportController extends Controller
                 ->get();
 
             $resultsCount = $results->count();
+        }else if($category == 'waste'){
+            if($report == 'raw'){
+                $results = DB::table('wastes')
+                    ->select('wastes.iid', 'wastes.created_at','wastes.quantity', 'inventories.name', 'wastes.cost')
+                    ->join('inventories', 'wastes.iid', '=', 'inventories.id')
+                    ->where('wastes.on', 'INVENTORY')
+                    ->where('wastes.created_at', '>=', $startDate)
+                    ->where('wastes.created_at', '<', $endDate)
+                    ->orderBy('wastes.created_at', 'desc')
+                    ->get();
+            }else if($report == 'menu'){
+                $results = DB::table('wastes')
+                    ->select('wastes.iid', 'wastes.created_at','wastes.quantity', 'menus.name', 'wastes.cost')
+                    ->join('menus', 'wastes.iid', '=', 'menus.id')
+                    ->where('wastes.on', 'MENU')
+                    ->where('wastes.created_at', '>=', $startDate)
+                    ->where('wastes.created_at', '<', $endDate)
+                    ->orderBy('wastes.created_at', 'desc')
+                    ->get();
+            }
+
+            $resultsCount = $results->count();
         }
 
         return view('admin.reports.list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
@@ -274,9 +296,31 @@ class ReportController extends Controller
                 ->get();
 
             $resultsCount = $results->count();
+        }else if($category == 'waste'){
+            if($report == 'raw'){
+                $results = DB::table('wastes')
+                    ->select('wastes.iid', 'wastes.created_at','wastes.quantity', 'inventories.name', 'wastes.cost')
+                    ->join('inventories', 'wastes.iid', '=', 'inventories.id')
+                    ->where('wastes.on', 'INVENTORY')
+                    ->where('wastes.created_at', '>=', $startDate)
+                    ->where('wastes.created_at', '<', $endDate)
+                    ->orderBy('wastes.created_at', 'desc')
+                    ->get();
+            }else if($report == 'menu'){
+                $results = DB::table('wastes')
+                    ->select('wastes.iid', 'wastes.created_at','wastes.quantity', 'menus.name', 'wastes.cost')
+                    ->join('menus', 'wastes.iid', '=', 'menus.id')
+                    ->where('wastes.on', 'MENU')
+                    ->where('wastes.created_at', '>=', $startDate)
+                    ->where('wastes.created_at', '<', $endDate)
+                    ->orderBy('wastes.created_at', 'desc')
+                    ->get();
+            }
+
+            $resultsCount = $results->count();
         }
 
-        if($report == 'list' || $report == 'logs' || $report == 'stock' || $report == 'rank'){
+        if($report == 'list' || $report == 'logs' || $report == 'stock' || $report == 'rank' || $category == 'waste'){
             return view('admin.reports.print_list', compact('results', 'settings', 'category', 'resultsCount', 'startDate', 'endDate', 'report'));
         }else if($report == 'summary'){
             return view('admin.reports.print_summary_se', compact('results', 'settings'));

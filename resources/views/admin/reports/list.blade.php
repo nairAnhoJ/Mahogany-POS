@@ -32,6 +32,12 @@
                                 }
                             }else if($category == 'menu'){
                                 $ncat = 'Menu Rankings';
+                            }else if($category == 'waste'){
+                                if ($report == 'raw') {
+                                    $ncat = 'Raw Inventory Waste';
+                                }else{
+                                    $ncat = 'Menu Waste';
+                                }
                             }
                         @endphp
                         <h1 class="text-xl lg:text-3xl">{{ $ncat }}</h1>
@@ -69,6 +75,20 @@
                                                 </th>
                                                 <th class="px-6 text-center">
                                                     Quantity
+                                                </th>
+
+                                            @elseif($category == 'waste')
+                                                <th class="px-6 text-center">
+                                                    Date
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Name
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Quantity
+                                                </th>
+                                                <th class="px-6 text-center">
+                                                    Cost
                                                 </th>
 
                                             @elseif($category == 'inventory')
@@ -118,8 +138,14 @@
                                     <tbody>
                                         @php
                                             $x = 1;
+                                            $total = 0;
                                         @endphp
                                         @foreach ($results as $result)
+                                        @php
+                                            if($category == 'waste'){
+                                                $total = $total +  $result->cost;
+                                            }
+                                        @endphp
                                             <tr class="border-b">
                                                 @if ($category == 'sales')
                                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
@@ -192,11 +218,36 @@
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ round($result->quantity, 0) }}
                                                     </td>
+                                                @elseif($category == 'waste')
+                                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                                        {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
+                                                    </th>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->name }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->quantity }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        ₱ {{ number_format($result->cost, 2, '.', ',') }}
+                                                    </td>
                                                 @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @if($category == 'waste')
+                                    <table class="w-full">
+                                        <tr>
+                                            <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                                Total
+                                            </th>
+                                            <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                ₱ {{ number_format($total, 2, '.', ',') }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                @endif
                             </div>
                         </div>
                     {{-- TABLE END --}}
