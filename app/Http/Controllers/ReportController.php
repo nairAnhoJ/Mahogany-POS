@@ -50,7 +50,7 @@ class ReportController extends Controller
         }else if($category == 'expenses'){
 
             $results = DB::table('inventory_transactions')
-                ->select('inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
+                ->select('inventory_transactions.id as id','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
                 ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
                 // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
                 ->where('inventory_transactions.created_at', '>=', $startDate)
@@ -325,5 +325,48 @@ class ReportController extends Controller
         }else if($report == 'summary'){
             return view('admin.reports.print_summary_se', compact('results', 'settings'));
         }
+    }
+
+    public function updateExpenses(Request $request){
+        $it = DB::table('inventory_transactions')->where('id',$request->id)->first();
+        $item = DB::table('inventories')->where('id', $it->inv_id)->first();
+
+        if($request->quantity > $it->quantity){
+            if($item->quantity < ($request->quantity - $it->quantity)){
+                echo 'Invalid Quantity';
+            }else{
+                DB::table('inventories')->where('id', $item->id)->update([
+                    'quantity' => $item->quantity - ($request->quantity - $it->quantity)
+                ]);
+
+                DB::table('inventory_transactions')->where('id',$request->id)->update([
+                    'amount' => $request->amount,
+                    'quantity' => $request->quantity,
+                    'quantity_after' => $it->quantity_before + $request->quantity,
+                    'created_at' => date('Y-m-d', strtotime($request->date)).' '.date('H:i:s'),
+                ]);
+
+                echo 'Update Successful';
+            }
+        }else{
+            DB::table('inventories')->where('id', $item->id)->update([
+                'quantity' => $item->quantity + ($it->quantity - $request->quantity)
+            ]);
+            
+            DB::table('inventory_transactions')->where('id',$request->id)->update([
+                'amount' => $request->amount,
+                'quantity' => $request->quantity,
+                'quantity_after' => $it->quantity_before + $request->quantity,
+                'created_at' => date('Y-m-d', strtotime($request->date)).' '.date('H:i:s'),
+            ]);
+
+            echo 'Update Successful';
+        }
+    }
+
+    public function deleteExpenses(Request $request){
+        DB::table('inventory_transactions')->where('id', $request->id)->delete();
+
+        echo 'Delete Successful';
     }
 }

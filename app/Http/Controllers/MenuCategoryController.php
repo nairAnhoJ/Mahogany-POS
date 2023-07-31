@@ -62,7 +62,7 @@ class MenuCategoryController extends Controller
         $slug = $nslug;
 
         $category = new MenuCategory();
-        $category->name = strtoupper($name);
+        $category->name = $name;
         $category->slug = $slug;
         $category->save();
 
@@ -84,7 +84,7 @@ class MenuCategoryController extends Controller
 
         DB::table('menu_categories')->where('slug', $slug)
             ->update([
-                'name' => strtoupper($name),
+                'name' => $name,
             ]);
 
         return redirect()->route('menu.category.index')->withInput()->with('message', 'Successfully Updated');

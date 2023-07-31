@@ -1,5 +1,92 @@
 <x-app-layout>
     @section('page_title', 'REPORTS')
+
+    {{-- EDIT MODAL --}}
+        <!-- Main modal -->
+        <div id="editModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+            <div class="relative w-full h-full max-w-2xl md:h-auto">
+                <!-- Modal content -->
+                <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
+                        <h3 class="font-semibold text-gray-900 flex items-center">
+                            <span class="text-blue-700 text-base md:text-lg lg:text-xl">Edit</span>
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="editModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="px-6 py-6">
+                        @csrf
+                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
+                            <h1 id="editName" class="pb-5 font-bold text-xl"></h1>
+                            <div class="mb-6">
+                                <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
+                                <div class="flex items-center">
+                                    <input type="text" id="editQuantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                    <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                                <div class="flex items-center">
+                                    <span class="px-3 text-base font-bold text-gray-600">₱</span>
+                                    <input type="text" id="editPrice" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                                <div class="relative max-w-sm">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                      <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                                    </div>
+                                    <input datepicker type="text" id="editDate" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date">
+                                  </div>
+                            </div>
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
+                        <button type="button" data-modal-hide="editModal" class="editSubmit w-24 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>
+                        <button data-modal-hide="editModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- EDIT MODAL END --}}
+
+    {{-- DELETE MODAL --}}
+        <!-- Main modal -->
+        <div id="deleteModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+            <div class="relative w-full h-full max-w-2xl md:h-auto">
+                <!-- Modal content -->
+                <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
+                        <h3 class="font-semibold text-gray-900 flex items-center">
+                            <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i>
+                            <span class="text-red-700 text-base md:text-lg lg:text-xl">Delete Item</span>
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="deleteModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="px-6 py-3 md:py-6 space-y-6">
+                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
+                            Are you sure you want to delete this?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
+                        <button type="button" data-modal-hide="deleteModal" class="deleteSubmit w-24 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Yes</button>
+                        <button data-modal-hide="deleteModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- DELETE MODAL END --}}
     
     <div class="p-3 lg:pt-3 {{ (Auth::user()->role == 2) ? '' : ' lg:ml-64' }}">
         <div id="contentDiv" class="p-2 w-full">
@@ -76,7 +163,11 @@
                                                 <th class="px-6 text-center">
                                                     Quantity
                                                 </th>
-
+                                                @if (Auth::user()->role == 1)
+                                                    <th class="px-6 text-center">
+                                                        Action
+                                                    </th>
+                                                @endif
                                             @elseif($category == 'waste')
                                                 <th class="px-6 text-center">
                                                     Date
@@ -165,11 +256,14 @@
                                                         {{ date('F j, Y h:i A', strtotime($result->date)) }}
                                                     </th>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        @if ($result->inv_id != 0)
-                                                            {{ $result->nn }}
-                                                        @else
-                                                            {{ $result->remarks }}
-                                                        @endif
+                                                        @php
+                                                            if($result->inv_id != 0){
+                                                                $iname = $result->nn;
+                                                            }else{
+                                                                $iname = $result->remarks;
+                                                            }
+                                                        @endphp
+                                                        {{ $iname }}
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         ₱ {{ number_format($result->amount, 2, '.', ',') }}
@@ -177,6 +271,13 @@
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->quantity }}
                                                     </td>
+                                                    @if (Auth::user()->role == 1)
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
+                                                            <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
+                                                            <span class="px-2">|</span>
+                                                            <button data-id="{{ $result->id }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
+                                                        </td>
+                                                    @endif
                                                 @elseif($category == 'inventory')
                                                     @if ($report == 'logs')
                                                         <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
@@ -423,57 +524,13 @@
                         </div>
                     {{-- INVENTORY LIST SMALL DEVICE END --}}
                 </div>
-
-                {{-- PAGINATION --}}
-                    {{-- <div class="grid md:grid-cols-2 mt-3 px-3">
-                        @php
-                            $prev = $page - 1;
-                            $next = $page + 1;
-                            $from = ($prev * 100) + 1;
-                            $to = $page * 100;
-                            if($to > $resultsCount){
-                                $to = $resultsCount;
-                            }if($resultsCount == 0){
-                                $from = 0;
-                            }
-                        @endphp
-                        <div class="justify-self-center md:justify-self-start self-center">
-                            <span class="text-sm text-gray-700">
-                                Showing <span class="font-semibold text-gray-900">{{ $from }}</span> to <span class="font-semibold text-gray-900">{{ $to }}</span> of <span class="font-semibold text-gray-900">{{ $resultsCount }}</span> Items
-                            </span>
-                        </div>
-
-                        <div class="justify-self-center md:justify-self-end">
-                            <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
-                                <ul class="inline-flex items-center -space-x-px">
-                                    <li>
-                                        <a href="{{ ($search == '') ? url('/system-management/user/'.$prev) : url('/system-management/user/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
-                                            <i class="uil uil-angle-left-b"></i>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">{{ $page }}</p>
-                                    </li>
-                                    <li>
-                                        <a href="{{ ($search == '') ? url('/system-management/user/'.$next) : url('/system-management/user/'.$next.'/'.$search); }}" class="{{ ($to == $resultsCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
-                                            <i class="uil uil-angle-right-b"></i>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div> --}}
-                {{-- PAGINATION END --}}
-
-
             </div>
         </div>
      </div>
 
     <script>
         $(document).ready(function() {
+            var id;
             $('#navButton').click(function(){
                     $('#topNav').addClass('absolute');
                     $('#topNav').removeClass('sticky');
@@ -486,8 +543,59 @@
                 if (!container.is(e.target) && container.has(e.target).length === 0) {
                     $('#topNav').removeClass('absolute');
                     $('#topNav').addClass('sticky');
-                $('#contentDiv').removeClass('pt-14');
+                    $('#contentDiv').removeClass('pt-14');
                 }
+            });
+
+            $('.actionButton').click(function(){
+                id = $(this).data('id');
+                var name = $(this).data('name');
+                var amount = $(this).data('amount');
+                var quantity = $(this).data('quantity');
+                var date = $(this).data('date');
+
+                $('#editName').html(name);
+                $('#editPrice').val(amount);
+                $('#editQuantity').val(quantity);
+                $('#editDate').val(date);
+            });
+
+            $('.editSubmit').click(function(){
+                var amount = $('#editPrice').val();
+                var quantity = $('#editQuantity').val();
+                var date = $('#editDate').val();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('updateExpenses') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        amount: amount,
+                        quantity: quantity,
+                        date: date,
+                        _token: _token
+                    },
+                    success:function(result){
+                        alert(result);
+                    }
+                })
+            });
+
+            $('.deleteSubmit').click(function(){
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{ route('deleteExpenses') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        alert(result);
+                    }
+                })
             });
         });
     </script>

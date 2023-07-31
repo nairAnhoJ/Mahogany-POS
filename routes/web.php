@@ -60,6 +60,8 @@ Route::middleware("role:1,2")->group(function(){
     // REPORTS
     Route::get('/reports', [ReportController::class, 'index'])->name('areport.index');
     Route::post('/report/generate', [ReportController::class, 'generate'])->name('areport.generate');
+    Route::post('/report/generate/update-expenses', [ReportController::class, 'updateExpenses'])->name('updateExpenses');
+    Route::post('/report/generate/delete-expenses', [ReportController::class, 'deleteExpenses'])->name('deleteExpenses');
     Route::get('/report/print/{start}/{end}/{category}/{report}', [ReportController::class, 'print']);
 
     // USERS
