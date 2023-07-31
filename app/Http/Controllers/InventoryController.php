@@ -23,7 +23,7 @@ class InventoryController extends Controller
         $search = "";
 
         if(auth()->user()->role == 1){
-            return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
+            return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
         }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
             return view('user.reciever.index', compact('inventories', 'invCount', 'page', 'search'));
         }
@@ -223,6 +223,9 @@ class InventoryController extends Controller
     public function addqty(Request $request){
         $slug = $request->addSlug;
         $quantity = $request->quantity;
+        if($quantity < 1 || $quantity == '' || $quantity == null){
+            return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
+        }
         $price = $request->price;
         $dateAdd = $request->dateAdd;
         $inv = DB::table('inventories')->where('slug', $slug)->first();

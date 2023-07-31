@@ -110,7 +110,11 @@
                             if($category == 'sales'){
                                 $ncat = 'Sales Transaction Logs';
                             }else if($category == 'expenses'){
-                                $ncat = 'Expenses Transaction Logs';
+                                if($report == 'unpaid'){
+                                    $ncat = 'Unpaid Expenses';
+                                }else{
+                                    $ncat = 'Expenses Transaction Logs';
+                                }
                             }else if($category == 'inventory'){
                                 if ($report == 'logs') {
                                     $ncat = 'Inventory Outgoing Logs';

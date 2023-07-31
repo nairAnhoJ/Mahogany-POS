@@ -74,7 +74,13 @@
                 $('#report').empty();
 
                 if(category != 'both'){
-                    if(category == 'inventory'){
+                    if(category == 'expenses'){
+                        $('#report').html(`
+                            <option value="list">Transaction Logs</option>
+                            <option value="summary">Summary</option>
+                            <option value="unpaid">Unpaid</option>
+                        `);
+                    }else if(category == 'inventory'){
                         $('#report').html(`
                             <option value="logs">Logs</option>
                             <option value="stock">Stocks</option>

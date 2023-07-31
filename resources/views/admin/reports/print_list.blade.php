@@ -42,7 +42,11 @@
                     if($category == 'sales'){
                         $ncat = 'Sales Transaction';
                     }else if($category == 'expenses'){
-                        $ncat = 'Expenses Transaction';
+                        if($report == 'unpaid'){
+                            $ncat = 'Unpaid Expenses';
+                        }else{
+                            $ncat = 'Expenses Transaction';
+                        }
                     }else if($category == 'inventory'){
                         $ncat = 'Inventory Outgoing';
                     }else if($category == 'menu'){
