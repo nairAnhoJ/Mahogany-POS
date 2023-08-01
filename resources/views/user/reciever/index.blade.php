@@ -137,9 +137,9 @@
                             <h1 id="addName" class="pb-5 font-bold text-xl"></h1>
                             <input type="hidden" id="addSlug" name="addSlug">
                             <div class="mb-6">
-                                <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
+                                <label for="dquantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
                                 <div class="flex items-center">
-                                    <input type="text" id="quantity" name="quantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                    <input type="text" id="dquantity" name="quantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
                                     <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
                                 </div>
                             </div>
@@ -151,7 +151,20 @@
                                 </div>
                             </div>
                             <div class="mb-6">
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Status</label>
+                                <div class="flex items-center gap-x-10">
+                                    <div class="flex items-center">
+                                        <input checked id="paid" type="radio" value="1" name="status" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="paid" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Paid</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="unpaid" type="radio" value="0" name="status" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="unpaid" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Unpaid</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
                                 <div class="relative max-w-sm">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                       <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
@@ -255,7 +268,7 @@
         @endif
     {{-- ERROR NOTIFICATION END --}}
 
-    <div class="p-3 lg:pt-3 lg:ml-64">
+    <div class="p-3 {{ (Auth::user()->role == 1) ? 'lg:ml-64' : '' }} lg:pt-3">
         <div id="contentDiv" class="p-2 w-full">
             <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
                 {{-- CONTROLS --}}

@@ -222,6 +222,7 @@ class InventoryController extends Controller
 
     public function addqty(Request $request){
         $slug = $request->addSlug;
+        $status = $request->status;
         $quantity = $request->quantity;
         if($quantity < 1 || $quantity == '' || $quantity == null){
             return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
@@ -245,6 +246,7 @@ class InventoryController extends Controller
         $it->quantity_after = $qf;
         $it->amount = $price;
         $it->remarks = 'N/A';
+        $it->is_paid = $status;
         $it->user_id = Auth::id();
         $it->created_at = $dateAdd . ' ' . date('H:i:s');
         $it->save();
