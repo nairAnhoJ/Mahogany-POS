@@ -56,7 +56,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '>=', $startDate)
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
-                    ->where('inventory_transactions.amount', 0)
+                    ->where('inventory_transactions.is_paid', 0)
                     ->orderBy('inventory_transactions.id', 'desc')
                     ->get();
     
@@ -67,12 +67,12 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '>=', $startDate)
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
-                    ->where('inventory_transactions.amount', 0)
+                    ->where('inventory_transactions.is_paid', 0)
                     ->orderBy('inventory_transactions.id', 'desc')
                     ->get()->count();
             }else{
                 $results = DB::table('inventory_transactions')
-                    ->select('inventory_transactions.id as id','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
+                    ->select('inventory_transactions.id as id','inventory_transactions.is_paid as is_paid','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
                     ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
                     // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
                     ->where('inventory_transactions.created_at', '>=', $startDate)
@@ -253,18 +253,18 @@ class ReportController extends Controller
         }else if($category == 'expenses'){
             if($report == 'unpaid'){
                 $results = DB::table('inventory_transactions')
-                    ->select('inventory_transactions.id as id','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
+                    ->select('inventory_transactions.id as id','inventory_transactions.is_paid as is_paid','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
                     ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
                     // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
                     ->where('inventory_transactions.created_at', '>=', $startDate)
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
-                    ->where('inventory_transactions.amount', 0)
+                    ->where('inventory_transactions.is_paid', 0)
                     ->orderBy('inventory_transactions.id', 'desc')
                     ->get();
             }else{
                 $results = DB::table('inventory_transactions')
-                    ->select('inventory_transactions.id as id','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
+                    ->select('inventory_transactions.id as id','inventory_transactions.is_paid as is_paid','inventory_transactions.created_at as date', 'inventory_transactions.inv_id as inv_id', 'inventories.name as nn', 'inventory_transactions.amount as amount', 'inventory_transactions.quantity as quantity', 'inventory_transactions.remarks as remarks')
                     ->leftJoin('inventories', 'inventory_transactions.inv_id', '=', 'inventories.id')
                     // ->whereBetween('inventory_transactions.created_at', [$startDate, $endDate])
                     ->where('inventory_transactions.created_at', '>=', $startDate)
@@ -382,6 +382,15 @@ class ReportController extends Controller
         }else if($report == 'summary'){
             return view('admin.reports.print_summary_se', compact('results', 'settings'));
         }
+    }
+
+    public function payExpenses(Request $request){
+        DB::table('inventory_transactions')->where('id', $request->id)->update([
+            'is_paid' => 1,
+            'created_at' => date('Y-m-d', strtotime($request->date)).' '.date('H:i:s')
+        ]);
+
+        echo 'Mard as Paid Successful';
     }
 
     public function updateExpenses(Request $request){

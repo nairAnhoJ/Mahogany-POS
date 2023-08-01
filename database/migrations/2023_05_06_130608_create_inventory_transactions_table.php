@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('quantity');
             $table->string('quantity_after');
             $table->string('amount')->nullable();
+            $table->integer('is_paid')->default(1);
             $table->string('remarks');
             $table->string('user_id');
             $table->timestamps();

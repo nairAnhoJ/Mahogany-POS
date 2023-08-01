@@ -81,9 +81,9 @@
                                 </th>
 
                             @elseif($category == 'expenses')
-                            <th class="px-6 text-center">
-                                Date
-                            </th>
+                                <th class="px-6 text-center">
+                                    Date
+                                </th>
                                 <th class="px-6 text-center">
                                     Item Name
                                 </th>
@@ -93,6 +93,11 @@
                                 <th class="px-6 text-center">
                                     Quantity
                                 </th>
+                                @if ($report != 'unpaid')
+                                    <th class="px-6 text-center">
+                                        Status
+                                    </th>
+                                @endif
 
                             @elseif($category == 'inventory')
                                 @if ($report == 'logs')
@@ -222,6 +227,18 @@
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                         {{ $result->quantity }}
                                     </td>
+                                    @if ($report != 'unpaid')
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            @php
+                                                if($result->is_paid == 1 ){
+                                                    $ip = 'PAID';
+                                                }else{
+                                                    $ip = 'UNPAID';
+                                                }
+                                            @endphp
+                                            {{ $ip }}
+                                        </td>
+                                    @endif
                                 @elseif($category == 'inventory')
                                     @if ($report == 'logs')
                                         <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
