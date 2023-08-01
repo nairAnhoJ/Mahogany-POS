@@ -167,7 +167,7 @@ class DashboardController extends Controller
             $profitArray = array();
 
             for ($i = 0; $i < 7; $i++) {
-                $monthStart = Carbon::parse($currentMonth)->startOfMonth()->addMonths($i);
+                $monthStart = Carbon::parse($currentMonth)->subMonths($i);
                 $monthEnd = $monthStart->copy()->endOfMonth();
                 $months[] = [$monthStart->format('Y-m-d'), $monthEnd->format('Y-m-d')];
                     
