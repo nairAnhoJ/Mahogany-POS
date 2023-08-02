@@ -228,7 +228,6 @@ class InventoryController extends Controller
             return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
         }
         $price = $request->price;
-        $dateAdd = $request->dateAdd;
         $inv = DB::table('inventories')->where('slug', $slug)->first();
         $qb = $inv->quantity;
         $qf = $qb + $quantity;
@@ -248,7 +247,10 @@ class InventoryController extends Controller
         $it->remarks = 'N/A';
         $it->is_paid = $status;
         $it->user_id = Auth::id();
-        $it->created_at = $dateAdd . ' ' . date('H:i:s');
+        if(Auth::user()->role == 1){
+            $dateAdd = $request->dateAdd;
+            $it->created_at = $dateAdd . ' ' . date('H:i:s');
+        }
         $it->save();
 
         return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Increased');
@@ -278,7 +280,10 @@ class InventoryController extends Controller
             $it->quantity_after = $qf;
             $it->remarks = $remarks;
             $it->user_id = Auth::id();
-            $it->created_at = $dateMinus;
+            if(Auth::user()->role == 1){
+                $dateMinus = $request->dateMinus;
+                $it->created_at = $dateMinus . ' ' . date('H:i:s');
+            }
             $it->save();
     
             return redirect()->route('inventory.index')->withInput()->with('message', 'Quantity Successfully Decreased');

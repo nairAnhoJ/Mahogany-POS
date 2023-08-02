@@ -57,7 +57,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
                     ->where('inventory_transactions.is_paid', 0)
-                    ->orderBy('inventory_transactions.id', 'desc')
+                    ->orderBy('inventory_transactions.created_at', 'desc')
                     ->get();
     
                 $resultsCount = DB::table('inventory_transactions')
@@ -68,7 +68,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
                     ->where('inventory_transactions.is_paid', 0)
-                    ->orderBy('inventory_transactions.id', 'desc')
+                    ->orderBy('inventory_transactions.created_at', 'desc')
                     ->get()->count();
             }else{
                 $results = DB::table('inventory_transactions')
@@ -78,7 +78,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '>=', $startDate)
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
-                    ->orderBy('inventory_transactions.id', 'desc')
+                    ->orderBy('inventory_transactions.created_at', 'desc')
                     ->get();
     
                 $resultsCount = DB::table('inventory_transactions')
@@ -88,7 +88,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '>=', $startDate)
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
-                    ->orderBy('inventory_transactions.id', 'desc')
+                    ->orderBy('inventory_transactions.created_at', 'desc')
                     ->get()->count();
             }
 
@@ -260,7 +260,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
                     ->where('inventory_transactions.is_paid', 0)
-                    ->orderBy('inventory_transactions.id', 'desc')
+                    ->orderBy('inventory_transactions.created_at', 'desc')
                     ->get();
             }else{
                 $results = DB::table('inventory_transactions')
@@ -270,7 +270,7 @@ class ReportController extends Controller
                     ->where('inventory_transactions.created_at', '>=', $startDate)
                     ->where('inventory_transactions.created_at', '<', $endDate)
                     ->where('inventory_transactions.type', 'INCOMING')
-                    ->orderBy('inventory_transactions.id', 'desc')
+                    ->orderBy('inventory_transactions.created_at', 'desc')
                     ->get();
             }
 

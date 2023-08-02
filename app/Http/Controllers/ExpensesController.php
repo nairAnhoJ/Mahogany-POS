@@ -89,10 +89,11 @@ class ExpensesController extends Controller
     public function store(Request $request){
         // $item_code = $request->item_code;
         $name = $request->name;
+        $status = $request->status;
         // $category_id = $request->category_id;
         // $quantity = $request->quantity;
         // $reorder_point = $request->reorder_point;
-        $dateAdd = $request->dateAdd.' '.date('H:i:s');
+        
         $quantity = str_replace(',', '', $request->quantity);
         $price = str_replace(',', '', $request->price);
         // $image = $request->image;
@@ -111,8 +112,12 @@ class ExpensesController extends Controller
         $item->quantity_after = 0;
         $item->amount = $price;
         $item->remarks = $name;
+        $item->is_paid = $status;
         $item->user_id = Auth::user()->id;
-        $item->created_at = date('Y/m/d H:i:s', strtotime($dateAdd));
+        if(Auth::user()->role == 1){
+            $dateAdd = $request->dateAdd.' '.date('H:i:s');
+            $item->created_at = date('Y/m/d H:i:s', strtotime($dateAdd));
+        }
         $item->save();
 
         return redirect()->route('expenses.index')->withInput()->with('message', 'Successfully Added');
@@ -127,7 +132,12 @@ class ExpensesController extends Controller
     public function update(Request $request){
         $id = $request->id;
         $name = $request->name;
-        $dateAdd = $request->dateAdd.' '.date('H:i:s');
+        $status = $request->status;
+        if(Auth::user()->role == 1){
+            $dateAdd = $request->dateAdd.' '.date('H:i:s');
+        }else{
+            $dateAdd = date('Y/m/d H:i:s');
+        }
         $quantity = str_replace(',', '', $request->quantity);
         $price = str_replace(',', '', $request->price);
 
@@ -142,6 +152,7 @@ class ExpensesController extends Controller
                 'remarks' => $name,
                 'quantity' => $quantity,
                 'amount' => $price,
+                'is_paid' => $status,
                 'created_at' => date('Y/m/d H:i:s', strtotime($dateAdd))
             ]);
 
