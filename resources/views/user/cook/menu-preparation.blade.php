@@ -293,7 +293,7 @@
 
                                                         <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="editButton text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
                                                         @if ($menu->is_combo != 1)
-                                                            <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" data-slug="{{ $menu->slug }}"data-name="{{ $menu->name }}"  class="disposeButton text-orange-500 hover:underline font-semibold text-sm cursor-pointer">Dispose</a> | 
+                                                            <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" data-slug="{{ $menu->slug }}"data-name="{{ $menu->name }}"  class="disposeButton text-orange-500 hover:underline font-semibold text-sm cursor-pointer">Waste</a> | 
                                                         @endif
                                                         
                                                         <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>

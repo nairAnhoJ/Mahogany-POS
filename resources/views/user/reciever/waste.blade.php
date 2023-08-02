@@ -33,39 +33,6 @@
         </div>
     {{-- LOADING END --}}
 
-    {{-- DELETE MODAL --}}
-        
-        <!-- Main modal -->
-        <div id="itemDeleteModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
-                <!-- Modal content -->
-                <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i>
-                            <span class="text-red-700 text-base md:text-lg lg:text-xl">Delete Item</span>
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="itemDeleteModal">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="px-6 py-3 md:py-6 space-y-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            Are you sure you want to delete this item?
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <a type="button" href="" class="deleteConfirm w-24 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Yes</a>
-                        <button data-modal-hide="itemDeleteModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{-- DELETE MODAL END --}}
-
     {{-- NOTIFICATION --}}
         @if (session('message'))
             <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 lg:ml-32 bg-emerald-200 rounded-lg z-50 shadow-md shadow-emerald-800 flex flex-row justify-between px-2">
@@ -141,9 +108,11 @@
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Quantity
                                             </th>
-                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                Action
-                                            </th>
+                                            @if (Auth::user()->role == 1)
+                                                <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                    Action
+                                                </th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -161,9 +130,11 @@
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ $inventory->quantity }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    <a href="{{ url('/waste/inventory/restore/'.$inventory->id) }}" class="text-green-600 hover:underline font-semibold text-sm">Restore</a>
-                                                </td>
+                                                @if (Auth::user()->role == 1)
+                                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                        <a href="{{ url('/waste/inventory/restore/'.$inventory->id) }}" class="text-green-600 hover:underline font-semibold text-sm">Restore</a>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -178,7 +149,7 @@
                                 @php
                                     $x = 1;
                                     foreach ($inventories as $inventory) {
-                                        if($x == 1){
+                                        if(Auth::user()->role == 1){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
@@ -198,6 +169,25 @@
                                                             <div class="text-xs leading-5">Action</div>
                                                             <div class="col-span-2">
                                                                 <a href="'.url('/inventory/edit/'.$inventory->id).'" class="text-green-600 hover:underline font-semibold text-sm">Restore</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ';
+                                        }else{
+                                            echo '
+                                                <h2 id="accordion-collapse-heading-'.$x.'">
+                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                        <span>'.$inventory->name.'</span>
+                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
+                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
+                                                        <div class="grid grid-cols-3">
+                                                            <div class="text-xs leading-5">Quantity</div>
+                                                            <div class="col-span-2 font-semibold text-sm">
+                                                                '.$inventory->quantity.'
                                                             </div>
                                                         </div>
                                                     </div>

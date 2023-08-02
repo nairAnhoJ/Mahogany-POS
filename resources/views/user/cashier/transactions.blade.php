@@ -109,7 +109,7 @@
                                                     {{ $result->nn }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ $result->amount }}.00
+                                                    ₱ {{ number_format($result->amount, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
                                                     {{ $result->table }}
