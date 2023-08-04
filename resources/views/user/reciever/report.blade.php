@@ -17,7 +17,12 @@
         }
     </style>
 
-    @section('page_title', 'REPORT')
+    @if ($rt == 'inv')
+        @section('page_title', 'INVENTORY LOW STOCK REPORT')
+    @else
+        @section('page_title', 'MENU LOW STOCK REPORT')
+    @endif
+
 
     {{-- LOADING --}}
         <div wire:loading id="loadingScreen" class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[60] overflow-hidden bg-gray-900 opacity-75 opa flex flex-col items-center justify-center">
@@ -68,7 +73,7 @@
                     <div class="mb-3">
                         <div class="md:grid md:grid-cols-2">
                             <div class=" w-24">
-                                <a href="{{ route('report.print') }}" target="_blank" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-print mr-1"></i>Print</a>
+                                <a href="{{ $rt == 'inv' ? route('report.inventory.print') : route('report.menu.print') }}" target="_blank" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-print mr-1"></i>Print</a>
                             </div>
                             <div class="justify-self-end w-full xl:w-4/5">
                                 <form method="GET" action="" id="searchForm" class="w-full">
@@ -105,9 +110,11 @@
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Current Quantity
                                             </th>
-                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
-                                                Reorder Point
-                                            </th>
+                                            @if ($rt == 'inv')
+                                                <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                    Reorder Point
+                                                </th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -122,9 +129,11 @@
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ round($inventory->quantity, 2).' '.$inventory->unit }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    {{ $inventory->reorder_point.' '.$inventory->unit }}
-                                                </td>
+                                                @if ($rt == 'inv')
+                                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                        {{ $inventory->reorder_point.' '.$inventory->unit }}
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -139,7 +148,7 @@
                                 @php
                                     $x = 1;
                                     foreach ($inventories as $inventory) {
-                                        if($x == 1){
+                                        if($rt == 'inv'){
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
                                                     <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
@@ -170,48 +179,17 @@
                                                     </div>
                                                 </div>
                                             ';
-                                        }else if($x == $inventories->count()){
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
-                                                        <div class="grid grid-cols-3 content-center">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$inventory->quantity.' '.$inventory->unit.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div>Reorder Point</div>
-                                                            <div class="col-span-2">
-                                                                '.$inventory->reorder_point.' '.$inventory->unit.'
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
                                         }else{
                                             echo '
                                                 <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-left text-gray-500 border border-b-0 border-gray-200 hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
+                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
                                                         <span>'.$inventory->name.'</span>
                                                         <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                     </button>
                                                 </h2>
                                                 <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3 content-center">
+                                                        <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Category</div>
                                                             <div class="col-span-2 font-semibold text-sm">
                                                                 '.$inventory->cat_name.'
@@ -221,12 +199,6 @@
                                                             <div class="text-xs leading-5">Quantity</div>
                                                             <div class="col-span-2 font-semibold text-sm">
                                                                 '.$inventory->quantity.' '.$inventory->unit.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Reorder Point</div>
-                                                            <div class="col-span-2">
-                                                                '.$inventory->reorder_point.' '.$inventory->unit.'
                                                             </div>
                                                         </div>
                                                     </div>
@@ -264,7 +236,7 @@
                             <nav aria-label="Page navigation example" class="h-8 mb-0.5 shadow-xl">
                                 <ul class="inline-flex items-center -space-x-px">
                                     <li>
-                                        <a href="{{ ($search == '') ? url('/inventory/'.$prev) : url('/inventory/'.$prev.'/'.$search);  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                        <a href="{{ ($rt == 'inv') ? ($search == '' ? url('/inventory/'.$prev) : url('/inventory/'.$prev.'/'.$search)) : ($search == '' ? url('/menu/'.$prev) : url('/menu/'.$prev.'/'.$search))  }}"  class="{{ ($page == 1) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
                                             <i class="uil uil-angle-left-b"></i>
                                             <span class="sr-only">Previous</span>
                                         </a>
@@ -273,7 +245,7 @@
                                         <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">{{ $page }}</p>
                                     </li>
                                     <li>
-                                        <a href="{{ ($search == '') ? url('/inventory/'.$next) : url('/inventory/'.$next.'/'.$search); }}" class="{{ ($to == $invCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                        <a href="{{ ($rt == 'inv') ? ($search == '' ? url('/inventory/'.$next) : url('/inventory/'.$next.'/'.$search)) : ($search == '' ? url('/menu/'.$next) : url('/menu/'.$next.'/'.$search))  }}" class="{{ ($to == $invCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                                             <i class="uil uil-angle-right-b"></i>
                                             <span class="sr-only">Next</span>
                                         </a>
@@ -291,12 +263,21 @@
 
      <script>
         $(document).ready(function() {
+            var rt = '{{ $rt }}';
             $('#searchButton').click(function(){
                 var search = $('#searchInput').val();
                 if(search != ""){
-                    $('#searchForm').prop('action', `{{ url('/report/1/${search}') }}`);
+                    if(rt == 'inv'){
+                        $('#searchForm').prop('action', `{{ url('/report/inventory/1/${search}') }}`);
+                    }else{
+                        $('#searchForm').prop('action', `{{ url('/report/menu/1/${search}') }}`);
+                    }
                 }else{
-                    $('#searchForm').prop('action', `{{ url('/report/1') }}`);
+                    if(rt == 'inv'){
+                    $('#searchForm').prop('action', `{{ url('/report/inventory/1') }}`);
+                    }else{
+                    $('#searchForm').prop('action', `{{ url('/report/menu/1') }}`);
+                    }
                 }
                 $('#searchForm').submit();
             });

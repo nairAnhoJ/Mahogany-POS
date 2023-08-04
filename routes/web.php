@@ -165,10 +165,17 @@ Route::middleware('role:1,4,2')->group(function(){
 
 
 
-    Route::get('/report', [ReceiverReportController::class, 'index'])->name('report.index');
-    Route::get('/report/print', [ReceiverReportController::class, 'print'])->name('report.print');
-    Route::get('/report/{page}', [ReceiverReportController::class, 'paginate']);
-    Route::get('/report/{page}/{search}', [ReceiverReportController::class, 'search']);
+    Route::get('/report/inventory', [ReceiverReportController::class, 'invIndex'])->name('report.inventory.index');
+    Route::get('/report/inventory/print', [ReceiverReportController::class, 'invPrint'])->name('report.inventory.print');
+    Route::get('/report/inventory/{page}', [ReceiverReportController::class, 'invPaginate']);
+    Route::get('/report/inventory/{page}/{search}', [ReceiverReportController::class, 'invSearch']);
+
+
+
+    Route::get('/report/menu', [ReceiverReportController::class, 'menuIndex'])->name('report.menu.index');
+    Route::get('/report/menu/print', [ReceiverReportController::class, 'menuPrint'])->name('report.menu.print');
+    Route::get('/report/menu/{page}', [ReceiverReportController::class, 'menuPaginate']);
+    Route::get('/report/menu/{page}/{search}', [ReceiverReportController::class, 'menuSearch']);
 });
 
 

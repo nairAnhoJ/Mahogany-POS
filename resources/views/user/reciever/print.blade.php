@@ -37,8 +37,9 @@
             <div class="">
                 <img src="{{ asset('storage/'.$settings->logo) }}" class="h-10" alt="">
             </div>
-            <div class="mt-4 flex justify-between">
+            <div class="mt-4 flex justify-between items-end">
                 <h1 class="text-3xl">Low Stock Report</h1>
+                <h3>{{ date('F j, Y') }}</h3>
             </div>
             <div class="mt-3 w-full">
                 <table class="w-full mt-4">
@@ -50,9 +51,11 @@
                             <th class="px-6">
                                 Current Quantity
                             </th>
-                            <th class="px-6">
-                                Reorder Point
-                            </th>
+                            @if ($rt == 'inv')
+                                <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                    Reorder Point
+                                </th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -64,9 +67,11 @@
                             <td class="px-6 py-1 text-center whitespace-nowrap">
                                 {{ $inventory->quantity.' '.$inventory->unit }}
                             </td>
-                            <td class="px-6 py-1 text-center whitespace-nowrap">
-                                {{ $inventory->reorder_point.' '.$inventory->unit }}
-                            </td>
+                            @if ($rt == 'inv')
+                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                    {{ $inventory->reorder_point.' '.$inventory->unit }}
+                                </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
