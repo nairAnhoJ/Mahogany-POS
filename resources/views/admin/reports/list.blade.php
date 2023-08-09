@@ -680,6 +680,7 @@
                     },
                     success:function(result){
                         alert(result);
+                        location.reload();
                     }
                 })
             });

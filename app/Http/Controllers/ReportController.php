@@ -394,18 +394,24 @@ class ReportController extends Controller
     }
 
     public function updateExpenses(Request $request){
-        $it = DB::table('inventory_transactions')->where('id',$request->id)->first();
-        $item = DB::table('inventories')->where('id', $it->inv_id)->first();
+        // dd($request->id);
+        // dd(date('Y-m-d', strtotime($request->date)).' '.date('H:i:s'));
+        $it = DB::table('inventory_transactions')->where('id', $request->id)->first();
+        if($it->inv_id != 0){
+            $item = DB::table('inventories')->where('id', $it->inv_id)->first();
+        }
 
         if($request->quantity > $it->quantity){
             if($item->quantity < ($request->quantity - $it->quantity)){
                 echo 'Invalid Quantity';
             }else{
-                DB::table('inventories')->where('id', $item->id)->update([
-                    'quantity' => $item->quantity - ($request->quantity - $it->quantity)
-                ]);
+                if($it->inv_id != 0){
+                    DB::table('inventories')->where('id', $item->id)->update([
+                        'quantity' => $item->quantity - ($request->quantity - $it->quantity)
+                    ]);
+                }
 
-                DB::table('inventory_transactions')->where('id',$request->id)->update([
+                DB::table('inventory_transactions')->where('id', $request->id)->update([
                     'amount' => $request->amount,
                     'quantity' => $request->quantity,
                     'quantity_after' => $it->quantity_before + $request->quantity,
@@ -415,11 +421,13 @@ class ReportController extends Controller
                 echo 'Update Successful';
             }
         }else{
-            DB::table('inventories')->where('id', $item->id)->update([
-                'quantity' => $item->quantity + ($it->quantity - $request->quantity)
-            ]);
+            if($it->inv_id != 0){
+                DB::table('inventories')->where('id', $item->id)->update([
+                    'quantity' => $item->quantity + ($it->quantity - $request->quantity)
+                ]);
+            }
             
-            DB::table('inventory_transactions')->where('id',$request->id)->update([
+            DB::table('inventory_transactions')->where('id', $request->id)->update([
                 'amount' => $request->amount,
                 'quantity' => $request->quantity,
                 'quantity_after' => $it->quantity_before + $request->quantity,
