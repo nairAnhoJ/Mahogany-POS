@@ -179,7 +179,7 @@ Route::middleware('role:1,4,2')->group(function(){
 });
 
 
-Route::middleware('role:2')->group(function(){
+Route::middleware('role:1,2')->group(function(){
 
     // POS
     Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
