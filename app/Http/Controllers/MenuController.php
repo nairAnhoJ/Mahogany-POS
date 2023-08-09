@@ -202,7 +202,7 @@ class MenuController extends Controller
             // }else{
             //     $itemName = $item->name;
             // }
-                $itemName = $item->name;
+            $itemName = $item->name;
             $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$itemName.'</li>';
         }
 
@@ -244,26 +244,25 @@ class MenuController extends Controller
         $counter = $request->counter;
 
         if($request->combo == 'true'){
-            $menuQuery = DB::table('menus')
-                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'));
+            $items = DB::table('menus')
+                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->get();
             
-            $inventoryQuery = DB::table('inventories')
-                ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
+            // $inventoryQuery = DB::table('inventories')
+            //     ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
             
-            $items = $menuQuery->union($inventoryQuery)->get();
+            // $items = $menuQuery->union($inventoryQuery)->get();
         }else{
             $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
         }
         $li = '';
 
-
         foreach ($items as $item){
-            if($item->is_menu == 1){
-                $itemName = 'MENU-'.$item->name;
-            }else{
-                $itemName = $item->name;
-            }
-            $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$counter.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$itemName.'</li>';
+            // if($item->is_menu == 1){
+            //     $itemName = 'MENU-'.$item->name;
+            // }else{
+            //     $itemName = $item->name;
+            // }
+            $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$counter.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
         }
 
         $result = '
@@ -427,6 +426,11 @@ class MenuController extends Controller
         $image = $request->image;
         $servings = $request->servings;
         $Totalcounter = $request->counter;
+        if($request->combo != null){
+            $combo = 1;
+        }else{
+            $combo = 0;
+        }
         $menuID = (DB::table('menus')->where('slug', $oldSlug)->first())->id;
 
         $slug = Str::slug($name, '-');
@@ -485,6 +489,7 @@ class MenuController extends Controller
                     'price' => $price,
                     'image' => $imagePath,
                     'servings' => $servings,
+                    'is_combo' => $combo,
                     'slug' => $slug,
                 ]);
         }else{
@@ -494,6 +499,7 @@ class MenuController extends Controller
                     'category_id' => $category_id,
                     'price' => $price,
                     'servings' => $servings,
+                    'is_combo' => $combo,
                     'slug' => $slug,
                 ]);
         }
