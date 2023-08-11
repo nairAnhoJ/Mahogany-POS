@@ -12,9 +12,9 @@ class WasteController extends Controller
             ->select('wastes.*', 'inventories.name')
             ->join('inventories', 'wastes.iid', 'inventories.id')
             ->where('on', 'INVENTORY')
-            ->orderBy('wastes.created_at', 'desc')
+            ->orderBy('wastes.created_at', 'desc') 
             ->paginate(100);
-        $invCount = DB::table('wastes')->where('on', 'INVENTORY')->count();
+        $invCount = $inventories->total();
 
         $page = 1;
         $search = "";
@@ -29,7 +29,8 @@ class WasteController extends Controller
             ->where('on', 'INVENTORY')
             ->orderBy('wastes.created_at', 'desc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('wastes')->where('on', 'INVENTORY')->count();
+
+        $invCount = $inventories->total();
 
         $search = "";
 
@@ -44,13 +45,8 @@ class WasteController extends Controller
             ->whereRaw("CONCAT_WS(' ', inventories.name) LIKE '%{$search}%'")
             ->orderBy('wastes.created_at', 'desc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('wastes')
-            ->select('wastes.*', 'inventories.name')
-            ->join('inventories', 'wastes.iid', 'inventories.id')
-            ->where('on', 'INVENTORY')
-            ->whereRaw("CONCAT_WS(' ', inventories.name) LIKE '%{$search}%'")
-            ->orderBy('wastes.created_at', 'desc')
-            ->count();
+
+        $invCount = $inventories->total();
 
         return view('user.reciever.waste', compact('search', 'page', 'inventories', 'invCount'));
     }
@@ -85,7 +81,8 @@ class WasteController extends Controller
             ->where('on', 'MENU')
             ->orderBy('wastes.created_at', 'desc')
             ->paginate(100);
-        $invCount = DB::table('wastes')->where('on', 'MENU')->count();
+
+        $invCount = $inventories->total();
 
         $page = 1;
         $search = "";
@@ -100,7 +97,8 @@ class WasteController extends Controller
             ->where('on', 'MENU')
             ->orderBy('wastes.created_at', 'desc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('wastes')->where('on', 'MENU')->count();
+
+        $invCount = $inventories->total();
 
         $search = "";
 
@@ -115,13 +113,8 @@ class WasteController extends Controller
             ->whereRaw("CONCAT_WS(' ', inventories.name) LIKE '%{$search}%'")
             ->orderBy('wastes.created_at', 'desc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('wastes')
-            ->select('wastes.*', 'menus.name')
-            ->join('menus', 'wastes.iid', 'menus.id')
-            ->where('on', 'MENU')
-            ->whereRaw("CONCAT_WS(' ', inventories.name) LIKE '%{$search}%'")
-            ->orderBy('wastes.created_at', 'desc')
-            ->count();
+
+        $invCount = $inventories->total();
 
         $search = "";
 

@@ -184,7 +184,7 @@ class MenuController extends Controller
     public function changeIng(Request $request){
         if($request->combo == 'true'){
             $items = DB::table('menus')
-                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->get();
+                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_combo', 0)->get();
             
             // $inventoryQuery = DB::table('inventories')
                 // ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
@@ -216,7 +216,7 @@ class MenuController extends Controller
                         </div>
                         <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
                             <div class="search relative">
-                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
+                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i> 
                                 <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
                             </div>
                             <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
@@ -245,7 +245,7 @@ class MenuController extends Controller
 
         if($request->combo == 'true'){
             $items = DB::table('menus')
-                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->get();
+                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_combo', 0)->get();
             
             // $inventoryQuery = DB::table('inventories')
             //     ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
@@ -359,7 +359,13 @@ class MenuController extends Controller
                 $itemsArray = explode(",", $request->$iname);
                 $is_menu = $itemsArray[0];
                 $item_id = $itemsArray[1];
-                $invUnit = (DB::table('inventories')->where('id', $item_id)->first())->unit;
+
+                if($request->combo != null){
+                    $invUnit = 'pc/s';
+                }else{
+                    $invUnit = (DB::table('inventories')->where('id', $item_id)->first())->unit;
+                }
+
                 $ingr = new Ingredient();
                 $ingr->menu_id = $item->id;
                 $ingr->inventory_id = $item_id;
@@ -468,7 +474,12 @@ class MenuController extends Controller
                 $itemsArray = explode(",", $request->$iname);
                 $is_menu = $itemsArray[0];
                 $item_id = $itemsArray[1];
-                $invUnit = (DB::table('inventories')->where('id', $item_id)->first())->unit;
+
+                if($request->combo != null){
+                    $invUnit = 'pc/s';
+                }else{
+                    $invUnit = (DB::table('inventories')->where('id', $item_id)->first())->unit;
+                }
 
                 $ingr = new Ingredient();
                 $ingr->menu_id = $menuID;

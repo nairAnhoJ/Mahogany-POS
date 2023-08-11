@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -393,6 +394,16 @@ class ReportController extends Controller
         echo 'Mard as Paid Successful';
     }
 
+
+
+
+
+
+
+
+
+
+
     public function updateExpenses(Request $request){
         // dd($request->id);
         // dd(date('Y-m-d', strtotime($request->date)).' '.date('H:i:s'));
@@ -443,4 +454,41 @@ class ReportController extends Controller
 
         echo 'Delete Successful';
     }
+
+
+
+
+
+
+
+
+
+    public function updateSales(Request $request){
+        $tran = Transaction::where('id', $request->id)->first();
+        $tran->total = $request->amount;
+        if(date('Y-m-d', strtotime($tran->created_at)) != date('Y-m-d', strtotime($request->date))){
+            $tran->created_at = date('Y-m-d', strtotime($request->date)).' '.date('H:i:s');
+        }
+        $tran->save();
+
+        echo 'Update Successful';
+    }
+
+    public function deleteSales(Request $request){
+        Transaction::where('id', $request->id)->delete();
+
+        echo 'Delete Successful';
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

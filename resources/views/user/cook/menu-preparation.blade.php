@@ -246,7 +246,7 @@
                             </div>
                         </div>
                     {{-- CONTROLS END --}}
-    
+     
                     <div>
                         {{-- TABLE --}}
                             <div class="hidden md:block">

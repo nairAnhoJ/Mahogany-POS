@@ -70,15 +70,17 @@
                         @csrf
                         <p class="text-xs md:text-base leading-relaxed text-gray-500">
                             <h1 id="editName" class="pb-5 font-bold text-xl"></h1>
-                            <div class="mb-6">
-                                <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="editQuantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                    <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
+                            @if ($category != 'sales')
+                                <div class="mb-6">
+                                    <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
+                                    <div class="flex items-center">
+                                        <input type="text" id="editQuantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                        <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="mb-6">
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">{{ ($category == 'sales' ? 'Amount' : 'Price') }}</label>
                                 <div class="flex items-center">
                                     <span class="px-3 text-base font-bold text-gray-600">₱</span>
                                     <input type="text" id="editPrice" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
@@ -202,6 +204,11 @@
                                                 <th class="px-6 text-center">
                                                     Mode of Payment
                                                 </th>
+                                                @if (Auth::user()->role == 1)
+                                                    <th class="px-6 text-center">
+                                                        Action
+                                                    </th>
+                                                @endif
                                             @elseif($category == 'expenses')
                                                 <th class="px-6 text-center">
                                                     Date
@@ -313,6 +320,13 @@
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->mode_of_payment }}
                                                     </td>
+                                                    @if (Auth::user()->role == 1)
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
+                                                            <button data-id="{{ $result->id }}" data-name="{{ $result->nn }}" data-amount="{{ $result->amount }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
+                                                            <span class="px-2">|</span>
+                                                            <button data-id="{{ $result->id }}" data-category="{{ $category }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
+                                                        </td>
+                                                    @endif
                                                 @elseif($category == 'expenses')
                                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
                                                         {{ date('F j, Y h:i A', strtotime($result->date)) }}
@@ -347,14 +361,14 @@
                                                     @endif
                                                     @if ($report == 'unpaid')
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
-                                                            <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y') }}" data-modal-show="payModal" data-modal-target="payModal" class="actionButton text-green-500 hover:underline">Mark as Paid</button>
+                                                            <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y') }}" data-category="{{ $category }}" data-modal-show="payModal" data-modal-target="payModal" class="actionButton text-green-500 hover:underline">Mark as Paid</button>
                                                         </td>
                                                     @endif
                                                     @if ($report != 'unpaid' && Auth::user()->role == 1)
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
-                                                            <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
+                                                            <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
                                                             <span class="px-2">|</span>
-                                                            <button data-id="{{ $result->id }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
+                                                            <button data-id="{{ $result->id }}" data-category="{{ $category }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
                                                         </td>
                                                     @endif
                                                 @elseif($category == 'inventory')
@@ -610,6 +624,7 @@
     <script>
         $(document).ready(function() {
             var id;
+            var category;
             $('#navButton').click(function(){
                     $('#topNav').addClass('absolute');
                     $('#topNav').removeClass('sticky');
@@ -628,20 +643,24 @@
 
             $('.actionButton').click(function(){
                 id = $(this).data('id');
+                category = $(this).data('category');
                 var name = $(this).data('name');
                 var amount = $(this).data('amount');
-                var quantity = $(this).data('quantity');
                 var date = $(this).data('date');
+
+                if(category != 'sales'){
+                    var quantity = $(this).data('quantity');
+                    $('#editQuantity').val(quantity);
+
+                    $('#payName').html(name);
+                    $('#payPrice').html(amount);
+                    $('#payQuantity').html(quantity);
+                    $('#payDate').val(date);
+                }
 
                 $('#editName').html(name);
                 $('#editPrice').val(amount);
-                $('#editQuantity').val(quantity);
                 $('#editDate').val(date);
-
-                $('#payName').html(name);
-                $('#payPrice').html(amount);
-                $('#payQuantity').html(quantity);
-                $('#payDate').val(date);
             });
 
             $('.paySubmit').click(function(){
@@ -664,12 +683,18 @@
 
             $('.editSubmit').click(function(){
                 var amount = $('#editPrice').val();
-                var quantity = $('#editQuantity').val();
                 var date = $('#editDate').val();
                 var _token = $('input[name="_token"]').val();
 
+                if(category != 'sales'){
+                    var quantity = $('#editQuantity').val();
+                    var route = "{{ route('updateExpenses') }}";
+                }else{
+                    var route = "{{ route('updateSales') }}";
+                }
+
                 $.ajax({
-                    url:"{{ route('updateExpenses') }}",
+                    url: route,
                     method:"POST",
                     data:{
                         id: id,
@@ -688,8 +713,14 @@
             $('.deleteSubmit').click(function(){
                 var _token = $('input[name="_token"]').val();
 
+                if(category != 'sales'){
+                    var route = "{{ route('deleteExpenses') }}";
+                }else{
+                    var route = "{{ route('deleteSales') }}";
+                }
+
                 $.ajax({
-                    url:"{{ route('deleteExpenses') }}",
+                    url: route,
                     method:"POST",
                     data:{
                         id: id,
@@ -697,6 +728,7 @@
                     },
                     success:function(result){
                         alert(result);
+                        location.reload();
                     }
                 })
             });

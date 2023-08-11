@@ -190,7 +190,7 @@
                                                                 '.$inventory->quantity.'
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> 
                                                 </div>
                                             ';
                                         }

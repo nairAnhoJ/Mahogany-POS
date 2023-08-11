@@ -63,6 +63,8 @@ Route::middleware("role:1,2")->group(function(){
     Route::post('/report/generate/pay-expenses', [ReportController::class, 'payExpenses'])->name('payExpenses');
     Route::post('/report/generate/update-expenses', [ReportController::class, 'updateExpenses'])->name('updateExpenses');
     Route::post('/report/generate/delete-expenses', [ReportController::class, 'deleteExpenses'])->name('deleteExpenses');
+    Route::post('/report/generate/update-sales', [ReportController::class, 'updateSales'])->name('updateSales');
+    Route::post('/report/generate/delete-sales', [ReportController::class, 'deleteSales'])->name('deleteSales');
     Route::get('/report/print/{start}/{end}/{category}/{report}', [ReportController::class, 'print']);
 
     // USERS
