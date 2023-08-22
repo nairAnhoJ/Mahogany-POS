@@ -69,7 +69,13 @@
                     <div class="px-6 py-6">
                         @csrf
                         <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            <h1 id="editName" class="pb-5 font-bold text-xl"></h1>
+                            <h1 class="editName pb-5 font-bold text-xl"></h1>
+                            <div class="nameDiv mb-6">
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Item Name</label>
+                                <div class="flex items-center">
+                                    <input type="text" id="name" class="editName bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                </div>
+                            </div>
                             @if ($category != 'sales')
                                 <div class="mb-6">
                                     <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
@@ -366,7 +372,7 @@
                                                     @endif
                                                     @if ($report != 'unpaid' && Auth::user()->role == 1)
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
-                                                            <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
+                                                            <button data-id="{{ $result->id }}" data-inv_id="{{ $result->inv_id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
                                                             <span class="px-2">|</span>
                                                             <button data-id="{{ $result->id }}" data-category="{{ $category }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
                                                         </td>
@@ -643,10 +649,13 @@
 
             $('.actionButton').click(function(){
                 id = $(this).data('id');
+                inv_id = $(this).data('inv_id');
                 category = $(this).data('category');
                 var name = $(this).data('name');
                 var amount = $(this).data('amount');
                 var date = $(this).data('date');
+
+                $('.nameDiv').addClass('hidden');
 
                 if(category != 'sales'){
                     var quantity = $(this).data('quantity');
@@ -656,9 +665,14 @@
                     $('#payPrice').html(amount);
                     $('#payQuantity').html(quantity);
                     $('#payDate').val(date);
+
+                    if(inv_id == 0){
+                        $('.nameDiv').removeClass('hidden');
+                    }
                 }
 
-                $('#editName').html(name);
+                $('.editName').html(name);
+                $('.editName').val(name);
                 $('#editPrice').val(amount);
                 $('#editDate').val(date);
             });
@@ -682,6 +696,7 @@
             });
 
             $('.editSubmit').click(function(){
+                var name = $('#name').val();
                 var amount = $('#editPrice').val();
                 var date = $('#editDate').val();
                 var _token = $('input[name="_token"]').val();
@@ -698,6 +713,7 @@
                     method:"POST",
                     data:{
                         id: id,
+                        name: name,
                         amount: amount,
                         quantity: quantity,
                         date: date,
