@@ -189,7 +189,7 @@
                             }
                         @endphp
                         <h1 class="text-xl lg:text-3xl">{{ $ncat }}</h1>
-                        <h1 class="flex items-center">{{ date('M j, Y', strtotime($startDate)).' - '.date('M j, Y', strtotime('-1 day', strtotime($endDate))) }}</h1>
+                        <h1 class="flex items-center">{{ date('M j, Y h:i A', strtotime($startDate)).' - '.date('M j, Y h:i A', strtotime($endDate)) }}</h1>
                     </div>
                     {{-- TABLE --}}
                         <div class="hidden md:block">

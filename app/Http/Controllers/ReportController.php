@@ -17,7 +17,8 @@ class ReportController extends Controller
         $start = $request->start;
         $end = $request->end;
         $startDate = date('Y-m-d H:i:s', strtotime($start));
-        $endDate = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($end)));
+        $endDate = date('Y-m-d H:i:s', strtotime($end));
+
         $category = $request->category;
         $report = $request->report;
 
