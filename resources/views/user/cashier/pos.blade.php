@@ -500,23 +500,25 @@
                             <div class="p-8" id="all-menu" role="tabpanel" aria-labelledby="all-menu-tab">
                                 <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                     @foreach ($menus as $menu)
-                                        <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > 5) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }}  rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
-                                            <div class="w-full aspect-square overflow-hidden">
-                                                <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
-                                            </div>
-                                            <div class="h-[calc(100%-184px)] text-center">
-                                                <div class="h-2/3 border-b border-neutral-400 flex items-center">
-                                                    <p class="text-lg font-medium">
-                                                        {{$menu->name}}
-                                                    </p>
+                                        @if ($menu->is_hidden != 1)
+                                            <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > 5) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }}  rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                                <div class="w-full aspect-square overflow-hidden">
+                                                    <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
                                                 </div>
-                                                <div class="h-1/3 flex justify-center items-center">
-                                                    <p class="text-xl font-bold">
-                                                        ₱ {{number_format($menu->price, 2, '.', ',')}}
-                                                    </p>
+                                                <div class="h-[calc(100%-184px)] text-center">
+                                                    <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                        <p class="text-lg font-medium">
+                                                            {{$menu->name}}
+                                                        </p>
+                                                    </div>
+                                                    <div class="h-1/3 flex justify-center items-center">
+                                                        <p class="text-xl font-bold">
+                                                            ₱ {{number_format($menu->price, 2, '.', ',')}}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
+                                            </a>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

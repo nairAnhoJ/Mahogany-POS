@@ -16,12 +16,6 @@ use Illuminate\Support\Str;
 class MenuController extends Controller
 {
     public function index(){
-        // $menus = DB::table('menus')
-        //     ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.price', 'menus.is_combo', 'menus.slug')
-        //     ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
-        //     ->orderBy('name', 'asc')
-        //     ->paginate(100);
-
         $menus = DB::table('menus')
             ->select(
                 'menus.name',
@@ -311,6 +305,11 @@ class MenuController extends Controller
         }else{
             $combo = 0;
         }
+        if($request->hidden != null){
+            $hidden = 1;
+        }else{
+            $hidden = 0;
+        }
 
         $slug = Str::slug($name, '-');
         $check_slug = DB::table('menus')->where('slug', $slug)->get();
@@ -345,6 +344,7 @@ class MenuController extends Controller
         $item->current_quantity = 0;
         $item->servings = $servings;
         $item->is_combo = $combo;
+        $item->is_hidden = $hidden;
         if($image != null){
             $item->image = $imagePath;
         }
@@ -437,6 +437,11 @@ class MenuController extends Controller
         }else{
             $combo = 0;
         }
+        if($request->hidden != null){
+            $hidden = 1;
+        }else{
+            $hidden = 0;
+        }
         $menuID = (DB::table('menus')->where('slug', $oldSlug)->first())->id;
 
         $slug = Str::slug($name, '-');
@@ -501,6 +506,7 @@ class MenuController extends Controller
                     'image' => $imagePath,
                     'servings' => $servings,
                     'is_combo' => $combo,
+                    'is_hidden' => $hidden,
                     'slug' => $slug,
                 ]);
         }else{
@@ -511,6 +517,7 @@ class MenuController extends Controller
                     'price' => $price,
                     'servings' => $servings,
                     'is_combo' => $combo,
+                    'is_hidden' => $hidden,
                     'slug' => $slug,
                 ]);
         }

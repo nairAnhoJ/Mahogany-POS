@@ -22,7 +22,7 @@ class POSController extends Controller
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $menus = DB::table('menus')->where('current_quantity', '>', 0)->orderBy('name', 'asc')->get();
 
-        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
+        $categories = DB::table('menu_categories')->where('is_hidden', 0)->orderBy('name', 'asc')->get();
         $subTotal = 0;
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();

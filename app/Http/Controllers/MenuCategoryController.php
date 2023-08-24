@@ -45,6 +45,11 @@ class MenuCategoryController extends Controller
 
     public function store(Request $request){
         $name = $request->name;
+        if($request->hidden != null){
+            $hidden = 1;
+        }else{
+            $hidden = 0;
+        }
 
         $request->validate([
             'name' => ['required'],
@@ -64,6 +69,7 @@ class MenuCategoryController extends Controller
         $category = new MenuCategory();
         $category->name = $name;
         $category->slug = $slug;
+        $category->is_hidden = $hidden;
         $category->save();
 
         return redirect()->route('menu.category.index')->withInput()->with('message', 'Successfully Added');
@@ -77,6 +83,11 @@ class MenuCategoryController extends Controller
     public function update(Request $request){
         $name = $request->name;
         $slug = $request->slug;
+        if($request->hidden != null){
+            $hidden = 1;
+        }else{
+            $hidden = 0;
+        }
 
         $request->validate([
             'name' => ['required'],
@@ -85,6 +96,7 @@ class MenuCategoryController extends Controller
         DB::table('menu_categories')->where('slug', $slug)
             ->update([
                 'name' => $name,
+                'is_hidden' => $hidden,
             ]);
 
         return redirect()->route('menu.category.index')->withInput()->with('message', 'Successfully Updated');
