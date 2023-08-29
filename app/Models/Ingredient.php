@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Ingredient extends Model
 {
     use HasFactory;
+
+    
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class, 'inventory_id');
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailNotify;
+use App\Models\Ingredient;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Ordered;
@@ -16,7 +17,8 @@ use Illuminate\Support\Facades\Mail;
 
 class POSController extends Controller
 {
-    public function index(){
+    public function index(){  
+
         $this->updateCurrentQuantity();
         $tables = DB::table('tables')->orderBy('id', 'asc')->get();
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
@@ -77,23 +79,22 @@ class POSController extends Controller
                     $order->slug = $orderSlug;
                     $order->save();
 
-
                     if($menu->is_combo == 1){
                         $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
                         foreach($ings as $ing){
-                            DB::table('menus')
-                                ->where('id', $ing->inventory_id)
-                                ->decrement('current_quantity', 1);
+                            $decq = 1 * $ing->computed_quantity;
+                            $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
+                            $newq = $curq - $decq;
+        
+                            $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                            $updateMenu->current_quantity = $newq;
+                            $updateMenu->save();
                         }
                     }else{
                         DB::table('menus')->where('id', $menu->id)->update([
                             'current_quantity' => $current_quantity,
                         ]);
                     }
-
-                    // DB::table('menus')->where('id', $menu->id)->update([
-                    //     'current_quantity' => $current_quantity,
-                    // ]);
                 }else{
                     $notif .= '
                     <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
@@ -127,19 +128,19 @@ class POSController extends Controller
                 if($menu->is_combo == 1){
                     $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
                     foreach($ings as $ing){
-                        DB::table('menus')
-                            ->where('id', $ing->inventory_id)
-                            ->decrement('current_quantity', 1);
+                        $decq = $order->quantity * $ing->computed_quantity;
+                        $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
+                        $newq = $curq - $decq;
+    
+                        $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                        $updateMenu->current_quantity = $newq;
+                        $updateMenu->save();
                     }
                 }else{
                     DB::table('menus')->where('id', $menu->id)->update([
                         'current_quantity' => $current_quantity,
                     ]);
                 }
-
-                // DB::table('menus')->where('id', $menu->id)->update([
-                //     'current_quantity' => $current_quantity,
-                // ]);
             }
         }else{
             $notif = '
@@ -234,9 +235,13 @@ class POSController extends Controller
             if($menu->is_combo == 1){
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
                 foreach($ings as $ing){
-                    DB::table('menus')
-                        ->where('id', $ing->inventory_id)
-                        ->decrement('current_quantity', 1);
+                    $decq = 1 * $ing->computed_quantity;
+                    $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
+                    $newq = $curq - $decq;
+
+                    $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                    $updateMenu->current_quantity = $newq;
+                    $updateMenu->save();
                 }
             }else{
                 DB::table('menus')->where('id', $corder->menu_id)->update([
@@ -335,9 +340,13 @@ class POSController extends Controller
             if($menu->is_combo == 1){
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
                 foreach($ings as $ing){
-                    DB::table('menus')
-                        ->where('id', $ing->inventory_id)
-                        ->increment('current_quantity', 1);
+                    $decq = 1 * $ing->computed_quantity;
+                    $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
+                    $newq = $curq + $decq;
+
+                    $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                    $updateMenu->current_quantity = $newq;
+                    $updateMenu->save();
                 }
             }else{
                 DB::table('menus')->where('id', $corder->menu_id)->update([
@@ -408,15 +417,19 @@ class POSController extends Controller
         $slug = $request->slug;
         $ord = DB::table('orders')->where('slug', $slug)->first();
         $mid = $ord->menu_id;
-        $menu = DB::table('menus')->where('id', $mid)->first();
+        $menu = DB::table('menus')->where('id', $mid)->first();                            
         $qty = $ord->quantity;
 
         if($menu->is_combo == 1){
             $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
             foreach($ings as $ing){
-                DB::table('menus')
-                    ->where('id', $ing->inventory_id)
-                    ->increment('current_quantity', $qty);
+                $decq = $qty * $ing->computed_quantity;
+                $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
+                $newq = $curq + $decq;
+
+                $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                $updateMenu->current_quantity = $newq;
+                $updateMenu->save();
             }
         }else{
             DB::table('menus')
@@ -503,16 +516,6 @@ class POSController extends Controller
             $type = 'DINE-IN';
         }
 
-        // $this_tran = DB::table('transactions')->where('table', $table)->where('status', 'PAID')->where('order_status', '!=', 'CANCELLED')->where('order_status', '!=', 'COMPLETED')->first();
-        // if($this_tran){
-        //     $tran_id = $this_tran->id;
-        //     DB::table('transactions')->where('id', $tran_id)->increment('total', $amount);
-        //     DB::table('transactions')->where('id', $tran_id)->increment('amount', $amountInput);
-        //     DB::table('transactions')->where('id', $tran_id)->update([
-        //         'order_status' => 'PREPARING',
-        //         'created_at' => date('Y-m-d H:i:s')
-        //     ]);
-        // }else{
         $id = Transaction::latest()->pluck('id')->first();
         if($id == null){
             $id = 1;
@@ -548,7 +551,6 @@ class POSController extends Controller
         $tran->save();
 
         $tran_id = $tran->id;
-        // }
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->get();
         foreach($orders as $order){
@@ -572,26 +574,24 @@ class POSController extends Controller
                 'updated_at' => date('Y-m-d h:i:s')
             ]);
 
-            // $oqty = $menu->quantity;
-            // $nqty = $oqty - $order->quantity;
             $menu = DB::table('menus')->where('id', $order->menu_id)->first();
 
             if($menu->is_combo == 1){
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
                 foreach($ings as $ing){
-                    DB::table('menus')
-                        ->where('id', $ing->inventory_id)
-                        ->decrement('quantity', $order->quantity);
+                    $decq = $order->quantity * $ing->computed_quantity;
+                    $curq = Menu::where('id', $ing->inventory_id)->first()->quantity;
+                    $newq = $curq - $decq;
+
+                    $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                    $updateMenu->quantity = $newq;
+                    $updateMenu->save();
                 }
             }else{
                 DB::table('menus')
                     ->where('id', $order->menu_id)
                     ->decrement('quantity', $order->quantity);
             }
-
-            // DB::table('menus')->where('id', $order->menu_id)->update([
-            //     'quantity' => $nqty
-            // ]);
 
             DB::table('orders')->where('id', $order->id)->delete();
         }
@@ -725,21 +725,18 @@ class POSController extends Controller
                 'updated_at' => date('Y-m-d h:i:s')
             ]);
 
-            // $oqty = (DB::table('menus')->where('id', $order->menu_id)->first())->quantity;
-            // $nqty = $oqty - $order->quantity;
-
-            // DB::table('menus')->where('id', $order->menu_id)->update([
-            //     'quantity' => $nqty
-            // ]);
-
             $menu = DB::table('menus')->where('id', $order->menu_id)->first();
 
             if($menu->is_combo == 1){
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
                 foreach($ings as $ing){
-                    DB::table('menus')
-                        ->where('id', $ing->inventory_id)
-                        ->decrement('quantity', $order->quantity);
+                    $decq = $order->quantity * $ing->computed_quantity;
+                    $curq = Menu::where('id', $ing->inventory_id)->first()->quantity;
+                    $newq = $curq - $decq;
+
+                    $updateMenu = Menu::where('id', $ing->inventory_id)->first();
+                    $updateMenu->quantity = $newq;
+                    $updateMenu->save();
                 }
             }else{
                 DB::table('menus')
@@ -885,47 +882,75 @@ class POSController extends Controller
     }
 
     public function updateCurrentQuantity(){
-        $menus = DB::table('menus')
-            ->select(
-                'menus.id',
-                'menus.name',
-                'menus.category_id',
-                'menu_categories.name AS category',
-                'menus.price',
-                'menus.is_combo',
-                'menus.slug',
-                'menus.image',
-                DB::raw('
-                    CASE
-                        WHEN menus.is_combo = 1 THEN (
-                            SELECT
-                                MIN(
-                                    CASE
-                                        WHEN is_menu = 1 THEN (
-                                            SELECT menus.current_quantity FROM menus WHERE menus.id = ingredients.inventory_id
-                                        )
-                                        ELSE (
-                                            SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
-                                        )
-                                    END
-                                )
-                            FROM ingredients
-                            WHERE menu_id = menus.id
-                        )
-                        ELSE menus.quantity
-                    END AS new_current_quantity
-                ')
-            )
-            ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
-            ->where('is_combo', 1)
-            ->orderBy('name', 'asc')
-            ->get();
 
-        foreach($menus as $menu){
-            DB::table('menus')->where('id', $menu->id)->update([
-                'current_quantity' => $menu->new_current_quantity
+        $comboMenus = Menu::where('is_combo', 1)->get();
+        
+        foreach ($comboMenus as $comboMenu) {
+            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->get();
+            
+            $minQuantity = PHP_INT_MAX;
+            $cminQuantity = PHP_INT_MAX;
+            
+            foreach ($ingredients as $ingredient) {
+                $inventoryQuantity = $ingredient->menu->quantity;
+                $requiredQuantity = $ingredient->quantity;
+                $availableCombos = floor($inventoryQuantity / $requiredQuantity);
+                $minQuantity = min($minQuantity, $availableCombos);
+
+                $cinventoryQuantity = $ingredient->menu->current_quantity;
+                $crequiredQuantity = $ingredient->quantity;
+                $cavailableCombos = floor($cinventoryQuantity / $crequiredQuantity);
+                $cminQuantity = min($cminQuantity, $cavailableCombos);
+            }
+            
+            $comboMenu->update([
+                'quantity' => $minQuantity,
+                'current_quantity' => $cminQuantity,
             ]);
-        }
+        }   
+
+
+        // $menus = DB::table('menus')
+        //     ->select(
+        //         'menus.id',
+        //         'menus.name',
+        //         'menus.category_id',
+        //         'menu_categories.name AS category',
+        //         'menus.price',
+        //         'menus.is_combo',
+        //         'menus.slug',
+        //         'menus.image',
+        //         DB::raw('
+        //             CASE
+        //                 WHEN menus.is_combo = 1 THEN (
+        //                     SELECT
+        //                         MIN(
+        //                             CASE
+        //                                 WHEN is_menu = 1 THEN (
+        //                                     SELECT menus.current_quantity FROM menus WHERE menus.id = ingredients.inventory_id
+        //                                 )
+        //                                 ELSE (
+        //                                     SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
+        //                                 )
+        //                             END
+        //                         )
+        //                     FROM ingredients
+        //                     WHERE menu_id = menus.id
+        //                 )
+        //                 ELSE menus.quantity
+        //             END AS new_current_quantity
+        //         ')
+        //     )
+        //     ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
+        //     ->where('is_combo', 1)
+        //     ->orderBy('name', 'asc')
+        //     ->get();
+
+        // foreach($menus as $menu){
+        //     DB::table('menus')->where('id', $menu->id)->update([
+        //         'current_quantity' => $menu->new_current_quantity
+        //     ]);
+        // }
     }
 
 }

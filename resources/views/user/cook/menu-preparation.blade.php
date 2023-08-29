@@ -278,7 +278,7 @@
                                                         {{ $menu->name }}
                                                     </th>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
-                                                        {{ $menu->category }}
+                                                        {{ $menu->category->name }}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap flex justify-center items-center">
                                                         {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button> --}}

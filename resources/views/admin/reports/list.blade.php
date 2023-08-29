@@ -179,7 +179,15 @@
                                     $ncat = 'Inventory Stocks Report';
                                 }
                             }else if($category == 'menu'){
-                                $ncat = 'Menu Rankings';
+                                if ($report == 'rank') {
+                                    $ncat = 'Menu Rankings';
+                                }else{
+                                    $ncat = 'Menu Current Stock';
+                                }
+                            }else if($category == 'invmenu'){
+                                if ($report == 'summary') {
+                                    $ncat = 'Inventory Summary';
+                                }
                             }else if($category == 'waste'){
                                 if ($report == 'raw') {
                                     $ncat = 'Raw Inventory Waste';
@@ -210,6 +218,9 @@
                                                 <th class="px-6 text-center">
                                                     Mode of Payment
                                                 </th>
+                                                <th class="px-6 text-center">
+                                                    Cashier
+                                                </th>
                                                 @if (Auth::user()->role == 1)
                                                     <th class="px-6 text-center">
                                                         Action
@@ -233,6 +244,9 @@
                                                         Status
                                                     </th>
                                                 @endif
+                                                <th class="px-6 text-center">
+                                                    Cashier Name
+                                                </th>
                                                 @if($report == 'unpaid')
                                                     <th class="px-6 text-center">
                                                         Action
@@ -289,15 +303,39 @@
                                                     </th>
                                                 @endif
                                             @elseif($category == 'menu')
-                                                <th class="px-6 text-center">
-                                                    #
-                                                </th>
-                                                <th class="px-6 text-center">
-                                                    Menu
-                                                </th>
-                                                <th class="px-6 text-center">
-                                                    Total Served
-                                                </th>
+                                                @if ($report == 'rank')
+                                                    <th class="px-6 text-center">
+                                                        #
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Menu
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Total Served
+                                                    </th>
+                                                @else
+                                                    <th class="px-6 text-center">
+                                                        Menu
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Category
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Current Stock
+                                                    </th>
+                                                @endif
+                                            @elseif($category == 'invmenu')
+                                                @if ($report == 'summary')
+                                                    <th class="px-6 text-center">
+                                                        Menu
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Category
+                                                    </th>
+                                                    <th class="px-6 text-center">
+                                                        Current Stock
+                                                    </th>
+                                                @endif
                                             @endif
                                         </tr>
                                     </thead>
@@ -325,6 +363,9 @@
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->mode_of_payment }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->cashier }}
                                                     </td>
                                                     @if (Auth::user()->role == 1)
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
@@ -365,6 +406,9 @@
                                                             {{ $ip }}
                                                         </td>
                                                     @endif
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                        {{ $result->cashier }}
+                                                    </td>
                                                     @if ($report == 'unpaid')
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
                                                             <button data-id="{{ $result->id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y') }}" data-category="{{ $category }}" data-modal-show="payModal" data-modal-target="payModal" class="actionButton text-green-500 hover:underline">Mark as Paid</button>
@@ -409,15 +453,39 @@
                                                         </td>
                                                     @endif
                                                 @elseif($category == 'menu')
-                                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                                        {{ $x++ }}
-                                                    </th>
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->name }}
-                                                    </td>
-                                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ round($result->quantity, 0) }}
-                                                    </td>
+                                                    @if ($report == 'rank')
+                                                        <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                                            {{ $x++ }}
+                                                        </th>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->name }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity, 0) }}
+                                                        </td>
+                                                    @else
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->name }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->category->name }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity, 0) }}
+                                                        </td>
+                                                    @endif
+                                                @elseif($category == 'invmenu')
+                                                    @if ($report == 'summary')
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->name }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ $result->category }}
+                                                        </td>
+                                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                            {{ round($result->quantity, 0) }}
+                                                        </td>
+                                                    @endif
                                                 @elseif($category == 'waste')
                                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
                                                         {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
@@ -453,7 +521,7 @@
                     {{-- TABLE END --}}
 
                     {{-- INVENTORY LIST SMALL DEVICE --}}
-                        <div id="inventoryMobile" class="overflow-auto md:hidden">
+                        {{-- <div id="inventoryMobile" class="overflow-auto md:hidden">
                             <div id="accordion-collapse" data-accordion="collapse">
                                 @php
                                     $x = 1;
@@ -620,7 +688,7 @@
                                     }
                                 @endphp
                             </div>
-                        </div>
+                        </div> --}}
                     {{-- INVENTORY LIST SMALL DEVICE END --}}
                 </div>
             </div>

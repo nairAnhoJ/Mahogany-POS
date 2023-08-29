@@ -501,7 +501,7 @@
                                 <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                     @foreach ($menus as $menu)
                                         @if ($menu->is_hidden != 1)
-                                            <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > 5) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }}  rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                            <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > $menu->reorder_point) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }}  rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
                                                 <div class="w-full aspect-square overflow-hidden">
                                                     <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
                                                 </div>
@@ -527,7 +527,7 @@
                                     <div class="w-[656px] xl:w-[880px] 2xl:w-[1104px] mx-auto grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center content-center">
                                         @foreach ($menus as $menu)
                                             @if ($menu->category_id == $category->id)
-                                                <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > 5) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }} rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
+                                                <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > $menu->reorder_point) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }} rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
                                                     <div class="w-full aspect-square overflow-hidden">
                                                         <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
                                                     </div>

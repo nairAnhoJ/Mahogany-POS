@@ -50,7 +50,11 @@
                     }else if($category == 'inventory'){
                         $ncat = 'Inventory Outgoing';
                     }else if($category == 'menu'){
-                        $ncat = 'Menu Rankings';
+                        if ($report == 'rank') {
+                            $ncat = 'Menu Rankings';
+                        }else{
+                            $ncat = 'Menu Current Stock';
+                        }
                     }else if($category == 'waste'){
                         if ($report == 'raw') {
                             $ncat = 'Raw Inventory Waste';
@@ -79,7 +83,9 @@
                                 <th class="px-6 text-center">
                                     Mode of Payment
                                 </th>
-
+                                <th class="px-6 text-center">
+                                    Cashier
+                                </th>
                             @elseif($category == 'expenses')
                                 <th class="px-6 text-center">
                                     Date
@@ -98,7 +104,9 @@
                                         Status
                                     </th>
                                 @endif
-
+                                <th class="px-6 text-center">
+                                    Cashier
+                                </th>
                             @elseif($category == 'inventory')
                                 @if ($report == 'logs')
                                     <th class="px-6 text-center">
@@ -131,15 +139,27 @@
                                     </th>
                                 @endif
                             @elseif($category == 'menu')
-                                <th class="px-6 text-center">
-                                    #
-                                </th>
-                                <th class="px-6 text-center">
-                                    Menu
-                                </th>
-                                <th class="px-6 text-center">
-                                    Total Served
-                                </th>
+                                @if ($report == 'rank')
+                                    <th class="px-6 text-center">
+                                        #
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Menu
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Total Served
+                                    </th>
+                                @else
+                                    <th class="px-6 text-center">
+                                        Menu
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Category
+                                    </th>
+                                    <th class="px-6 text-center">
+                                        Current Stock
+                                    </th>
+                                @endif
                             @elseif($category == 'waste')
                                 <th class="px-6 text-center">
                                     Date
@@ -156,32 +176,6 @@
 
                             @endif
                         </tr>
-                        {{-- <tr class="border-b">
-                            <th class="px-6">
-                                Date
-                            </th>
-                            @if ($category == 'sales')
-                                <th class="px-6">
-                                    Transaction Number
-                                </th>
-                            @else
-                                <th class="px-6">
-                                    Item Name
-                                </th>
-                            @endif
-                            <th class="px-6">
-                                Amount
-                            </th>
-                            @if ($category == 'sales')
-                                <th class="px-6">
-                                    Mode of Payment
-                                </th>
-                            @else
-                                <th class="px-6">
-                                    Quantity
-                                </th>
-                            @endif
-                        </tr> --}}
                     </thead>
                     <tbody>
                         @php
@@ -209,6 +203,9 @@
                                     </td>
                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                         {{ $result->mode_of_payment }}
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->cashier }}
                                     </td>
                                 @elseif($category == 'expenses')
                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
@@ -239,6 +236,9 @@
                                             {{ $ip }}
                                         </td>
                                     @endif
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        {{ $result->cashier }}
+                                    </td>
                                 @elseif($category == 'inventory')
                                     @if ($report == 'logs')
                                         <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
@@ -271,15 +271,27 @@
                                         </td>
                                     @endif
                                 @elseif($category == 'menu')
-                                    <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $x++ }}
-                                    </th>
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $result->name }}
-                                    </td>
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ round($result->quantity, 0) }}
-                                    </td>
+                                    @if ($report == 'rank')
+                                        <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
+                                            {{ $x++ }}
+                                        </th>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $result->name }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ round($result->quantity, 0) }}
+                                        </td>
+                                    @else
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $result->name }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $result->category->name }}
+                                        </td>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ round($result->quantity, 0) }}
+                                        </td>
+                                    @endif
                                 @elseif($category == 'waste')
                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
                                         {{ date('F j, Y h:i A', strtotime($result->created_at)) }}

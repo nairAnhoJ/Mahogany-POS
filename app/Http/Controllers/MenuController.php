@@ -16,37 +16,62 @@ use Illuminate\Support\Str;
 class MenuController extends Controller
 {
     public function index(){
-        $menus = DB::table('menus')
-            ->select(
-                'menus.name',
-                'menu_categories.name AS category',
-                'menus.price',
-                'menus.is_combo',
-                'menus.slug',
-                DB::raw('
-                    CASE
-                        WHEN menus.is_combo = 1 THEN (
-                            SELECT
-                                MIN(
-                                    CASE
-                                        WHEN is_menu = 1 THEN (
-                                            SELECT menus.quantity FROM menus WHERE menus.id = ingredients.inventory_id
-                                        )
-                                        ELSE (
-                                            SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
-                                        )
-                                    END
-                                )
-                            FROM ingredients
-                            WHERE menu_id = menus.id
-                        )
-                        ELSE menus.quantity
-                    END AS quantity
-                ')
-            )
-            ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
-            ->orderBy('name', 'asc')
-            ->paginate(100);
+        $comboMenus = Menu::where('is_combo', 1)->get();
+        
+        foreach ($comboMenus as $comboMenu) {
+            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->get();
+            
+            $minQuantity = PHP_INT_MAX;
+            
+            foreach ($ingredients as $ingredient) {
+                $inventoryQuantity = $ingredient->menu->quantity;
+                $requiredQuantity = $ingredient->quantity;
+                $availableCombos = floor($inventoryQuantity / $requiredQuantity);
+                $minQuantity = min($minQuantity, $availableCombos);
+            }
+            
+            $comboMenu->update([
+                'quantity' => $minQuantity,
+                'current_quantity' => $minQuantity,
+            ]);
+        }        
+
+        $menus = Menu::with('category')->orderBy('name', 'asc')->paginate(100);
+
+
+
+
+        // $menus = DB::table('menus')
+        //     ->select(
+        //         'menus.name',
+        //         'menu_categories.name AS category',
+        //         'menus.price',
+        //         'menus.is_combo',
+        //         'menus.slug',
+        //         DB::raw('
+        //             CASE
+        //                 WHEN menus.is_combo = 1 THEN (
+        //                     SELECT
+        //                         MIN(
+        //                             CASE
+        //                                 WHEN is_menu = 1 THEN (
+        //                                     SELECT menus.quantity FROM menus WHERE menus.id = ingredients.inventory_id
+        //                                 )
+        //                                 ELSE (
+        //                                     SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
+        //                                 )
+        //                             END
+        //                         )
+        //                     FROM ingredients
+        //                     WHERE menu_id = menus.id
+        //                 )
+        //                 ELSE menus.quantity
+        //             END AS quantity
+        //         ')
+        //     )
+        //     ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
+        //     ->orderBy('name', 'asc')
+        //     ->paginate(100);
 
         $items = DB::table('inventories')->get();
         $menuCount = DB::table('menus')->get()->count();
@@ -298,6 +323,7 @@ class MenuController extends Controller
         $category_id = $request->category_id;
         $price = $request->price;
         $image = $request->image;
+        $reorder_point = $request->reorder_point;
         $servings = $request->servings;
         $Totalcounter = $request->counter;
         if($request->combo != null){
@@ -342,6 +368,7 @@ class MenuController extends Controller
         $item->price = $price;
         $item->quantity = 0;
         $item->current_quantity = 0;
+        $item->reorder_point = $reorder_point;
         $item->servings = $servings;
         $item->is_combo = $combo;
         $item->is_hidden = $hidden;
@@ -430,6 +457,7 @@ class MenuController extends Controller
         $category_id = $request->category_id;
         $price = $request->price;
         $image = $request->image;
+        $reorder_point = $request->reorder_point;
         $servings = $request->servings;
         $Totalcounter = $request->counter;
         if($request->combo != null){
@@ -504,6 +532,7 @@ class MenuController extends Controller
                     'category_id' => $category_id,
                     'price' => $price,
                     'image' => $imagePath,
+                    'reorder_point' => $reorder_point,
                     'servings' => $servings,
                     'is_combo' => $combo,
                     'is_hidden' => $hidden,
@@ -515,6 +544,7 @@ class MenuController extends Controller
                     'name' => $name,
                     'category_id' => $category_id,
                     'price' => $price,
+                    'reorder_point' => $reorder_point,
                     'servings' => $servings,
                     'is_combo' => $combo,
                     'is_hidden' => $hidden,
