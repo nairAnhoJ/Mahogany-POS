@@ -23,7 +23,7 @@
                         <h1 class="flex items-center">{{ date('M j, Y', strtotime($startDate)).' - '.date('M j, Y', strtotime('-1 day', strtotime($endDate))) }}</h1>
                     </div>
                     {{-- TABLE --}}
-                        <div class="hidden md:block">
+                        <div class="block">
                             <div id="inventoryTable" class="overflow-auto w-full shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">

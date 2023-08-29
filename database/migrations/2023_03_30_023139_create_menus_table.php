@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('category_id')->nullable();
-            $table->integer('current_quantity');
-            $table->integer('quantity');
+            $table->decimal('current_quantity', 30,20);
+            $table->decimal('quantity', 30,20);
             $table->string('price')->nullable();
             $table->string('image')->nullable();
+            $table->integer('reorder_point')->default(0);
             $table->integer('servings');
             $table->integer('is_combo')->default(0);
+            $table->integer('is_hidden')->default(0);
             $table->string('unit')->default('pc/s');
             $table->string('slug')->unique();
             $table->timestamps();
