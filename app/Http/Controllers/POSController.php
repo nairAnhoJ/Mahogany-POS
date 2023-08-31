@@ -888,8 +888,14 @@ class POSController extends Controller
         foreach ($comboMenus as $comboMenu) {
             $ingredients = Ingredient::where('menu_id', $comboMenu->id)->get();
             
-            $minQuantity = 0;
-            $cminQuantity = 0;
+            
+            if($ingredients->count() == 0){
+                $minQuantity = 0;
+                $cminQuantity = 0;
+            }else{
+                $minQuantity = PHP_INT_MAX;
+                $cminQuantity = PHP_INT_MAX;
+            }
             
             foreach ($ingredients as $ingredient) {
                 $inventoryQuantity = $ingredient->menu->quantity;

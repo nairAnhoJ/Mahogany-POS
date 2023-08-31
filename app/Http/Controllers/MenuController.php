@@ -21,7 +21,11 @@ class MenuController extends Controller
         foreach ($comboMenus as $comboMenu) {
             $ingredients = Ingredient::where('menu_id', $comboMenu->id)->get();
             
-            $minQuantity = 0;
+            if($ingredients->count() == 0){
+                $minQuantity = 0;
+            }else{
+                $minQuantity = PHP_INT_MAX;
+            }
             
             foreach ($ingredients as $ingredient) {
                 $inventoryQuantity = $ingredient->menu->quantity;
