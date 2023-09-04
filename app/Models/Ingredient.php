@@ -14,5 +14,10 @@ class Ingredient extends Model
     {
         return $this->belongsTo(Menu::class, 'inventory_id');
     }
+    
+    public function inv()
+    {
+        return $this->belongsTo(Inventory::class, 'inventory_id');
+    }
 
 }

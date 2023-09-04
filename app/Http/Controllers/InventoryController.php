@@ -16,9 +16,10 @@ class InventoryController extends Controller
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
+            ->where('inventories.is_deleted', 0)
             ->orderBy('name', 'asc')
             ->paginate(100);
-        $invCount = DB::table('inventories')->get()->count();
+        $invCount = $inventories->total();
         $page = 1;
         $search = "";
 
@@ -33,9 +34,11 @@ class InventoryController extends Controller
         $inventories = DB::table('inventories')
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
+            ->where('inventories.is_deleted', 0)
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
-        $invCount = DB::table('inventories')->get()->count();
+
+        $invCount = $inventories->total();
         $search = "";
 
 
@@ -52,15 +55,11 @@ class InventoryController extends Controller
             ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
             ->join('categories', 'inventories.category_id', 'categories.id')
             ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
+            ->where('inventories.is_deleted', 0)
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
 
-        $invCount = DB::table('inventories')
-            ->select('inventories.item_code', 'inventories.name', 'categories.name AS cat_name', 'inventories.quantity', 'inventories.reorder_point', 'inventories.unit', 'inventories.price', 'inventories.image', 'inventories.slug')
-            ->join('categories', 'inventories.category_id', 'categories.id')
-            ->whereRaw("CONCAT_WS(' ', inventories.item_code, inventories.name, categories.name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
-            ->count();
+        $invCount = $inventories->total();
 
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.index', compact('inventories', 'invCount', 'page', 'search'));
@@ -70,10 +69,8 @@ class InventoryController extends Controller
     }
 
     public function add(){
-        $categories = DB::table('categories')->orderBy('name', 'asc')->get();
-
-
-
+        $categories = DB::table('categories')->orderBy('name', 'asc')->where('is_deleted', 0)->get();
+            
         if(auth()->user()->role == 1){
             return view('user.inventory.inventory.add', compact('categories'));
         }elseif(auth()->user()->role == 4 || auth()->user()->role == 2){
@@ -136,7 +133,7 @@ class InventoryController extends Controller
 
     public function edit($slug){
         $item = DB::table('inventories')->where('slug', $slug)->first();
-        $categories = DB::table('categories')->orderBy('name', 'asc')->get();
+        $categories = DB::table('categories')->orderBy('name', 'asc')->where('is_deleted', 0)->get();
 
 
         if(auth()->user()->role == 1){
@@ -184,7 +181,17 @@ class InventoryController extends Controller
     }
 
     public function delete($slug){
-        DB::table('inventories')->where('slug', $slug)->delete();
+        $invID = (DB::table('inventories')->where('slug', $slug)->first())->id;
+
+        DB::table('inventories')->where('slug', $slug)
+            ->update([
+                'is_deleted' => 1,
+            ]);
+        
+        DB::table('ingredients')->where('is_menu', 0)->where('inventory_id', $invID)
+            ->update([
+                'is_deleted' => 1,
+            ]);
 
         return redirect()->route('inventory.index')->withInput()->with('message', 'Successfully Deleted');
     }
@@ -205,7 +212,11 @@ class InventoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        $cost = ($inv_tran->amount * $quantity) / $inv_tran->quantity;
+        if($inv_tran != null){
+            $cost = ($inv_tran->amount * $quantity) / $inv_tran->quantity;
+        }else{
+            $cost = 0;
+        }
 
         $waste = new Waste();
         $waste->on = 'INVENTORY';

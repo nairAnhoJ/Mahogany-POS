@@ -10,16 +10,16 @@ use Illuminate\Support\Str;
 class MenuCategoryController extends Controller
 {
     public function index(){
-        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->paginate(100);
-        $categoryCount = DB::table('menu_categories')->get()->count();
+        $categories = DB::table('menu_categories')->where('is_deleted', 0)->orderBy('name', 'asc')->paginate(100);
+        $categoryCount = $categories->total();
         $page = 1;
         $search = "";
         return view('admin.system-management.menu-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
     public function paginate($page){
-        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->paginate(100,'*','page',$page);
-        $categoryCount = DB::table('menu_categories')->get()->count();
+        $categories = DB::table('menu_categories')->where('is_deleted', 0)->orderBy('name', 'asc')->paginate(100,'*','page',$page);
+        $categoryCount = $categories->total();
         $search = "";
         return view('admin.system-management.menu-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
@@ -27,15 +27,12 @@ class MenuCategoryController extends Controller
     public function search($page, $search){
         $categories = DB::table('menu_categories')
             ->select('*')
+            ->where('is_deleted', 0)
             ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
 
-        $categoryCount = DB::table('menu_categories')
-            ->select('*')
-            ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
-            ->count();
+        $categoryCount = $categories->total();
         return view('admin.system-management.menu-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
@@ -103,7 +100,10 @@ class MenuCategoryController extends Controller
     }
 
     public function delete($slug){
-        DB::table('menu_categories')->where('slug', $slug)->delete();
+        DB::table('menu_categories')->where('slug', $slug)
+            ->update([
+                'is_deleted' => 1,
+            ]);
 
         return redirect()->route('menu.category.index')->withInput()->with('message', 'Successfully Deleted');
     }

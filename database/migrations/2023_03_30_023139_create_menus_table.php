@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('is_hidden')->default(0);
             $table->string('unit')->default('pc/s');
             $table->string('slug')->unique();
+            $table->string('is_deleted')->default(0);
             $table->timestamps();
         });
     }

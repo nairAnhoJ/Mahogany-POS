@@ -16,10 +16,10 @@ use Illuminate\Support\Str;
 class MenuController extends Controller
 {
     public function index(){
-        $comboMenus = Menu::where('is_combo', 1)->get();
+        $comboMenus = Menu::where('is_combo', 1)->where('is_deleted', 0)->get();
         
         foreach ($comboMenus as $comboMenu) {
-            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->get();
+            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->where('is_deleted', 0)->get();
             
             if($ingredients->count() == 0){
                 $minQuantity = 0;
@@ -40,45 +40,10 @@ class MenuController extends Controller
             ]);
         }        
 
-        $menus = Menu::with('category')->orderBy('name', 'asc')->paginate(100);
+        $menus = Menu::with('category')->where('is_deleted', 0)->orderBy('name', 'asc')->paginate(100);
 
-
-
-
-        // $menus = DB::table('menus')
-        //     ->select(
-        //         'menus.name',
-        //         'menu_categories.name AS category',
-        //         'menus.price',
-        //         'menus.is_combo',
-        //         'menus.slug',
-        //         DB::raw('
-        //             CASE
-        //                 WHEN menus.is_combo = 1 THEN (
-        //                     SELECT
-        //                         MIN(
-        //                             CASE
-        //                                 WHEN is_menu = 1 THEN (
-        //                                     SELECT menus.quantity FROM menus WHERE menus.id = ingredients.inventory_id
-        //                                 )
-        //                                 ELSE (
-        //                                     SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
-        //                                 )
-        //                             END
-        //                         )
-        //                     FROM ingredients
-        //                     WHERE menu_id = menus.id
-        //                 )
-        //                 ELSE menus.quantity
-        //             END AS quantity
-        //         ')
-        //     )
-        //     ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
-        //     ->orderBy('name', 'asc')
-        //     ->paginate(100);
-
-        $items = DB::table('inventories')->get();
-        $menuCount = DB::table('menus')->get()->count();
+        $items = DB::table('inventories')->where('is_deleted', 0)->get();
+        $menuCount = $menus->total();
         $page = 1;
         $search = "";
 
@@ -86,145 +51,93 @@ class MenuController extends Controller
     }
 
     public function paginate($page){
-        // $menus = DB::table('menus')
-        //     ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
-        //     ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
-        //     ->orderBy('name', 'asc')
-        //     ->paginate(100,'*','page',$page);
+        $comboMenus = Menu::where('is_combo', 1)->where('is_deleted', 0)->get();
+        
+        foreach ($comboMenus as $comboMenu) {
+            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->where('is_deleted', 0)->get();
+            
+            if($ingredients->count() == 0){
+                $minQuantity = 0;
+            }else{
+                $minQuantity = PHP_INT_MAX;
+            }
+            
+            foreach ($ingredients as $ingredient) {
+                $inventoryQuantity = $ingredient->menu->quantity;
+                $requiredQuantity = $ingredient->quantity;
+                $availableCombos = floor($inventoryQuantity / $requiredQuantity);
+                $minQuantity = min($minQuantity, $availableCombos);
+            }
+            
+            $comboMenu->update([
+                'quantity' => $minQuantity,
+                'current_quantity' => $minQuantity,
+            ]);
+        }        
 
-        $menus = DB::table('menus')
-            ->select(
-                'menus.name',
-                'menu_categories.name AS category',
-                'menus.price',
-                'menus.is_combo',
-                'menus.slug',
-                DB::raw('
-                    CASE
-                        WHEN menus.is_combo = 1 THEN (
-                            SELECT
-                                MIN(
-                                    CASE
-                                        WHEN is_menu = 1 THEN (
-                                            SELECT menus.quantity FROM menus WHERE menus.id = ingredients.inventory_id
-                                        )
-                                        ELSE (
-                                            SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
-                                        )
-                                    END
-                                )
-                            FROM ingredients
-                            WHERE menu_id = menus.id
-                        )
-                        ELSE menus.quantity
-                    END AS quantity
-                ')
-            )
-            ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
-            ->orderBy('name', 'asc')
-            ->paginate(100,'*','page',$page);
+        $menus = Menu::with('category')->where('is_deleted', 0)->orderBy('name', 'asc')->paginate(100,'*','page',$page);
 
-
-        $menuCount = DB::table('menus')->get()->count();
-        $items = DB::table('inventories')->get();
+        $items = DB::table('inventories')->where('is_deleted', 0)->get();
+        $menuCount = $menus->total();
+        $page = $page;
         $search = "";
 
         return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
     }
 
     public function search($page, $search){
-        // $menus = DB::table('menus')
-        //     ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
-        //     ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
-        //     ->whereRaw("CONCAT_WS(' ', menus.name, menu_categories.name) LIKE '%{$search}%'")
-        //     ->orderBy('name', 'asc')
-        //     ->paginate(100,'*','page',$page);
-
-        $menus = DB::table('menus')
-            ->select(
-                'menus.name',
-                'menu_categories.name AS category',
-                'menus.price',
-                'menus.is_combo',
-                'menus.slug',
-                DB::raw('
-                    CASE
-                        WHEN menus.is_combo = 1 THEN (
-                            SELECT
-                                MIN(
-                                    CASE
-                                        WHEN is_menu = 1 THEN (
-                                            SELECT menus.quantity FROM menus WHERE menus.id = ingredients.inventory_id
-                                        )
-                                        ELSE (
-                                            SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
-                                        )
-                                    END
-                                )
-                            FROM ingredients
-                            WHERE menu_id = menus.id
-                        )
-                        ELSE menus.quantity
-                    END AS quantity
-                ')
-            )
-            ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
-            ->whereRaw("CONCAT_WS(' ', menus.name, menu_categories.name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
-            ->paginate(100,'*','page',$page);
-
-        $menuCount = DB::table('menus')
-            ->select('menus.name', 'menu_categories.name AS category', 'menus.current_quantity', 'menus.quantity', 'menus.price', 'menus.slug')
-            ->join('menu_categories' , 'menus.category_id', '=', 'menu_categories.id')
-            ->whereRaw("CONCAT_WS(' ', menus.name, menu_categories.name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
-            ->count();
-            $items = DB::table('inventories')->get();
+        $comboMenus = Menu::where('is_combo', 1)->where('is_deleted', 0)->get();
+        
+        foreach ($comboMenus as $comboMenu) {
+            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->where('is_deleted', 0)->get();
             
+            if($ingredients->count() == 0){
+                $minQuantity = 0;
+            }else{
+                $minQuantity = PHP_INT_MAX;
+            }
+            
+            foreach ($ingredients as $ingredient) {
+                $inventoryQuantity = $ingredient->menu->quantity;
+                $requiredQuantity = $ingredient->quantity;
+                $availableCombos = floor($inventoryQuantity / $requiredQuantity);
+                $minQuantity = min($minQuantity, $availableCombos);
+            }
+            
+            $comboMenu->update([
+                'quantity' => $minQuantity,
+                'current_quantity' => $minQuantity,
+            ]);
+        }        
+
+        $menus = Menu::with('category')->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")->where('is_deleted', 0)->orderBy('name', 'asc')->paginate(100,'*','page',$page);
+
+        $items = DB::table('inventories')->where('is_deleted', 0)->get();
+        $menuCount = $menus->total();
+        $page = $page;
+        $search = $search;
+
         return view('user.cook.menu-preparation', compact('menus', 'menuCount', 'page', 'search', 'items'));
     }
 
     public function add(){
-        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
-        $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
-        $menus = DB::table('menus')->get();
+        $categories = DB::table('menu_categories')->where('is_deleted', 0)->orderBy('name', 'asc')->get();
+        $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->where('is_deleted', 0)->get();
+        $menus = DB::table('menus')->where('is_deleted', 0)->get();
 
-        // $menuQuery = DB::table('menus')
-        //     ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'));
-        
-        // $inventoryQuery = DB::table('inventories')
-        //     ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
-        
-        // $items = $menuQuery->union($inventoryQuery)->get();
-
-        // if(auth()->user()->role == 1){
-            // return view('user.inventory.menu.add', compact('categories', 'items', 'menus'));
-        // }elseif(auth()->user()->role == 3){
         return view('user.cook.menu-preparation-add', compact('categories','items', 'menus'));
-        // }
     }
 
     public function changeIng(Request $request){
         if($request->combo == 'true'){
-            $items = DB::table('menus')
-                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_combo', 0)->get();
-            
-            // $inventoryQuery = DB::table('inventories')
-                // ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
-            
-            // $items = $menuQuery->union($inventoryQuery)->get();
+            $items = DB::table('menus')->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_deleted', 0)->where('is_combo', 0)->get();
         }else{
-            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
+            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->where('is_deleted', 0)->get();
         }
         $li = '';
 
 
         foreach ($items as $item){
-            // if($item->is_menu == 1){
-            //     $itemName = 'MENU-'.$item->name;
-            // }else{
-            //     $itemName = $item->name;
-            // }
             $itemName = $item->name;
             $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$itemName.'</li>';
         }
@@ -267,24 +180,13 @@ class MenuController extends Controller
         $counter = $request->counter;
 
         if($request->combo == 'true'){
-            $items = DB::table('menus')
-                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_combo', 0)->get();
-            
-            // $inventoryQuery = DB::table('inventories')
-            //     ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
-            
-            // $items = $menuQuery->union($inventoryQuery)->get();
+            $items = DB::table('menus')->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_deleted', 0)->where('is_combo', 0)->get();
         }else{
-            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
+            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->where('is_deleted', 0)->get();
         }
         $li = '';
 
         foreach ($items as $item){
-            // if($item->is_menu == 1){
-            //     $itemName = 'MENU-'.$item->name;
-            // }else{
-            //     $itemName = $item->name;
-            // }
             $li .= '<li data-id="'.$item->id.'" data-name="'.$item->name.'" data-unit="'.$item->unit.'" data-is_menu="'.$item->is_menu.'" data-idnum="'.$counter.'" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">'.$item->name.'</li>';
         }
 
@@ -413,46 +315,17 @@ class MenuController extends Controller
 
     public function edit($slug){
         $item = DB::table('menus')->where('slug', $slug)->first();
-        $ingredients = DB::table('ingredients')
-            ->select('ingredients.id', 'ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name AS name', 'ingredients.quantity', 'ingredients.unit')
-            ->join('inventories', 'ingredients.inventory_id', 'inventories.id')
-            ->where('ingredients.menu_id', $item->id)->get();
-
-        $ingredients = DB::table('ingredients')
-            ->select('ingredients.*', DB::raw('CASE WHEN ingredients.is_menu = 1 THEN menus.name WHEN ingredients.is_menu = 0 THEN inventories.name END AS name'))
-            ->leftJoin('menus', function ($join) {
-                $join->on('ingredients.inventory_id', '=', 'menus.id')
-                    ->where('ingredients.is_menu', '=', 1);
-            })
-            ->leftJoin('inventories', function ($join) {
-                $join->on('ingredients.inventory_id', '=', 'inventories.id')
-                    ->where('ingredients.is_menu', '=', 0);
-            })
-            ->where('ingredients.menu_id', $item->id)
-            ->get();
-
-        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->get();
+        $categories = DB::table('menu_categories')->orderBy('name', 'asc')->where('is_deleted', 0)->get();
 
         if($item->is_combo == 1){
-            $items = DB::table('menus')
-                ->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->get();
-            
-            // $inventoryQuery = DB::table('inventories')
-            //     ->select('id', 'name', 'unit', DB::raw('0 AS is_menu'));
-            
-            // $items = $menuQuery->union($inventoryQuery)->get();
+            $items = DB::table('menus')->select('id', 'name', 'unit', DB::raw('1 AS is_menu'))->where('is_deleted', 0)->where('is_combo', 0)->get();
+            $ingredients = Ingredient::with('menu')->where('menu_id', $item->id)->where('is_deleted', 0)->get();
         }else{
-            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->get();
+            $items = DB::table('inventories')->select('id', 'name', 'unit', DB::raw('0 AS is_menu'))->where('is_deleted', 0)->get();
+            $ingredients = Ingredient::with('inv')->where('menu_id', $item->id)->where('is_deleted', 0)->get();
         }
 
-        // dd($ingredients->count());
-
-        
-        // if(auth()->user()->role == 1){
-        //     return view('user.inventory.menu.edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
-        // }elseif(auth()->user()->role == 3){
         return view('user.cook.menu-preparation-edit', compact('item', 'ingredients', 'categories', 'items', 'slug'));
-        // }
     }
 
     public function update(Request $request){
@@ -618,7 +491,7 @@ class MenuController extends Controller
         $ings = DB::table('ingredients')
             ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.computed_quantity', 'ingredients.unit')
             ->join('inventories', 'ingredients.inventory_id', '=', 'inventories.id')
-            ->where('menu_id', $id)->orderBy('ingredients.id','asc')->get();
+            ->where('menu_id', $id)->where('ingredients.is_deleted', 0)->orderBy('ingredients.id','asc')->get();
 
         $ingredients = '';
         $x = 1;
@@ -641,10 +514,6 @@ class MenuController extends Controller
             ';
             $x++;
         }
-        // <div class="px-4 text-xl font-semibold tracking-wide">
-        //     <h1><span>'.$ing->quantity.'</span><span>'.$ing->unit.'</span><span style="margin-left: 32px;">'.$ing->name.'</span></h1>
-        // </div>
-        
 
         $result = array(
             'name' => $name,
@@ -666,7 +535,7 @@ class MenuController extends Controller
         $ings = DB::table('ingredients')
             ->select('ingredients.menu_id', 'ingredients.inventory_id', 'inventories.name as name', 'ingredients.quantity', 'ingredients.computed_quantity', 'ingredients.unit')
             ->join('inventories', 'ingredients.inventory_id', '=', 'inventories.id')
-            ->where('menu_id', $id)->orderBy('ingredients.id','asc')->get();
+            ->where('menu_id', $id)->where('ingredients.is_deleted', 0)->orderBy('ingredients.id','asc')->get();
 
         $ingredients = '';
         $x = 1;
@@ -709,7 +578,7 @@ class MenuController extends Controller
         $menu = DB::table('menus')->where('slug', $slug)->first();
         $menuID = $menu->id;
         $menuName = $menu->name;
-        $ings = DB::table('ingredients')->where('menu_id', $menuID)->orderBy('id','asc')->get();
+        $ings = DB::table('ingredients')->where('menu_id', $menuID)->where('is_deleted', 0)->orderBy('id','asc')->get();
 
         if($ings->count() > 0){
             $x = 1;
@@ -730,7 +599,6 @@ class MenuController extends Controller
                 $nq = 'ingq'.$x;
                 $old_quantity = (DB::table('inventories')->where('id', $ing->inventory_id)->first())->quantity;
                 $tqty = $request->$nq;
-                // $tqty = $ing->quantity * $quantity;
                 $new_quantity = $old_quantity - $tqty;
 
                 DB::table('inventories')->where('id', $ing->inventory_id)->update([
@@ -785,8 +653,20 @@ class MenuController extends Controller
     public function delete($slug){
         $menuID = (DB::table('menus')->where('slug', $slug)->first())->id;
         
-        DB::table('ingredients')->where('menu_id', $menuID)->delete();
-        DB::table('menus')->where('slug', $slug)->delete();
+        DB::table('ingredients')->where('menu_id', $menuID)
+            ->update([
+                'is_deleted' => 1,
+            ]);
+        
+        DB::table('ingredients')->where('is_menu', 1)->where('inventory_id', $menuID)
+            ->update([
+                'is_deleted' => 1,
+            ]);
+
+        DB::table('menus')->where('slug', $slug)
+            ->update([
+                'is_deleted' => 1,
+            ]);
 
         return redirect()->route('menu.index')->withInput()->with('message', 'Successfully Deleted');
     }

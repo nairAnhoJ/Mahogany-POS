@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->tinyInteger('role'); // 1 = Admin; 2 = Cashier; 3 = Cook;  4 = Reciever;
             $table->string('slug')->unique();
+            $table->string('is_deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -289,7 +289,9 @@
                                                         {{ '₱ '.number_format($menu->price, 2, '.', ',') }}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
+                                                        @if ($menu->is_combo != 1)
                                                         <a type="button" data-modal-target="moveMenuModal" data-modal-toggle="moveMenuModal" data-slug="{{ $menu->slug }}" data-quantity="{{ $menu->quantity }}" class="moveButton text-teal-600 hover:underline font-semibold text-sm">Move</a> | 
+                                                        @endif
 
                                                         <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="editButton text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
                                                         @if ($menu->is_combo != 1)

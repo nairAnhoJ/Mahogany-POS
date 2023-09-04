@@ -215,7 +215,6 @@ Route::middleware('role:1,2')->group(function(){
     Route::get('/transactions/print/{id}', [TransactionController::class, 'print']);
 
     // WASTE
-
         // INVENTORY
         Route::get('/waste/inventory', [WasteController::class, 'inventoryIndex'])->name('waste.inventory.index');
         Route::get('/waste/inventory/restore/{id}', [WasteController::class, 'inventoryRestore'])->name('waste.inventory.restore');
@@ -227,7 +226,6 @@ Route::middleware('role:1,2')->group(function(){
         Route::get('/waste/menu/restore/{id}', [WasteController::class, 'menuRestore'])->name('waste.menu.restore');
         Route::get('/waste/menu/{page}', [WasteController::class, 'menuPaginate']);
         Route::get('/waste/menu/{page}/{search}', [WasteController::class, 'menuSearch']);
-
     // WASTE END
 
 });

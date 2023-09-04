@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('status')->default(0); // 0 - Open , 1 - Occupied , 2 - Reserved
             $table->string('slug')->unique();
+            $table->string('is_deleted')->default(0);
             $table->timestamps();
         });
     }

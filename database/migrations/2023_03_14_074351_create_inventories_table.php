@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('price')->nullable();
             $table->string('image')->nullable();
             $table->string('slug')->unique();
+            $table->string('is_deleted')->default(0);
             $table->timestamps();
         });
     }

@@ -12,16 +12,16 @@ use Illuminate\Validation\Rules;
 class CategoryController extends Controller
 {
     public function index(){
-        $categories = DB::table('categories')->orderBy('name', 'asc')->paginate(100);
-        $categoryCount = DB::table('categories')->get()->count();
+        $categories = DB::table('categories')->where('is_deleted', 0)->orderBy('name', 'asc')->paginate(100);
+        $categoryCount = $categories->total();
         $page = 1;
         $search = "";
         return view('admin.system-management.inventory-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
     public function paginate($page){
-        $categories = DB::table('categories')->orderBy('name', 'asc')->paginate(100,'*','page',$page);
-        $categoryCount = DB::table('categories')->get()->count();
+        $categories = DB::table('categories')->orderBy('name', 'asc')->where('is_deleted', 0)->paginate(100,'*','page',$page);
+        $categoryCount = $categories->total();
         $search = "";
         return view('admin.system-management.inventory-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
@@ -29,15 +29,13 @@ class CategoryController extends Controller
     public function search($page, $search){
         $categories = DB::table('categories')
             ->select('*')
+            ->where('is_deleted', 0)
             ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
 
-        $categoryCount = DB::table('categories')
-            ->select('*')
-            ->whereRaw("CONCAT_WS(' ', name) LIKE '%{$search}%'")
-            ->orderBy('name', 'asc')
-            ->count();
+        $categoryCount = $categories->total();
+
         return view('admin.system-management.inventory-categories.index', compact('categories', 'categoryCount', 'page', 'search'));
     }
 
@@ -82,7 +80,10 @@ class CategoryController extends Controller
     }
 
     public function delete($slug){
-        DB::table('categories')->where('slug', $slug)->delete();
+        DB::table('categories')->where('slug', $slug)
+            ->update([
+                'is_deleted' => 1,
+            ]);
 
         return redirect()->route('inventory.category.index')->withInput()->with('message', 'Successfully Deleted');
     }

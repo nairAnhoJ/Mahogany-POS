@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="password" class="block text-sm font-medium text-gray-900 lg:text-base">Password <span class="text-red-500">*</span></label>
+                        <label for="password" class="block text-sm font-medium text-gray-900 lg:text-base">Password <span class="text-red-500">*</span><span class="italic text-sm">password must be atleast 8 characters</span></label>
                         <input type="password" id="password" name="password" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
                     </div>
                     <div class="mb-4">

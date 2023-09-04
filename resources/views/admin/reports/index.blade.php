@@ -17,6 +17,7 @@
                     <div class="mb-3">
                         <label for="category" class="block text-sm font-medium text-gray-900">Category</label>
                         <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="remit">Remittance</option>
                             <option value="sales">Sales</option>
                             <option value="expenses">Expenses</option>
                             <option value="both">Sales & Expenses</option>
@@ -29,8 +30,7 @@
                     <div class="mb-3">
                         <label for="report" class="block text-sm font-medium text-gray-900">Report</label>
                         <select id="report" name="report" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option value="list">Transaction Logs</option>
-                            <option value="summary">Summary</option>
+                            <option value="report">Report</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -70,6 +70,10 @@
                             <option value="list">Transaction Logs</option>
                             <option value="summary">Summary</option>
                             <option value="unpaid">Unpaid</option>
+                        `);
+                    }else if(category == 'remit'){
+                        $('#report').html(`
+                            <option value="report">Report</option>
                         `);
                     }else if(category == 'inventory'){
                         $('#report').html(`

@@ -12,7 +12,7 @@ use Illuminate\Validation\Rules;
 class UserController extends Controller
 {
     public function index(){
-        $users = DB::table('users')->orderBy('name', 'asc')->paginate(100);
+        $users = DB::table('users')->orderBy('name', 'asc')->where('is_deleted', 0)->paginate(100);
         $userCount = DB::table('users')->get()->count();
         $page = 1;
         $search = "";
@@ -20,7 +20,7 @@ class UserController extends Controller
     }
 
     public function paginate($page){
-        $users = DB::table('users')->orderBy('name', 'asc')->paginate(100,'*','page',$page);
+        $users = DB::table('users')->orderBy('name', 'asc')->where('is_deleted', 0)->paginate(100,'*','page',$page);
         $userCount = DB::table('users')->get()->count();
         $search = "";
         return view('admin.system-management.users.index', compact('users', 'userCount', 'page', 'search'));
@@ -30,12 +30,14 @@ class UserController extends Controller
         $users = DB::table('users')
             ->select('*')
             ->whereRaw("CONCAT_WS(' ', name, username) LIKE '%{$search}%'")
+            ->where('is_deleted', 0)
             ->orderBy('name', 'asc')
             ->paginate(100,'*','page',$page);
 
         $userCount = DB::table('users')
             ->select('*')
             ->whereRaw("CONCAT_WS(' ', name, username) LIKE '%{$search}%'")
+            ->where('is_deleted', 0)
             ->orderBy('name', 'asc')
             ->count();
         return view('admin.system-management.users.index', compact('users', 'userCount', 'page', 'search'));
@@ -112,7 +114,10 @@ class UserController extends Controller
     }
 
     public function delete($slug){
-        DB::table('users')->where('slug', $slug)->delete();
+        DB::table('users')->where('slug', $slug)
+            ->update([
+                'is_deleted' => 1,
+            ]);
 
         return redirect()->route('user.index')->withInput()->with('message', 'Successfully Deleted');
     }

@@ -194,6 +194,8 @@
                                 }else{
                                     $ncat = 'Menu Waste';
                                 }
+                            }else if($category == 'remit'){
+                                $ncat = 'Remittance Report';
                             }
                         @endphp
                         <h1 class="text-xl lg:text-3xl">{{ $ncat }}</h1>
@@ -345,43 +347,43 @@
                                             $total = 0;
                                         @endphp
                                         @foreach ($results as $result)
-                                        @php
-                                            if($category == 'waste'){
-                                                $total = $total +  $result->cost;
-                                            }
-                                        @endphp
+                                            @php
+                                                if($category == 'waste'){
+                                                    $total = $total +  $result->cost;
+                                                }
+                                            @endphp
                                             <tr class="border-b">
                                                 @if ($category == 'sales')
                                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                                        {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                                        {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
                                                     </th>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->nn }}
+                                                        {{ $result->number }}
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        ₱ {{ number_format($result->amount, 2, '.', ',') }}
+                                                        ₱ {{ number_format($result->total, 2, '.', ',') }}
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         {{ $result->mode_of_payment }}
                                                     </td>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->cashier }}
+                                                        {{ $result->thisCashier->name }}
                                                     </td>
                                                     @if (Auth::user()->role == 1)
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
-                                                            <button data-id="{{ $result->id }}" data-name="{{ $result->nn }}" data-amount="{{ $result->amount }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
+                                                            <button data-id="{{ $result->id }}" data-name="{{ $result->number }}" data-amount="{{ $result->total }}" data-date="{{ date('m/d/Y', strtotime($result->created_at)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
                                                             <span class="px-2">|</span>
                                                             <button data-id="{{ $result->id }}" data-category="{{ $category }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
                                                         </td>
                                                     @endif
                                                 @elseif($category == 'expenses')
                                                     <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                                        {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                                        {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
                                                     </th>
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         @php
                                                             if($result->inv_id != 0){
-                                                                $iname = $result->nn;
+                                                                $iname = $result->inv->name;
                                                             }else{
                                                                 $iname = $result->remarks;
                                                             }
@@ -407,7 +409,7 @@
                                                         </td>
                                                     @endif
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                        {{ $result->cashier }}
+                                                        {{ $result->user->name }}
                                                     </td>
                                                     @if ($report == 'unpaid')
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
@@ -416,7 +418,7 @@
                                                     @endif
                                                     @if ($report != 'unpaid' && Auth::user()->role == 1)
                                                         <td class="px-6 py-1 text-center whitespace-nowrap font-bold">
-                                                            <button data-id="{{ $result->id }}" data-inv_id="{{ $result->inv_id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->date)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
+                                                            <button data-id="{{ $result->id }}" data-inv_id="{{ $result->inv_id }}" data-name="{{ $iname }}" data-amount="{{ $result->amount }}" data-quantity="{{ $result->quantity }}" data-date="{{ date('m/d/Y', strtotime($result->created_at)) }}" data-category="{{ $category }}" data-modal-show="editModal" data-modal-target="editModal" class="actionButton text-blue-500 hover:underline">Edit</button>
                                                             <span class="px-2">|</span>
                                                             <button data-id="{{ $result->id }}" data-category="{{ $category }}" data-modal-show="deleteModal" data-modal-target="deleteModal" class="actionButton text-red-500 hover:underline">Delete</button>
                                                         </td>
@@ -424,10 +426,10 @@
                                                 @elseif($category == 'inventory')
                                                     @if ($report == 'logs')
                                                         <th class="px-6 py-1 text-center font-medium text-gray-900 whitespace-nowrap">
-                                                            {{ date('F j, Y h:i A', strtotime($result->date)) }}
+                                                            {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
                                                         </th>
                                                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                            {{ $result->nn }}
+                                                            {{ $result->inv->name }}
                                                         </td>
                                                         <td class="px-6 py-1 text-center whitespace-nowrap">
                                                             {{ round($result->quantity_before,2) }}
@@ -443,10 +445,10 @@
                                                         </td>
                                                     @else
                                                         <td class="px-6 py-1 text-left whitespace-nowrap">
-                                                            {{ $result->nn }}
+                                                            {{ $result->name }}
                                                         </td>
                                                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                            {{ $result->cn }}
+                                                            {{ $result->category->name }}
                                                         </td>
                                                         <td class="px-6 py-1 text-center whitespace-nowrap">
                                                             {{ round($result->quantity,2) }}
@@ -499,6 +501,13 @@
                                                     <td class="px-6 py-1 text-center whitespace-nowrap">
                                                         ₱ {{ number_format($result->cost, 2, '.', ',') }}
                                                     </td>
+                                                @elseif($category == 'remit')
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap {{ ($result->name == 'Total') ? 'text-lg font-bold text-gray-600' : '' }}">
+                                                        {{ strtoupper($result->name) }}
+                                                    </td>
+                                                    <td class="px-6 py-1 text-center whitespace-nowrap {{ ($result->name == 'Total') ? 'text-lg font-bold text-gray-600' : '' }}">
+                                                        ₱ {{ number_format($result->amount, 2, '.', ',') }}
+                                                    </td>
                                                 @endif
                                             </tr>
                                         @endforeach
@@ -511,7 +520,7 @@
                                                 Total
                                             </th>
                                             <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                ₱ {{ number_format($total, 2, '.', ',') }}
+                                                ₱ {{ number_format($resultsCount, 2, '.', ',') }}
                                             </td>
                                         </tr>
                                     </table>
@@ -519,177 +528,6 @@
                             </div>
                         </div>
                     {{-- TABLE END --}}
-
-                    {{-- INVENTORY LIST SMALL DEVICE --}}
-                        {{-- <div id="inventoryMobile" class="overflow-auto md:hidden">
-                            <div id="accordion-collapse" data-accordion="collapse">
-                                @php
-                                    $x = 1;
-                                    foreach ($results as $result) {
-                                        if($category == 'sales'){
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$result->nn.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Date</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.date('Y-m-d', strtotime($result->date)).'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Amount</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                ₱ '.round($result->amount, 2).'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Mode of Payment</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$result->mode_of_payment.'
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }else if($category == 'expenses'){
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$result->nn.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Date</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.date('Y-m-d', strtotime($result->date)).'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Amount</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                ₱ '.round($result->amount, 2).'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$result->quantity.'
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }else if($category == 'inventory'){
-                                            if($report == 'logs'){
-                                                echo '
-                                                    <h2 id="accordion-collapse-heading-'.$x.'">
-                                                        <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                            <span>'.$result->nn.'</span>
-                                                            <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                        <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Date</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.date('F j, Y h:i A', strtotime($result->date)).'
-                                                                </div>
-                                                            </div>
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Quantity Before</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.round($result->quantity_before, 2).'
-                                                                </div>
-                                                            </div>
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Quantity</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.round($result->quantity, 2).'
-                                                                </div>
-                                                            </div>
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Quantity After</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.round($result->quantity_after, 2).'
-                                                                </div>
-                                                            </div>
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Remarks</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.$result->remarks.'
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ';
-                                            }else{
-                                                echo '
-                                                    <h2 id="accordion-collapse-heading-'.$x.'">
-                                                        <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                            <span>'.$result->nn.'</span>
-                                                            <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                        <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Category</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.$result->cn.'
-                                                                </div>
-                                                            </div>
-                                                            <div class="grid grid-cols-3">
-                                                                <div class="text-xs leading-5">Quantity</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
-                                                                    '.round($result->quantity, 2).'
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ';
-                                            }
-                                        }else if($category == 'menu'){
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$x.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.$result->name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Amount</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
-                                                                '.round($result->quantity, 0).'
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }
-                                    $x++;
-                                    }
-                                @endphp
-                            </div>
-                        </div> --}}
-                    {{-- INVENTORY LIST SMALL DEVICE END --}}
                 </div>
             </div>
         </div>
@@ -759,6 +597,7 @@
                     },
                     success:function(result){
                         alert(result);
+                        location.reload();
                     }
                 })
             });

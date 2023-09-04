@@ -14,4 +14,14 @@ class Waste extends Model
     ];
 
     use HasFactory;
+
+    public function raw()
+    {
+        return $this->belongsTo(Inventory::class, 'iid');
+    }
+
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class, 'iid');
+    }
 }

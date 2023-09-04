@@ -20,11 +20,11 @@ class POSController extends Controller
     public function index(){  
 
         $this->updateCurrentQuantity();
-        $tables = DB::table('tables')->orderBy('id', 'asc')->get();
+        $tables = DB::table('tables')->orderBy('id', 'asc')->where('is_deleted', 0)->get();
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
-        $menus = DB::table('menus')->where('current_quantity', '>', 0)->orderBy('name', 'asc')->get();
+        $menus = DB::table('menus')->where('current_quantity', '>', 0)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
 
-        $categories = DB::table('menu_categories')->where('is_hidden', 0)->orderBy('name', 'asc')->get();
+        $categories = DB::table('menu_categories')->where('is_hidden', 0)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
         $subTotal = 0;
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
@@ -883,11 +883,10 @@ class POSController extends Controller
 
     public function updateCurrentQuantity(){
 
-        $comboMenus = Menu::where('is_combo', 1)->get();
+        $comboMenus = Menu::where('is_combo', 1)->where('is_deleted', 0)->get();
         
         foreach ($comboMenus as $comboMenu) {
-            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->get();
-            
+            $ingredients = Ingredient::where('menu_id', $comboMenu->id)->where('is_deleted', 0)->get();
             
             if($ingredients->count() == 0){
                 $minQuantity = 0;
@@ -913,50 +912,6 @@ class POSController extends Controller
                 'quantity' => $minQuantity,
                 'current_quantity' => $cminQuantity,
             ]);
-        }   
-
-
-        // $menus = DB::table('menus')
-        //     ->select(
-        //         'menus.id',
-        //         'menus.name',
-        //         'menus.category_id',
-        //         'menu_categories.name AS category',
-        //         'menus.price',
-        //         'menus.is_combo',
-        //         'menus.slug',
-        //         'menus.image',
-        //         DB::raw('
-        //             CASE
-        //                 WHEN menus.is_combo = 1 THEN (
-        //                     SELECT
-        //                         MIN(
-        //                             CASE
-        //                                 WHEN is_menu = 1 THEN (
-        //                                     SELECT menus.current_quantity FROM menus WHERE menus.id = ingredients.inventory_id
-        //                                 )
-        //                                 ELSE (
-        //                                     SELECT inventories.quantity FROM inventories WHERE inventories.id = ingredients.inventory_id
-        //                                 )
-        //                             END
-        //                         )
-        //                     FROM ingredients
-        //                     WHERE menu_id = menus.id
-        //                 )
-        //                 ELSE menus.quantity
-        //             END AS new_current_quantity
-        //         ')
-        //     )
-        //     ->join('menu_categories', 'menus.category_id', '=', 'menu_categories.id')
-        //     ->where('is_combo', 1)
-        //     ->orderBy('name', 'asc')
-        //     ->get();
-
-        // foreach($menus as $menu){
-        //     DB::table('menus')->where('id', $menu->id)->update([
-        //         'current_quantity' => $menu->new_current_quantity
-        //     ]);
-        // }
+        }
     }
-
 }
