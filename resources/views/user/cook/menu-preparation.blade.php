@@ -11,20 +11,20 @@
         <div id="itemDeleteModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
-                <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                <div class="absolute w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-red-700"></i>
-                            <span class="text-red-700 text-base md:text-lg lg:text-xl">Delete Item</span>
+                        <h3 class="flex items-center font-semibold text-gray-900">
+                            <i class="mr-2 text-xl text-red-700 uil uil-exclamation-triangle md:text-2xl lg:text-3xl"></i>
+                            <span class="text-base text-red-700 md:text-lg lg:text-xl">Delete Item</span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="itemDeleteModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="px-6 py-3 md:py-6 space-y-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
+                    <div class="px-6 py-3 space-y-6 md:py-6">
+                        <p class="text-xs leading-relaxed text-gray-500 md:text-base">
                             Are you sure you want to delete this item?
                         </p>
                     </div>
@@ -48,20 +48,20 @@
         <div id="moveMenuModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
-                <form method="POST" action="{{ route('menu.move') }}" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                <form method="POST" action="{{ route('menu.move') }}" class="absolute w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
                     @csrf
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            {{-- <i class="uil uil-exclamation-triangle mr-2 text-xl md:text-2xl lg:text-3xl text-yellow-400"></i> --}}
-                            <span class="text-emerald-600 text-base md:text-lg lg:text-xl">Move Menu to Inventory</span>
+                        <h3 class="flex items-center font-semibold text-gray-900">
+                            {{-- <i class="mr-2 text-xl text-yellow-400 uil uil-exclamation-triangle md:text-2xl lg:text-3xl"></i> --}}
+                            <span class="text-base text-emerald-600 md:text-lg lg:text-xl">Move Menu to Inventory</span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="moveMenuModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="px-6 py-3 md:py-6 space-y-6">
+                    <div class="px-6 py-3 space-y-6 md:py-6">
                         <input type="hidden" id="moveSlug" name="moveSlug">
                         <div class="mb-6">
                             <label for="moveServings" class="block mb-2 text-sm font-medium text-gray-900">Servings</label>
@@ -83,12 +83,12 @@
         <div id="disposeModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
-                <form method="POST" action="{{ route('menu.dispose') }}" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-lg shadow">
+                <form method="POST" action="{{ route('menu.dispose') }}" class="absolute w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
                     @csrf
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="font-semibold text-gray-900 flex items-center">
-                            <span class="text-blue-500 text-base md:text-lg lg:text-xl">Waste</span>
+                        <h3 class="flex items-center font-semibold text-gray-900">
+                            <span class="text-base text-blue-500 md:text-lg lg:text-xl">Waste</span>
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="disposeModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -96,8 +96,8 @@
                     </div>
                     <!-- Modal body -->
                     <div class="px-6 py-6">
-                        <p class="text-xs md:text-base leading-relaxed text-gray-500">
-                            <h1 id="disposeName" class="pb-5 font-bold text-xl"></h1>
+                        <p class="text-xs leading-relaxed text-gray-500 md:text-base">
+                            <h1 id="disposeName" class="pb-5 text-xl font-bold"></h1>
                             <input type="hidden" id="disposeSlug" name="disposeSlug">
                             <div class="mb-6">
                                 <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
@@ -129,13 +129,13 @@
 
     {{-- SUCCESS NOTIFICATION --}}
         @if (session('message'))
-            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-emerald-200 rounded-lg z-50 shadow-md shadow-emerald-800 flex flex-row justify-between px-2">
+            <div class="absolute z-50 flex flex-row justify-between h-12 px-2 -translate-x-1/2 rounded-lg shadow-md notif left-1/2 top-14 w-96 bg-emerald-200 shadow-emerald-800">
                 <div class="flex">
-                    <i class="self-center uil uil-cloud-check text-emerald-800 text-2xl"></i>
-                    <h1 class="self-center text-emerald-800 font-semibold ml-1">{{ session('message') }}</h1>
+                    <i class="self-center text-2xl uil uil-cloud-check text-emerald-800"></i>
+                    <h1 class="self-center ml-1 font-semibold text-emerald-800">{{ session('message') }}</h1>
                 </div>
-                <button class="notifButton self-center">
-                    <i class="uil uil-times text-2xl text-emerald-800"></i>
+                <button class="self-center notifButton">
+                    <i class="text-2xl uil uil-times text-emerald-800"></i>
                 </button>
             </div>
         @endif
@@ -143,13 +143,13 @@
 
     {{-- ERROR NOTIFICATION --}}
         @if (session('error'))
-            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-red-200 rounded-lg z-50 shadow-md shadow-red-800 flex flex-row justify-between px-2">
+            <div class="absolute z-50 flex flex-row justify-between h-12 px-2 -translate-x-1/2 bg-red-200 rounded-lg shadow-md notif left-1/2 top-14 w-96 shadow-red-800">
                 <div class="flex">
-                    <i class="self-center uil uil-cloud-check text-red-800 text-2xl"></i>
-                    <h1 class="self-center text-red-800 font-semibold ml-1">{{ session('error') }}</h1>
+                    <i class="self-center text-2xl text-red-800 uil uil-cloud-check"></i>
+                    <h1 class="self-center ml-1 font-semibold text-red-800">{{ session('error') }}</h1>
                 </div>
-                <button class="notifButton self-center">
-                    <i class="uil uil-times text-2xl text-red-800"></i>
+                <button class="self-center notifButton">
+                    <i class="text-2xl text-red-800 uil uil-times"></i>
                 </button>
             </div>
         @endif
@@ -159,46 +159,46 @@
         <button data-drawer-target="addServingModal" data-drawer-toggle="addServingModal" aria-controls="addServingModal" type="button" id="addServingButton" class="hidden">
         </button>
             
-        <aside id="addServingModal" data-drawer-backdrop="static" tabindex="-1" class="fixed top-0 left-1/4 lg:left-1/4 z-40 w-3/4 lg:w-3/4 h-screen transition-transform translate-x-full" aria-label="Sidebar">
-            <form method="POST" action="{{ route('menu.changeqty') }}" class="h-full px-4 py-4 overflow-y-auto bg-gray-50 relative">
+        <aside id="addServingModal" data-drawer-backdrop="static" tabindex="-1" class="fixed top-0 z-40 w-3/4 h-screen transition-transform translate-x-full left-1/4 lg:left-1/4 lg:w-3/4" aria-label="Sidebar">
+            <form method="POST" action="{{ route('menu.changeqty') }}" class="relative h-full px-4 py-4 overflow-y-auto bg-gray-50">
                 @csrf
                 <input type="hidden" id="counter" name="counter" value="1">
-                <h1 id="menuName" class="font-bold text-3xl tracking-wider">MENU NAME</h1>
-                <div class="grid grid-cols-2 mt-5 mb-1 w-full">
+                <h1 id="menuName" class="text-3xl font-bold tracking-wider">MENU NAME</h1>
+                <div class="grid w-full grid-cols-2 mt-5 mb-1">
                     <input type="hidden" id="slug" name="slug">
-                    <p class="font-bold text-2xl tracking-wide">Servings</p>
-                    <div class="flex flex-row-reverse items-center rounded-lg text-center">
+                    <p class="text-2xl font-bold tracking-wide">Servings</p>
+                    <div class="flex flex-row-reverse items-center text-center rounded-lg">
                         <button id="incQty" type="button">
-                            <i class="uil uil-plus-circle text-3xl text-blue-500"></i>
+                            <i class="text-3xl text-blue-500 uil uil-plus-circle"></i>
                         </button>
-                        <div class="text-2xl mx-2">
-                            <input type="text" id="servings" name="servings" value="" class="w-14 p-0 h-9 bg-gray-50 text-center" autocomplete="off">
+                        <div class="mx-2 text-2xl">
+                            <input type="text" id="servings" name="servings" value="" class="p-0 text-center w-14 h-9 bg-gray-50" autocomplete="off">
                         </div>
                         <button id="decQty" type="button">
-                            <i class="uil uil-minus-circle text-3xl text-red-500"></i>
+                            <i class="text-3xl text-red-500 uil uil-minus-circle"></i>
                         </button>
                     </div>
                 </div>
                 <div class="">
-                    <h2 class="font-bold text-2xl tracking-wide">INGREDIENTS</h2>
+                    <h2 class="text-2xl font-bold tracking-wide">INGREDIENTS</h2>
                     <div id="ingredients" class="">
                     </div>
 
                     <div class="mt-5">
 
-                        <div class="mt-7 mb-2 flex items-center">
-                            <h2 class="font-bold text-xl italic tracking-wide mr-5">ADDITIONALS</h2>
+                        <div class="flex items-center mb-2 mt-7">
+                            <h2 class="mr-5 text-xl italic font-bold tracking-wide">ADDITIONALS</h2>
                             <button id="addButton" type="button" class="text-3xl text-blue-500"><i class="uil uil-plus-circle"></i></button>
                         </div>
     
-                        <div class="mb-2 flex flex-row gap-x-3 h-6">
+                        <div class="flex flex-row h-6 mb-2 gap-x-3">
                             <div class="w-2/5 text-center">
                                 <label class="block font-medium text-gray-900">Name</label>
                             </div>
                             <div class="w-2/5 text-center">
                                 <label class="block font-medium text-gray-900">Quantity</label>
                             </div>
-                            <div class="w-1/5 flex">
+                            <div class="flex w-1/5">
                                 <div class="w-1/2"></div>
                                 <div class="w-1/2 text-center">Remove</div>
                             </div>
@@ -220,15 +220,15 @@
 
     <div class="">
         <div style="height: calc(100vh - 48px);" class="flex {{ auth()->user()->role == 1 ? 'lg:ml-64 lg:pt-3' : '' }}">
-            <div id="contentDiv" class="p-2 w-full">
-                <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
+            <div id="contentDiv" class="w-full p-2">
+                <div class="p-4 overflow-hidden bg-white rounded-lg shadow-md">
                     {{-- CONTROLS --}}
                         <div class="mb-3">
                             <div class="md:grid md:grid-cols-2">
-                                <div class=" w-24">
-                                    <a href="{{ route('menu.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</a>
+                                <div class="w-24 ">
+                                    <a href="{{ route('menu.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="mr-1 uil uil-plus"></i>ADD</a>
                                 </div>
-                                <div class="justify-self-end w-full xl:w-4/5">
+                                <div class="w-full justify-self-end xl:w-4/5">
                                     <form method="GET" action="" id="searchForm" class="w-full">
                                         <label for="searchInput" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
                                         <div class="relative">
@@ -236,8 +236,8 @@
                                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                             </div>
                                             <input type="search" id="searchInput" class="block w-full px-4 py-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="SEARCH" value="{{ $search }}" autocomplete="off">
-                                            <button id="clearButton" type="button" class=" absolute right-20 bottom-1">
-                                                <i class="uil uil-times text-2xl"></i>
+                                            <button id="clearButton" type="button" class="absolute right-20 bottom-1">
+                                                <i class="text-2xl uil uil-times"></i>
                                             </button>
                                             <button id="searchButton" type="button" style="bottom: 5px; right: 5px;" type="submit" class="text-white absolute bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2.5 py-1.5">Search</button>
                                         </div>
@@ -249,7 +249,7 @@
      
                     <div>
                         {{-- TABLE --}}
-                            <div class="hidden md:block">
+                            <div class="">
                                 <div id="menuTable" class="w-full shadow-md sm:rounded-lg">
                                     <table class="w-full text-sm text-left text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-200">
@@ -273,32 +273,37 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($menus as $menu)
-                                                <tr data-is_combo="{{ $menu->is_combo }}" class="addServing bg-white border-b cursor-pointer hover:bg-slate-50">
+                                                <tr data-is_combo="{{ $menu->is_combo }}" class="bg-white border-b cursor-pointer addServing hover:bg-slate-50">
                                                     <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
                                                         {{ $menu->name }}
                                                     </th>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         {{ $menu->category->name }}
                                                     </td>
-                                                    <td class="px-6 py-3 text-center whitespace-nowrap flex justify-center items-center">
-                                                        {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" class="addQuantity mr-2"><i class="uil uil-plus-circle text-xl text-blue-500 flex"></i></button> --}}
+                                                    <td class="flex items-center justify-center px-6 py-3 text-center whitespace-nowrap">
+                                                        {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" class="mr-2 addQuantity"><i class="flex text-xl text-blue-500 uil uil-plus-circle"></i></button> --}}
                                                         <span data-slug="{{$menu->slug}}" class="flex">{{ number_format($menu->quantity, 2, '.', ',') }}</span>
-                                                        {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="reduceQuantity ml-2"><i class="uil uil-minus-circle text-xl text-red-500 flex"></i></button> --}}
+                                                        {{-- <button data-slug="{{$menu->slug}}" data-modal-target="changeQtyModal" data-modal-toggle="changeQtyModal" class="ml-2 reduceQuantity"><i class="flex text-xl text-red-500 uil uil-minus-circle"></i></button> --}}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         {{ '₱ '.number_format($menu->price, 2, '.', ',') }}
                                                     </td>
                                                     <td class="px-6 py-3 text-center whitespace-nowrap">
                                                         @if ($menu->is_combo != 1)
-                                                        <a type="button" data-modal-target="moveMenuModal" data-modal-toggle="moveMenuModal" data-slug="{{ $menu->slug }}" data-quantity="{{ $menu->quantity }}" class="moveButton text-teal-600 hover:underline font-semibold text-sm">Move</a> | 
+                                                            <a type="button" data-modal-target="moveMenuModal" data-modal-toggle="moveMenuModal" data-slug="{{ $menu->slug }}" data-quantity="{{ $menu->quantity }}" class="text-sm font-semibold text-teal-600 moveButton hover:underline">Move</a> | 
                                                         @endif
 
-                                                        <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="editButton text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
-                                                        @if ($menu->is_combo != 1)
-                                                            <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" data-slug="{{ $menu->slug }}"data-name="{{ $menu->name }}"  class="disposeButton text-orange-500 hover:underline font-semibold text-sm cursor-pointer">Waste</a> | 
-                                                        @endif
+                                                        <a href="{{ url('/menu/edit/'.$menu->slug) }}" class="text-sm font-semibold text-blue-600 editButton hover:underline">Setup</a>
                                                         
-                                                        <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="deleteButton text-red-600 hover:underline font-semibold text-sm cursor-pointer">Delete</a>
+                                                        @if(Auth::user()->role == 1)
+                                                            | 
+
+                                                            @if ($menu->is_combo != 1)
+                                                                <a type="button" data-modal-target="disposeModal" data-modal-toggle="disposeModal" data-slug="{{ $menu->slug }}"data-name="{{ $menu->name }}"  class="text-sm font-semibold text-orange-500 cursor-pointer disposeButton hover:underline">Waste</a> | 
+                                                            @endif
+                                                            
+                                                            <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="{{ $menu->slug }}" class="text-sm font-semibold text-red-600 cursor-pointer deleteButton hover:underline">Delete</a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -309,7 +314,7 @@
                         {{-- TABLE END --}}
     
                         {{-- INVENTORY LIST SMALL DEVICE --}}
-                            <div id="menuMobile" class="overflow-auto md:hidden">
+                            {{-- <div id="menuMobile" class="overflow-auto md:hidden">
                                 <div id="accordion-collapse" data-accordion="collapse">
                                     @php
                                         $x = 1;
@@ -326,27 +331,27 @@
                                                         <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Category</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     '.$menu->category.'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Quantity</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     '.number_format($menu->quantity, 2, '.', ',').'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Price</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     ₱ '.number_format($menu->price, 2, '.', ',').'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Action</div>
                                                                 <div class="col-span-2">
-                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
-                                                                    <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-sm font-semibold text-blue-600 hover:underline">Setup</a> | 
+                                                                    <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="text-sm font-semibold text-red-600 deleteButton hover:underline">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -362,29 +367,29 @@
                                                     </h2>
                                                     <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                         <div class="px-3 py-1.5 font-light border border-t-0 border-gray-200 rounded-b-xl">
-                                                            <div class="grid grid-cols-3 content-center">
+                                                            <div class="grid content-center grid-cols-3">
                                                                 <div class="text-xs leading-5">Category</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     '.$menu->category.'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Quantity</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     '.$menu->quantity.'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Price</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     ₱ '.number_format($menu->price, 2, '.', ',').'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div>Action</div>
                                                                 <div class="col-span-2">
-                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
-                                                                    <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-sm font-semibold text-blue-600 hover:underline">Setup</a> | 
+                                                                    <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="text-sm font-semibold text-red-600 deleteButton hover:underline">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -400,29 +405,29 @@
                                                     </h2>
                                                     <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
                                                         <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                            <div class="grid grid-cols-3 content-center">
+                                                            <div class="grid content-center grid-cols-3">
                                                                 <div class="text-xs leading-5">Category</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     '.$menu->category.'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Quantity</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     '.$menu->quantity.'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Price</div>
-                                                                <div class="col-span-2 font-semibold text-sm">
+                                                                <div class="col-span-2 text-sm font-semibold">
                                                                     ₱ '.number_format($menu->price, 2, '.', ',').'
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols-3">
                                                                 <div class="text-xs leading-5">Action</div>
                                                                 <div class="col-span-2">
-                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-blue-600 hover:underline font-semibold text-sm">Setup</a> | 
-                                                                    <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="deleteButton text-red-600 hover:underline font-semibold text-sm">Delete</a>
+                                                                    <a href="'.url('/menu/edit/'.$menu->slug).'" class="text-sm font-semibold text-blue-600 hover:underline">Setup</a> | 
+                                                                    <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$menu->slug.'" class="text-sm font-semibold text-red-600 deleteButton hover:underline">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -433,12 +438,12 @@
                                         }
                                     @endphp
                                 </div>
-                            </div>
+                            </div> --}}
                         {{-- INVENTORY LIST SMALL DEVICE END --}}
                     </div>
     
                     {{-- PAGINATION --}}
-                        <div class="grid md:grid-cols-2 mt-3 px-3">
+                        <div class="grid px-3 mt-3 md:grid-cols-2">
                             @php
                                 $prev = $page - 1;
                                 $next = $page + 1;
@@ -450,7 +455,7 @@
                                     $from = 0;
                                 }
                             @endphp
-                            <div class="justify-self-center md:justify-self-start self-center">
+                            <div class="self-center justify-self-center md:justify-self-start">
                                 <span class="text-sm text-gray-700">
                                     Showing <span class="font-semibold text-gray-900">{{ $from }}</span> to <span class="font-semibold text-gray-900">{{ $to }}</span> of <span class="font-semibold text-gray-900">{{ $menuCount }}</span> Items
                                 </span>
@@ -466,7 +471,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">{{ $page }}</p>
+                                            <p class="z-10 block font-semibold leading-9 text-center text-gray-500 bg-white border border-gray-300 w-9 h-9">{{ $page }}</p>
                                         </li>
                                         <li>
                                             <a href="{{ ($search == '') ? url('/menu/'.$next) : url('/menu/'.$next.'/'.$search); }}" class="{{ ($to == $menuCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
@@ -680,22 +685,22 @@
                             $('#slug').val(slug);
                             $('#addServingButton').click();
                             $('#addDiv').html(`
-                            <div id="ing1" class="mb-5 flex flex-row gap-x-3">
+                            <div id="ing1" class="flex flex-row mb-5 gap-x-3">
                                 <div class="w-2/5">
-                                    <div class="wrapper w-full relative">
-                                        <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                                    <div class="relative w-full wrapper">
+                                        <div class="flex items-center justify-between p-2 bg-gray-100 border border-gray-300 rounded-md cursor-pointer select-btn h-9">
                                             <span></span>
-                                            <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                                            <i class="text-2xl transition-transform duration-300 uil uil-angle-down"></i>
                                         </div>
-                                        <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
-                                            <div class="search relative">
-                                                <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
-                                                <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                                        <div class="absolute z-50 hidden w-full p-3 mt-1 bg-gray-100 rounded-md content">
+                                            <div class="relative search">
+                                                <i class="absolute leading-9 text-gray-500 uil uil-search left-3"></i>
+                                                <input type="text" class="w-full leading-9 text-gray-700 rounded-md outline-none selectSearch pl-9 h-9" placeholder="Search">
                                             </div>
-                                            <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                                <li data-id="" data-name="" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                            <ul class="mt-2 overflow-y-auto listOption options max-h-52">
+                                                <li data-id="" data-name="" data-idnum="1" class="flex items-center pl-3 leading-9 rounded-md cursor-pointer h-9 hover:bg-gray-300">None</li>
                                                 @foreach ($items as $item)
-                                                    <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="1" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
+                                                    <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="1" class="flex items-center pl-3 leading-9 rounded-md cursor-pointer h-9 hover:bg-gray-300">{{ $item->name }}</li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -703,11 +708,11 @@
                                     </div>
                                 </div>
                                 <div class="w-2/5">
-                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center" autocomplete="off">
+                                    <input type="text" id="quantity1" name="quantity1" value="{{ old('quantity') }}" class="block w-full px-2 text-center text-gray-900 border border-gray-300 rounded-lg quantity h-9 bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" autocomplete="off">
                                 </div>
-                                <div class="w-1/5 flex">
+                                <div class="flex w-1/5">
                                     <div id="unit1" class="w-1/2 text-lg leading-9"></div>
-                                    <button type="button" data-thisid="ing1" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                                    <button type="button" data-thisid="ing1" class="w-1/2 text-center removeButton"><i class="text-3xl text-red-500 uil uil-minus-circle"></i></button>
                                 </div>
                             </div>`);
                         }
@@ -718,22 +723,22 @@
             $('#addButton').click(function(){
                 $('#counter').val(counter);
                 $('#addDiv').append(`
-                    <div id="ing${counter}" class="mb-5 flex flex-row gap-x-3">
+                    <div id="ing${counter}" class="flex flex-row mb-5 gap-x-3">
                         <div class="w-2/5">
-                            <div class="wrapper w-full relative">
-                                <div class="select-btn flex items-center justify-between rounded-md bg-gray-100 border border-gray-300 p-2 h-9 cursor-pointer">
+                            <div class="relative w-full wrapper">
+                                <div class="flex items-center justify-between p-2 bg-gray-100 border border-gray-300 rounded-md cursor-pointer select-btn h-9">
                                     <span></span>
-                                    <i class="uil uil-angle-down text-2xl transition-transform duration-300"></i>
+                                    <i class="text-2xl transition-transform duration-300 uil uil-angle-down"></i>
                                 </div>
-                                <div class="content bg-gray-100 mt-1 rounded-md p-3 hidden absolute w-full z-50">
-                                    <div class="search relative">
-                                        <i class="uil uil-search absolute left-3 leading-9 text-gray-500"></i>
-                                        <input type="text" class="selectSearch w-full leading-9 text-gray-700 rounded-md pl-9 outline-none h-9" placeholder="Search">
+                                <div class="absolute z-50 hidden w-full p-3 mt-1 bg-gray-100 rounded-md content">
+                                    <div class="relative search">
+                                        <i class="absolute leading-9 text-gray-500 uil uil-search left-3"></i>
+                                        <input type="text" class="w-full leading-9 text-gray-700 rounded-md outline-none selectSearch pl-9 h-9" placeholder="Search">
                                     </div>
-                                    <ul class="listOption options mt-2 max-h-52 overflow-y-auto">
-                                        <li data-id="" data-code="None" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">None</li>
+                                    <ul class="mt-2 overflow-y-auto listOption options max-h-52">
+                                        <li data-id="" data-code="None" class="flex items-center pl-3 leading-9 rounded-md cursor-pointer h-9 hover:bg-gray-300">None</li>
                                         @foreach ($items as $item)
-                                            <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="${counter}" class="h-9 cursor-pointer hover:bg-gray-300 rounded-md flex items-center pl-3 leading-9">{{ $item->name }}</li>
+                                            <li data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-unit="{{ $item->unit }}" data-idnum="${counter}" class="flex items-center pl-3 leading-9 rounded-md cursor-pointer h-9 hover:bg-gray-300">{{ $item->name }}</li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -741,11 +746,11 @@
                             </div>
                         </div>
                         <div class="w-2/5">
-                            <input type="text" id="quantity${counter}" name="quantity${counter}" value="{{ old('quantity') }}" class="quantity block w-full h-9 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base text-center">
+                            <input type="text" id="quantity${counter}" name="quantity${counter}" value="{{ old('quantity') }}" class="block w-full px-2 text-center text-gray-900 border border-gray-300 rounded-lg quantity h-9 bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base">
                         </div>
-                        <div class="w-1/5 flex">
+                        <div class="flex w-1/5">
                             <div id="unit${counter}" class="w-1/2 text-lg leading-9"></div>
-                            <button type="button" data-thisid="ing${counter}" class="removeButton w-1/2 text-center"><i class="uil uil-minus-circle text-red-500 text-3xl"></i></button>
+                            <button type="button" data-thisid="ing${counter}" class="w-1/2 text-center removeButton"><i class="text-3xl text-red-500 uil uil-minus-circle"></i></button>
                         </div>
                     </div>
                 `);

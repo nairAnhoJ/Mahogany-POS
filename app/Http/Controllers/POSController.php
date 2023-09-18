@@ -15,25 +15,24 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 
 
-class POSController extends Controller
-{
-    public function index(){  
+class POSController extends Controller {
+    public function index() {
 
         $this->updateCurrentQuantity();
         $tables = DB::table('tables')->orderBy('id', 'asc')->where('is_deleted', 0)->get();
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
-        $menus = DB::table('menus')->where('current_quantity', '>', 0)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
+        $menus = DB::table('menus')->where('current_quantity', '>=', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
 
         $categories = DB::table('menu_categories')->where('is_hidden', 0)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
         $subTotal = 0;
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
         $discount = 0;
-        if($orders->count() > 0){
-            foreach($orders as $order){
+        if ($orders->count() > 0) {
+            foreach ($orders as $order) {
                 $subTotal = $subTotal + $order->total_price;
             }
-            if($discountRow->total_customer > 0){
+            if ($discountRow->total_customer > 0) {
                 $x = $subTotal / $discountRow->total_customer;
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
@@ -44,7 +43,7 @@ class POSController extends Controller
         return view('user.cashier.pos', compact('tables', 'orders', 'discountRow', 'menus', 'categories', 'subTotal', 'total', 'discount'));
     }
 
-    public function add(Request $request){
+    public function add(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
         $menu = DB::table('menus')->where('slug', $slug)->first();
@@ -54,15 +53,15 @@ class POSController extends Controller
         $orderSlug = Str::random(60);
         $norderSlug = $orderSlug;
         $check_slug = DB::table('inventories')->where('slug', $norderSlug)->get();
-        while(count($check_slug) > 0){
+        while (count($check_slug) > 0) {
             $norderSlug = Str::random(60);
             $check_slug = DB::table('inventories')->where('slug', $norderSlug)->get();
         }
         $orderSlug = $norderSlug;
 
-        if($menu->current_quantity > 0){
-            if($ord != null){
-                if($menu->current_quantity > 0){
+        if ($menu->current_quantity > 0) {
+            if ($ord != null) {
+                if ($menu->current_quantity > 0) {
                     $quantity = $ord->quantity + 1;
                     $total_price = $menu->price * $quantity;
                     $current_quantity = $menu->current_quantity - 1;
@@ -79,43 +78,43 @@ class POSController extends Controller
                     $order->slug = $orderSlug;
                     $order->save();
 
-                    if($menu->is_combo == 1){
+                    if ($menu->is_combo == 1) {
                         $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-                        foreach($ings as $ing){
+                        foreach ($ings as $ing) {
                             $decq = 1 * $ing->computed_quantity;
                             $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
                             $newq = $curq - $decq;
-        
+
                             $updateMenu = Menu::where('id', $ing->inventory_id)->first();
                             $updateMenu->current_quantity = $newq;
                             $updateMenu->save();
                         }
-                    }else{
+                    } else {
                         DB::table('menus')->where('id', $menu->id)->update([
                             'current_quantity' => $current_quantity,
                         ]);
                     }
-                }else{
+                } else {
                     $notif .= '
-                    <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
+                    <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 border border-red-200 rounded-lg shadow-lg" role="alert">
                         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             <span class="sr-only">Error icon</span>
                         </div>
-                        <div class="ml-3 pr-10 text-base font-medium">This menu is already out of stock.</div>
+                        <div class="pr-10 ml-3 text-base font-medium">This menu is already out of stock.</div>
                         <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8" data-dismiss-target="#toast-danger" aria-label="Close">
                             <span class="sr-only">Close</span>
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         </button>
                     </div>';
                 }
-            }else{
+            } else {
                 $quantity = 1;
                 $total_price = $menu->price * $quantity;
                 $current_quantity = $menu->current_quantity - 1;
-                    
+
                 $order = new Order();
-                $order->menu_id = $menu->id; 
+                $order->menu_id = $menu->id;
                 $order->name = $menu->name;
                 $order->quantity = $quantity;
                 $order->price = $menu->price;
@@ -125,31 +124,31 @@ class POSController extends Controller
                 $order->slug = $orderSlug;
                 $order->save();
 
-                if($menu->is_combo == 1){
+                if ($menu->is_combo == 1) {
                     $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-                    foreach($ings as $ing){
+                    foreach ($ings as $ing) {
                         $decq = $order->quantity * $ing->computed_quantity;
                         $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
                         $newq = $curq - $decq;
-    
+
                         $updateMenu = Menu::where('id', $ing->inventory_id)->first();
                         $updateMenu->current_quantity = $newq;
                         $updateMenu->save();
                     }
-                }else{
+                } else {
                     DB::table('menus')->where('id', $menu->id)->update([
                         'current_quantity' => $current_quantity,
                     ]);
                 }
             }
-        }else{
+        } else {
             $notif = '
-            <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
+            <div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 border border-red-200 rounded-lg shadow-lg" role="alert">
                 <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     <span class="sr-only">Error icon</span>
                 </div>
-                <div class="ml-3 pr-10 text-base font-medium">This menu is already out of stock.</div>
+                <div class="pr-10 ml-3 text-base font-medium">This menu is already out of stock.</div>
                 <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8" data-dismiss-target="#toast-danger" aria-label="Close">
                     <span class="sr-only">Close</span>
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -163,34 +162,34 @@ class POSController extends Controller
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
         $discount = 0;
-        if($orders->count() > 0){
-            foreach($orders as $order){
+        if ($orders->count() > 0) {
+            foreach ($orders as $order) {
                 $orderResult .= '
-                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                            '.$order->name.'
+                                    <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                        <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
+                                            ' . $order->name . '
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                         </div>
-                                        <div class="col-span-1 flex items-center justify-center">
-                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                            <input type="hidden" value="'.$order->quantity.'">
-                                        </div>
-                                        <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                        </div>
-                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        <div class="flex items-center justify-center col-span-1">
+                                            <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">' . $order->quantity . '</p>
+                                            <input type="hidden" value="' . $order->quantity . '">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
+                                            ' . number_format($order->total_price, 2, ".", ",") . '
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="' . $order->slug . '" data-name="' . $order->name . '" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                         </div>
                                     </div>
                                 ';
                 $subTotal = $subTotal + $order->total_price;
             }
-            if($discountRow->total_customer > 0){
+            if ($discountRow->total_customer > 0) {
                 $x = $subTotal / $discountRow->total_customer;
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
@@ -214,15 +213,15 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
-    public function inc(Request $request){
+    public function inc(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
         $corder = DB::table('orders')->where('slug', $slug)->first();
-        
+
         $menu = DB::table('menus')->where('id', $corder->menu_id)->first();
         $notif = '';
 
-        if($menu->current_quantity > 0){
+        if ($menu->current_quantity > 0) {
             $quantity = $corder->quantity + 1;
             $total_price = $corder->price * $quantity;
             $current_stock = $menu->current_quantity - 1;
@@ -232,9 +231,9 @@ class POSController extends Controller
                 'current_stock' => $current_stock,
             ]);
 
-            if($menu->is_combo == 1){
+            if ($menu->is_combo == 1) {
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-                foreach($ings as $ing){
+                foreach ($ings as $ing) {
                     $decq = 1 * $ing->computed_quantity;
                     $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
                     $newq = $curq - $decq;
@@ -243,19 +242,18 @@ class POSController extends Controller
                     $updateMenu->current_quantity = $newq;
                     $updateMenu->save();
                 }
-            }else{
+            } else {
                 DB::table('menus')->where('id', $corder->menu_id)->update([
                     'current_quantity' => $current_stock,
                 ]);
             }
-    
-        }else{
-            $notif = '<div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 rounded-lg shadow-lg border border-red-200" role="alert">
+        } else {
+            $notif = '<div id="toast-danger" class="flex items-center w-full p-4 mb-4 text-gray-500 bg-red-200 border border-red-200 rounded-lg shadow-lg" role="alert">
                         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-200 rounded-lg">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             <span class="sr-only">Error icon</span>
                         </div>
-                        <div class="ml-3 pr-10 text-base font-medium">This menu is already out of stock.</div>
+                        <div class="pr-10 ml-3 text-base font-medium">This menu is already out of stock.</div>
                         <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8" data-dismiss-target="#toast-danger" aria-label="Close">
                             <span class="sr-only">Close</span>
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -269,34 +267,34 @@ class POSController extends Controller
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
         $discount = 0;
-        if($orders->count() > 0){
-            foreach($orders as $order){
+        if ($orders->count() > 0) {
+            foreach ($orders as $order) {
                 $orderResult .= '
-                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                            '.$order->name.'
+                                    <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                        <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
+                                            ' . $order->name . '
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                         </div>
-                                        <div class="col-span-1 flex items-center justify-center">
-                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                            <input type="hidden" value="'.$order->quantity.'">
-                                        </div>
-                                        <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                        </div>
-                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        <div class="flex items-center justify-center col-span-1">
+                                            <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">' . $order->quantity . '</p>
+                                            <input type="hidden" value="' . $order->quantity . '">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
+                                            ' . number_format($order->total_price, 2, ".", ",") . '
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="' . $order->slug . '" data-name="' . $order->name . '" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                         </div>
                                     </div>
                                 ';
                 $subTotal = $subTotal + $order->total_price;
             }
-            if($discountRow->total_customer > 0){
+            if ($discountRow->total_customer > 0) {
                 $x = $subTotal / $discountRow->total_customer;
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
@@ -321,13 +319,13 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
-    public function desc(Request $request){
+    public function desc(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
         $corder = DB::table('orders')->where('slug', $slug)->first();
         $menu = DB::table('menus')->where('id', $corder->menu_id)->first();
 
-        if($corder->quantity > 1){
+        if ($corder->quantity > 1) {
             $quantity = $corder->quantity - 1;
             $total_price = $corder->price * $quantity;
             $current_quantity = $corder->current_stock + 1;
@@ -337,9 +335,9 @@ class POSController extends Controller
                 'current_stock' => $current_quantity,
             ]);
 
-            if($menu->is_combo == 1){
+            if ($menu->is_combo == 1) {
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-                foreach($ings as $ing){
+                foreach ($ings as $ing) {
                     $decq = 1 * $ing->computed_quantity;
                     $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
                     $newq = $curq + $decq;
@@ -348,7 +346,7 @@ class POSController extends Controller
                     $updateMenu->current_quantity = $newq;
                     $updateMenu->save();
                 }
-            }else{
+            } else {
                 DB::table('menus')->where('id', $corder->menu_id)->update([
                     'current_quantity' => $current_quantity,
                 ]);
@@ -361,34 +359,34 @@ class POSController extends Controller
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
         $discount = 0;
-        if($orders->count() > 0){
-            foreach($orders as $order){
+        if ($orders->count() > 0) {
+            foreach ($orders as $order) {
                 $orderResult .= '
-                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                            '.$order->name.'
+                                    <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                        <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
+                                            ' . $order->name . '
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                         </div>
-                                        <div class="col-span-1 flex items-center justify-center">
-                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                            <input type="hidden" value="'.$order->quantity.'">
-                                        </div>
-                                        <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                        </div>
-                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        <div class="flex items-center justify-center col-span-1">
+                                            <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">' . $order->quantity . '</p>
+                                            <input type="hidden" value="' . $order->quantity . '">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
+                                            ' . number_format($order->total_price, 2, ".", ",") . '
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="' . $order->slug . '" data-name="' . $order->name . '" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                         </div>
                                     </div>
                                 ';
                 $subTotal = $subTotal + $order->total_price;
             }
-            if($discountRow->total_customer > 0){
+            if ($discountRow->total_customer > 0) {
                 $x = $subTotal / $discountRow->total_customer;
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
@@ -412,17 +410,17 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
-    public function remove(Request $request){
+    public function remove(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
         $ord = DB::table('orders')->where('slug', $slug)->first();
         $mid = $ord->menu_id;
-        $menu = DB::table('menus')->where('id', $mid)->first();                            
+        $menu = DB::table('menus')->where('id', $mid)->first();
         $qty = $ord->quantity;
 
-        if($menu->is_combo == 1){
+        if ($menu->is_combo == 1) {
             $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-            foreach($ings as $ing){
+            foreach ($ings as $ing) {
                 $decq = $qty * $ing->computed_quantity;
                 $curq = Menu::where('id', $ing->inventory_id)->first()->current_quantity;
                 $newq = $curq + $decq;
@@ -431,7 +429,7 @@ class POSController extends Controller
                 $updateMenu->current_quantity = $newq;
                 $updateMenu->save();
             }
-        }else{
+        } else {
             DB::table('menus')
                 ->where('id', $mid)
                 ->increment('current_quantity', $qty);
@@ -452,34 +450,34 @@ class POSController extends Controller
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
         $discount = 0;
-        if($orders->count() > 0){
-            foreach($orders as $order){
+        if ($orders->count() > 0) {
+            foreach ($orders as $order) {
                 $orderResult .= '
-                                    <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                        <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                            '.$order->name.'
+                                    <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                        <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
+                                            ' . $order->name . '
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="w-full bg-red-200 rounded-lg descQty aspect-square"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                         </div>
-                                        <div class="col-span-1 flex items-center justify-center">
-                                            <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                            <input type="hidden" value="'.$order->quantity.'">
-                                        </div>
-                                        <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                        </div>
-                                        <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                            '.number_format($order->total_price, 2, ".", ",").'
+                                        <div class="flex items-center justify-center col-span-1">
+                                            <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">' . $order->quantity . '</p>
+                                            <input type="hidden" value="' . $order->quantity . '">
                                         </div>
                                         <div class="flex items-center justify-center">
-                                            <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                            <button data-slug="' . $order->slug . '" class="w-full rounded-lg incQty aspect-square bg-emerald-200"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
+                                        </div>
+                                        <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
+                                            ' . number_format($order->total_price, 2, ".", ",") . '
+                                        </div>
+                                        <div class="flex items-center justify-center">
+                                            <button data-slug="' . $order->slug . '" data-name="' . $order->name . '" class="w-full bg-red-600 rounded-lg removeButton aspect-square"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                         </div>
                                     </div>
                                 ';
                 $subTotal = $subTotal + $order->total_price;
             }
-            if($discountRow->total_customer > 0){
+            if ($discountRow->total_customer > 0) {
                 $x = $subTotal / $discountRow->total_customer;
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
@@ -502,7 +500,7 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
-    public function pay(Request $request){
+    public function pay(Request $request) {
         $amount = $request->amount;
         $table = $request->table;
         $amountInput = $request->amountInput;
@@ -510,26 +508,26 @@ class POSController extends Controller
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
 
-        if($table == 1){
+        if ($table == 1) {
             $type = 'TAKE OUT';
-        }else{
+        } else {
             $type = 'DINE-IN';
         }
 
         $id = Transaction::latest()->pluck('id')->first();
-        if($id == null){
+        if ($id == null) {
             $id = 1;
-        }else{
+        } else {
             $id++;
         }
-        $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
+        $nid = str_pad($id, 7, '0', STR_PAD_LEFT);
 
-        $number = date('mdY').'-'.$nid;
+        $number = date('mdY') . '-' . $nid;
 
         $tranSlug = Str::random(60);
         $ntranSlug = $tranSlug;
         $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
-        while(count($check_slug) > 0){
+        while (count($check_slug) > 0) {
             $ntranSlug = Str::random(60);
             $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
         }
@@ -553,11 +551,11 @@ class POSController extends Controller
         $tran_id = $tran->id;
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->get();
-        foreach($orders as $order){
+        foreach ($orders as $order) {
             $orderSlug = Str::random(60);
             $norderSlug = $orderSlug;
             $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
-            while(count($check_slug) > 0){
+            while (count($check_slug) > 0) {
                 $norderSlug = Str::random(60);
                 $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
             }
@@ -576,9 +574,9 @@ class POSController extends Controller
 
             $menu = DB::table('menus')->where('id', $order->menu_id)->first();
 
-            if($menu->is_combo == 1){
+            if ($menu->is_combo == 1) {
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-                foreach($ings as $ing){
+                foreach ($ings as $ing) {
                     $decq = $order->quantity * $ing->computed_quantity;
                     $curq = Menu::where('id', $ing->inventory_id)->first()->quantity;
                     $newq = $curq - $decq;
@@ -587,7 +585,7 @@ class POSController extends Controller
                     $updateMenu->quantity = $newq;
                     $updateMenu->save();
                 }
-            }else{
+            } else {
                 DB::table('menus')
                     ->where('id', $order->menu_id)
                     ->decrement('quantity', $order->quantity);
@@ -600,37 +598,37 @@ class POSController extends Controller
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
+        foreach ($orders as $order) {
             $orderResult .= '
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        '.$order->name.'
+                                <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                    <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
+                                        ' . $order->name . '
                                     </div>
                                     <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                        <button data-slug="' . $order->slug . '" class="w-full bg-red-200 rounded-lg descQty aspect-square"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                     </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                        <input type="hidden" value="'.$order->quantity.'">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        '.number_format($order->total_price, 2, ".", ",").'
+                                    <div class="flex items-center justify-center col-span-1">
+                                        <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">' . $order->quantity . '</p>
+                                        <input type="hidden" value="' . $order->quantity . '">
                                     </div>
                                     <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                        <button data-slug="' . $order->slug . '" class="w-full rounded-lg incQty aspect-square bg-emerald-200"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
+                                    </div>
+                                    <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
+                                        ' . number_format($order->total_price, 2, ".", ",") . '
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="' . $order->slug . '" data-name="' . $order->name . '" class="w-full bg-red-600 rounded-lg removeButton aspect-square"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                     </div>
                                 </div>
                             ';
-            
+
             $subTotal = $subTotal + $order->total_price;
             $total = $total + $order->total_price;
             $amount = $total + $order->total_price;
         }
 
-        if($table > 1){
+        if ($table > 1) {
             DB::table('tables')->where('id', $table)->update([
                 'status' => 1
             ]);
@@ -653,7 +651,7 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
-    public function paylater(Request $request){
+    public function paylater(Request $request) {
         $amount = $request->amount;
         $table = $request->table;
         $payor_name = $request->payor_name;
@@ -662,26 +660,26 @@ class POSController extends Controller
 
 
         $this_tran = DB::table('transactions')->where('table', $table)->where('status', 'UNPAID')->where('order_status', '!=', 'CANCELLED')->where('order_status', '!=', 'COMPLETED')->first();
-        if($this_tran){
+        if ($this_tran) {
             $tran_id = $this_tran->id;
 
             DB::table('transactions')->where('id', $tran_id)->increment('total', $amount);
-        }else{
-            
+        } else {
+
             $id = Transaction::latest()->pluck('id')->first();
-            if($id == null){
+            if ($id == null) {
                 $id = 1;
-            }else{
+            } else {
                 $id++;
             }
-            $nid =str_pad($id, 7, '0', STR_PAD_LEFT);
+            $nid = str_pad($id, 7, '0', STR_PAD_LEFT);
 
-            $number = date('mdY').'-'.$nid;
+            $number = date('mdY') . '-' . $nid;
 
             $tranSlug = Str::random(60);
             $ntranSlug = $tranSlug;
             $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
-            while(count($check_slug) > 0){
+            while (count($check_slug) > 0) {
                 $ntranSlug = Str::random(60);
                 $check_slug = DB::table('transactions')->where('slug', $ntranSlug)->get();
             }
@@ -704,11 +702,11 @@ class POSController extends Controller
         }
 
         $orders = DB::table('orders')->where('cashier', auth()->id())->get();
-        foreach($orders as $order){
+        foreach ($orders as $order) {
             $orderSlug = Str::random(60);
             $norderSlug = $orderSlug;
             $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
-            while(count($check_slug) > 0){
+            while (count($check_slug) > 0) {
                 $norderSlug = Str::random(60);
                 $check_slug = DB::table('ordered')->where('slug', $norderSlug)->get();
             }
@@ -727,9 +725,9 @@ class POSController extends Controller
 
             $menu = DB::table('menus')->where('id', $order->menu_id)->first();
 
-            if($menu->is_combo == 1){
+            if ($menu->is_combo == 1) {
                 $ings = DB::table('ingredients')->where('menu_id', $menu->id)->get();
-                foreach($ings as $ing){
+                foreach ($ings as $ing) {
                     $decq = $order->quantity * $ing->computed_quantity;
                     $curq = Menu::where('id', $ing->inventory_id)->first()->quantity;
                     $newq = $curq - $decq;
@@ -738,7 +736,7 @@ class POSController extends Controller
                     $updateMenu->quantity = $newq;
                     $updateMenu->save();
                 }
-            }else{
+            } else {
                 DB::table('menus')
                     ->where('id', $order->menu_id)
                     ->decrement('quantity', $order->quantity);
@@ -751,31 +749,31 @@ class POSController extends Controller
         $orderResult = '';
         $subTotal = 0;
         $total = 0;
-        foreach($orders as $order){
+        foreach ($orders as $order) {
             $orderResult .= '
-                                <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                    <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
-                                        '.$order->name.'
+                                <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                    <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
+                                        ' . $order->name . '
                                     </div>
                                     <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="descQty aspect-square w-full bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                        <button data-slug="' . $order->slug . '" class="w-full bg-red-200 rounded-lg descQty aspect-square"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                     </div>
-                                    <div class="col-span-1 flex items-center justify-center">
-                                        <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">'.$order->quantity.'</p>
-                                        <input type="hidden" value="'.$order->quantity.'">
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" class="incQty aspect-square w-full bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
-                                    </div>
-                                    <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
-                                        '.number_format($order->total_price, 2, ".", ",").'
+                                    <div class="flex items-center justify-center col-span-1">
+                                        <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">' . $order->quantity . '</p>
+                                        <input type="hidden" value="' . $order->quantity . '">
                                     </div>
                                     <div class="flex items-center justify-center">
-                                        <button data-slug="'.$order->slug.'" data-name="'.$order->name.'" class="removeButton aspect-square w-full bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                        <button data-slug="' . $order->slug . '" class="w-full rounded-lg incQty aspect-square bg-emerald-200"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
+                                    </div>
+                                    <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
+                                        ' . number_format($order->total_price, 2, ".", ",") . '
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <button data-slug="' . $order->slug . '" data-name="' . $order->name . '" class="w-full bg-red-600 rounded-lg removeButton aspect-square"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                     </div>
                                 </div>
                             ';
-            
+
             $subTotal = $subTotal + $order->total_price;
             $total = $total + $order->total_price;
             $amount = $total + $order->total_price;
@@ -802,7 +800,7 @@ class POSController extends Controller
         echo json_encode($response);
     }
 
-    public function updateDiscount(Request $request){
+    public function updateDiscount(Request $request) {
         $customer_with_discount = ltrim($request->customer_with_discount, '0');
         $total_customer = ltrim($request->total_customer, '0');
 
@@ -814,7 +812,7 @@ class POSController extends Controller
         return redirect()->route('pos.index');
     }
 
-    public function deleteDiscount(){
+    public function deleteDiscount() {
         DB::table('discounts')->where('id', 1)->update([
             'customer_with_discount' => 0,
             'total_customer' => 0,
@@ -823,7 +821,7 @@ class POSController extends Controller
         return redirect()->route('pos.index');
     }
 
-    public function send(){
+    public function send() {
         $emailTo = (DB::table('settings')->where('id', 1)->first())->email;
 
         $startDate = date('Y-m-d');
@@ -858,21 +856,21 @@ class POSController extends Controller
         return redirect()->route('pos.index');
     }
 
-    public function print($id){
+    public function print($id) {
         $trans = DB::table('transactions')
-                    ->select('transactions.*', 'tables.name as table_name')
-                    ->join('tables', 'transactions.table', '=', 'tables.id')
-                    ->where('transactions.table', $id)
-                    ->where('transactions.order_status', '!=', 'CANCELLED')
-                    ->where('transactions.order_status', '!=', 'COMPLETED')
-                    ->orderBy('id', 'desc')
-                    ->first();
+            ->select('transactions.*', 'tables.name as table_name')
+            ->join('tables', 'transactions.table', '=', 'tables.id')
+            ->where('transactions.table', $id)
+            ->where('transactions.order_status', '!=', 'CANCELLED')
+            ->where('transactions.order_status', '!=', 'COMPLETED')
+            ->orderBy('id', 'desc')
+            ->first();
 
         $orders = DB::table('ordered')
-                    ->select('ordered.*', 'menus.name')
-                    ->join('menus', 'ordered.menu_id', '=', 'menus.id')
-                    ->where('tran_id', $trans->id)
-                    ->get();
+            ->select('ordered.*', 'menus.name')
+            ->join('menus', 'ordered.menu_id', '=', 'menus.id')
+            ->where('tran_id', $trans->id)
+            ->get();
 
 
         $settings = DB::table('settings')->where('id', 1)->first();
@@ -881,21 +879,21 @@ class POSController extends Controller
         return view('user.cashier.bill', compact('orders', 'trans', 'settings'));
     }
 
-    public function updateCurrentQuantity(){
+    public function updateCurrentQuantity() {
 
         $comboMenus = Menu::where('is_combo', 1)->where('is_deleted', 0)->get();
-        
+
         foreach ($comboMenus as $comboMenu) {
             $ingredients = Ingredient::where('menu_id', $comboMenu->id)->where('is_deleted', 0)->get();
-            
-            if($ingredients->count() == 0){
+
+            if ($ingredients->count() == 0) {
                 $minQuantity = 0;
                 $cminQuantity = 0;
-            }else{
+            } else {
                 $minQuantity = PHP_INT_MAX;
                 $cminQuantity = PHP_INT_MAX;
             }
-            
+
             foreach ($ingredients as $ingredient) {
                 $inventoryQuantity = $ingredient->menu->quantity;
                 $requiredQuantity = $ingredient->quantity;
@@ -907,7 +905,7 @@ class POSController extends Controller
                 $cavailableCombos = floor($cinventoryQuantity / $crequiredQuantity);
                 $cminQuantity = min($cminQuantity, $cavailableCombos);
             }
-            
+
             $comboMenu->update([
                 'quantity' => $minQuantity,
                 'current_quantity' => $cminQuantity,

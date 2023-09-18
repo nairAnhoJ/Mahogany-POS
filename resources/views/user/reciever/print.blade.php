@@ -37,11 +37,11 @@
             <div class="">
                 <img src="{{ asset('storage/'.$settings->logo) }}" class="h-10" alt="">
             </div>
-            <div class="mt-4 flex justify-between items-end">
+            <div class="flex items-end justify-between mt-4">
                 <h1 class="text-3xl">Low Stock Report</h1>
                 <h3>{{ date('F j, Y') }}</h3>
             </div>
-            <div class="mt-3 w-full">
+            <div class="w-full mt-3">
                 <table class="w-full mt-4">
                     <thead>
                         <tr class="border-b">
@@ -61,11 +61,12 @@
                     <tbody>
                         @foreach ($inventories as $inventory)
                         <tr class="border-b">
-                            <th class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap text-left">
+                            <th class="px-6 py-1 font-medium text-left text-gray-900 whitespace-nowrap">
                                 {{ $inventory->name }}
                             </th>
                             <td class="px-6 py-1 text-center whitespace-nowrap">
-                                {{ $inventory->quantity.' '.$inventory->unit }}
+                                {{ round($inventory->quantity, 2).' '.$inventory->unit }}
+                                {{-- {{ $inventory->quantity.' '.$inventory->unit }} --}}
                             </td>
                             @if ($rt == 'inv')
                                 <td class="px-6 py-1 text-center whitespace-nowrap">
