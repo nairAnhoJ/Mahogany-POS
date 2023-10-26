@@ -4,21 +4,21 @@
 
     {{-- ERROR NOTIFICATION --}}
         @if (session('error'))
-            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-red-200 rounded-lg z-50 shadow-md shadow-red-800 flex flex-row justify-between px-2">
+            <div class="absolute z-50 flex flex-row justify-between h-12 px-2 -translate-x-1/2 bg-red-200 rounded-lg shadow-md notif left-1/2 top-14 w-96 shadow-red-800">
                 <div class="flex">
-                    <i class="self-center uil uil-cloud-check text-red-800 text-2xl"></i>
-                    <h1 class="self-center text-red-800 font-semibold ml-1">{{ session('error') }}</h1>
+                    <i class="self-center text-2xl text-red-800 uil uil-cloud-check"></i>
+                    <h1 class="self-center ml-1 font-semibold text-red-800">{{ session('error') }}</h1>
                 </div>
-                <button class="notifButton self-center">
-                    <i class="uil uil-times text-2xl text-red-800"></i>
+                <button class="self-center notifButton">
+                    <i class="text-2xl text-red-800 uil uil-times"></i>
                 </button>
             </div>
         @endif
     {{-- ERROR NOTIFICATION END --}}
 
-    <div class="p-3 lg:pt-3">
-        <div id="contentDiv" class="p-2 w-full">
-            <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
+    <div class="p-3 lg:pt-3 {{ (Auth::user()->role == 1) ? 'lg:ml-64' : '' }}">
+        <div id="contentDiv" class="w-full p-2">
+            <div class="p-3 overflow-hidden bg-white rounded-lg shadow-md">
                 <form action="{{ route('inventory.store') }}" method="POST" enctype="multipart/form-data" class="grid">
                     @csrf
                     <div class="mb-2">
@@ -55,15 +55,15 @@
                         <select id="unit" name="unit" value="{{ old('unit') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
                             <option {{ old('unit') == 'tsp' ? 'selected' : '' }} value="tsp">teaspoon (tsp)</option>
                             <option {{ old('unit') == 'tbsp' ? 'selected' : '' }} value="tbsp">tablespoon (tbsp)</option>
+                            <option {{ old('unit') == 'gal' ? 'selected' : '' }} value="gal">gallon (gal)</option>
+                            <option {{ old('unit') == 'L' ? 'selected' : '' }} value="L">liter (L)</option>
+                            <option {{ old('unit') == 'mL' ? 'selected' : '' }} value="mL">milliliter (mL)</option>
+                            <option {{ old('unit') == 'c' ? 'selected' : '' }} value="c">cup (c)</option>
                             <option {{ old('unit') == 'kg' ? 'selected' : '' }} value="kg">kilogram (kg)</option>
                             <option {{ old('unit') == 'g' ? 'selected' : '' }} value="g">gram (g)</option>
                             <option {{ old('unit') == 'mg' ? 'selected' : '' }} value="mg">milligram (mg)</option>
                             <option {{ old('unit') == 'oz' ? 'selected' : '' }} value="oz">ounce (oz)</option>
                             <option {{ old('unit') == 'lb' ? 'selected' : '' }} value="lb">pound (lb)</option>
-                            <option {{ old('unit') == 'gal' ? 'selected' : '' }} value="gal">gallon (gal)</option>
-                            <option {{ old('unit') == 'L' ? 'selected' : '' }} value="L">liter (L)</option>
-                            <option {{ old('unit') == 'mL' ? 'selected' : '' }} value="mL">milliliter (mL)</option>
-                            <option {{ old('unit') == 'c' ? 'selected' : '' }} value="c">cup (c)</option>
                             <option {{ old('unit') == 'ea' ? 'selected' : '' }} value="ea">each (ea)</option>
                             <option {{ old('unit') == 'doz' ? 'selected' : '' }} value="doz">dozen (doz)</option>
                         </select>
@@ -76,7 +76,7 @@
 
                     {{-- <div class="mb-3">
                         <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>
-                        <input class="px-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
+                        <input class="block w-full px-1 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
                     </div> --}}
 
                     <div class="flex justify-between">

@@ -2,9 +2,9 @@
 
     @section('page_title', 'INVENTORY - EDIT')
 
-    <div class="p-3 lg:pt-3">
-        <div id="contentDiv" class="p-2 w-full">
-            <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
+    <div class="p-3 lg:pt-3 {{ (Auth::user()->role == 1) ? 'lg:ml-64' : '' }}">
+        <div id="contentDiv" class="w-full p-2">
+            <div class="p-3 overflow-hidden bg-white rounded-lg shadow-md">
                 <div class="">
                     <form action="{{ route('inventory.update') }}" method="POST" enctype="multipart/form-data" class="grid" class="">
                         @csrf
@@ -41,15 +41,17 @@
                             <select id="unit" name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 lg:text-base">
                                 <option {{ ($item->unit == 'tsp') ? 'selected' : '' }} value="tsp">teaspoon (tsp)</option>
                                 <option {{ ($item->unit == 'tbsp') ? 'selected' : '' }} value="tbsp">tablespoon (tbsp)</option>
+                                <option {{ ($item->unit == 'gal') ? 'selected' : '' }} value="gal">gallon (gal)</option>
+                                <option {{ ($item->unit == 'L') ? 'selected' : '' }} value="L">liter (L)</option>
+                                <option {{ ($item->unit == 'mL') ? 'selected' : '' }} value="mL">milliliter (mL)</option>
+                                <option {{ ($item->unit == 'c') ? 'selected' : '' }} value="c">cup (c)</option>
+
                                 <option {{ ($item->unit == 'kg') ? 'selected' : '' }} value="kg">kilogram (kg)</option>
                                 <option {{ ($item->unit == 'g') ? 'selected' : '' }} value="g">gram (g)</option>
                                 <option {{ ($item->unit == 'mg') ? 'selected' : '' }} value="mg">milligram (mg)</option>
                                 <option {{ ($item->unit == 'oz') ? 'selected' : '' }} value="oz">ounce (oz)</option>
                                 <option {{ ($item->unit == 'lb') ? 'selected' : '' }} value="lb">pound (lb)</option>
-                                <option {{ ($item->unit == 'gal') ? 'selected' : '' }} value="gal">gallon (gal)</option>
-                                <option {{ ($item->unit == 'L') ? 'selected' : '' }} value="L">liter (L)</option>
-                                <option {{ ($item->unit == 'mL') ? 'selected' : '' }} value="mL">milliliter (mL)</option>
-                                <option {{ ($item->unit == 'c') ? 'selected' : '' }} value="c">cup (c)</option>
+                                
                                 <option {{ ($item->unit == 'ea') ? 'selected' : '' }} value="ea">each (ea)</option>
                                 <option {{ ($item->unit == 'doz') ? 'selected' : '' }} value="doz">dozen (doz)</option>
                             </select>
@@ -62,7 +64,7 @@
                         
                         {{-- <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-900 lg:text-base" for="image">Image</label>
-                            <input class="px-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
+                            <input class="block w-full px-1 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none lg:text-base" id="image" name="image" type="file" accept="image/*">
                         </div> --}}
                         
                         <div class="flex justify-between">

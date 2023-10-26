@@ -2,19 +2,19 @@
 
     @section('page_title', 'USER - ADD')
 
-    {{-- <div class="p-3 lg:ml-64 max-h-screen pt-14 lg:pt-3 overflow-y-auto"> --}}
+    {{-- <div class="max-h-screen p-3 overflow-y-auto lg:ml-64 pt-14 lg:pt-3"> --}}
         
-        {{-- <header class="bg-white shadow-md rounded-lg">
-            <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{-- <header class="bg-white rounded-lg shadow-md">
+            <div class="px-4 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
                     INVENTORY - ADD
                 </h2>
             </div>
         </header> --}}
     
     <div class="p-3 lg:ml-64 lg:pt-3">
-        <div id="contentDiv" class="p-2 w-full">
-            <div class="bg-white overflow-hidden shadow-md rounded-lg p-3">
+        <div id="contentDiv" class="w-full p-2">
+            <div class="p-3 overflow-hidden bg-white rounded-lg shadow-md">
                 <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" class="grid">
                     @csrf
                     <div class="mb-2">
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="password" class="block text-sm font-medium text-gray-900 lg:text-base">Password <span class="text-red-500">*</span><span class="italic text-sm">password must be atleast 8 characters</span></label>
+                        <label for="password" class="block text-sm font-medium text-gray-900 lg:text-base">Password <span class="text-red-500">*</span><span class="text-sm italic">password must be atleast 8 characters</span></label>
                         <input type="password" id="password" name="password" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 lg:text-base" required>
                     </div>
                     <div class="mb-4">

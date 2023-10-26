@@ -138,9 +138,10 @@
                             <input type="hidden" id="addSlug" name="addSlug">
                             <div class="mb-6">
                                 <label for="dquantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="dquantity" name="quantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                    <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span>
+                                <div class="flex items-center gap-x-2">
+                                    <input type="text" id="dquantity" name="quantity" class="w-3/4 inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5" required autocomplete="off">
+                                    <select id="unitAdd" name="unit" value="{{ old('unit') }}" class="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 lg:text-base"></select>
+                                    {{-- <span id="addUnit" class="px-3 text-base font-bold text-gray-600"></span> --}}
                                 </div>
                             </div>
                             <div class="mb-6">
@@ -209,9 +210,10 @@
                             <h1 id="minName" class="pb-5 text-xl font-bold"></h1>
                             <div class="mb-6">
                                 <label for="minQuantity" class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
-                                <div class="flex items-center">
+                                <div class="flex items-center gap-x-2">
                                     <input type="text" id="minQuantity" name="minQuantity" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                    <span id="minUnit" class="px-3 text-base font-bold text-gray-600"></span>
+                                    <select id="unitMinus" name="unit" value="{{ old('unit') }}" class="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 lg:text-base"></select>
+                                    {{-- <span id="minUnit" class="px-3 text-base font-bold text-gray-600"></span> --}}
                                 </div>
                             </div>
                             <div class="mb-6">
@@ -331,9 +333,13 @@
                                                     {{ $inventory->cat_name }}
                                                 </td>
                                                 <td class="flex items-center justify-center px-6 py-4 text-center whitespace-nowrap">
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="mr-2 text-xl text-red-500 uil uil-minus-circle"></i></button>
+                                                    @if($inventory->category_id != $menu_id)
+                                                        <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="minusQtyModal" data-modal-toggle="minusQtyModal" class="minusButton"><i class="mr-2 text-xl text-red-500 uil uil-minus-circle"></i></button>
+                                                    @endif
                                                     {{ round($inventory->quantity, 2) }}
-                                                    <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="mx-2 text-xl text-blue-500 uil uil-plus-circle"></i></button>
+                                                    @if($inventory->category_id != $menu_id)
+                                                        <button data-slug="{{ $inventory->slug }}" data-unit="{{ $inventory->unit }}" data-name="{{ $inventory->name }}" data-modal-target="addQtyModal" data-modal-toggle="addQtyModal" class="addButton"><i class="mx-2 text-xl text-blue-500 uil uil-plus-circle"></i></button>
+                                                    @endif
                                                     {{ $inventory->unit }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
@@ -354,52 +360,6 @@
                             </div>
                         </div>
                     {{-- TABLE END --}}
-
-                    {{-- INVENTORY LIST SMALL DEVICE --}}
-                        {{-- <div id="inventoryMobile" class="overflow-auto md:hidden">
-                            <div id="accordion-collapse" data-accordion="collapse">
-                                @php
-                                    $x = 1;
-                                    foreach ($inventories as $inventory) {
-                                        if($x == 1){
-                                            echo '
-                                                <h2 id="accordion-collapse-heading-'.$x.'">
-                                                    <button type="button" class="flex items-center justify-between w-full px-3 py-1.5 text-sm font-semibold text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100" data-accordion-target="#accordion-collapse-body-'.$x.'" aria-expanded="false" aria-controls="accordion-collapse-body-'.$x.'">
-                                                        <span>'.$inventory->name.'</span>
-                                                        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    </button>
-                                                </h2>
-                                                <div id="accordion-collapse-body-'.$x.'" class="hidden" aria-labelledby="accordion-collapse-heading-'.$x.'">
-                                                    <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Category</div>
-                                                            <div class="col-span-2 text-sm font-semibold">
-                                                                '.$inventory->cat_name.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 text-sm font-semibold">
-                                                                '.$inventory->quantity.'
-                                                            </div>
-                                                        </div>
-                                                        <div class="grid grid-cols-3">
-                                                            <div class="text-xs leading-5">Action</div>
-                                                            <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->slug).'" class="text-sm font-semibold text-blue-600 hover:underline">Edit</a> | 
-                                                                <a type="button" data-modal-target="itemDeleteModal" data-modal-toggle="itemDeleteModal" data-slug="'.$inventory->slug.'" class="text-sm font-semibold text-red-600 deleteButton hover:underline">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }
-                                        $x++;
-                                    }
-                                @endphp
-                            </div>
-                        </div> --}}
-                    {{-- INVENTORY LIST SMALL DEVICE END --}}
                 </div>
 
                 {{-- PAGINATION --}}
@@ -450,6 +410,10 @@
 
      <script>
         $(document).ready(function() {
+            var g1 = ['tsp', 'tbsp', 'gal', 'L', 'mL', 'c'];
+            var g2 = ['kg', 'g', 'mg', 'oz', 'lb'];
+            var g3 = ['ea', 'doz'];
+
             $('#searchButton').click(function(){
                 var search = $('#searchInput').val();
                 if(search != ""){
@@ -481,31 +445,6 @@
                 $('.deleteConfirm').prop('href', `{{ url('/inventory/delete/${slug}') }}`);
             });
 
-            // $('.contentDiv').click(function(){
-            //     $('.notif').addClass('hidden');
-            // });
-            // $('.navDiv').click(function(){
-            //     $('.notif').addClass('hidden');
-            // });
-            
-            // $('#navButton').click(function(){
-            //     $('#topNav').addClass('absolute');
-            //     $('#topNav').removeClass('sticky');
-            //     $('#topNav').removeClass('z-50');
-            //     $('#contentDiv').addClass('pt-14');
-            // });
-
-            // $(document).mouseup(function(e) {
-            //     var container = $(".navDiv");
-
-            //     if (!container.is(e.target) && container.has(e.target).length === 0) {
-            //         $('#topNav').removeClass('absolute');
-            //         $('#topNav').addClass('sticky');
-            //         $('#topNav').addClass('z-50');
-            //         $('#contentDiv').removeClass('pt-14');
-            //     }
-            // });
-
             $('.inputNumber').on('keypress keyup', function(event){
                 var regex = /^[0-9.]+$/;
                 var value = $(this).val() + String.fromCharCode(event.keyCode);
@@ -527,6 +466,29 @@
                 var slug = $(this).data('slug');
                 var unit = $(this).data('unit');
                 var name = $(this).data('name');
+
+                var selectedArray;
+                if (g1.includes(unit)) {
+                    selectedArray = g1;
+                } else if (g2.includes(unit)) {
+                    selectedArray = g2;
+                } else if (g3.includes(unit)) {
+                    selectedArray = g3;
+                } else {
+                    selectedArray = [];
+                }
+
+                var select = $('#unitAdd');
+                select.empty();
+                $.each(selectedArray, function(key, value) {
+                    select.append($('<option>', {
+                        value: value,
+                        text: value
+                    }));
+                });
+                select.val(unit);
+                
+
                 $('#addName').html(name);
                 $('#addSlug').val(slug);
                 $('#addUnit').html(unit);
@@ -539,6 +501,29 @@
                 var slug = $(this).data('slug');
                 var unit = $(this).data('unit');
                 var name = $(this).data('name');
+
+                var selectedArray;
+                if (g1.includes(unit)) {
+                    selectedArray = g1;
+                } else if (g2.includes(unit)) {
+                    selectedArray = g2;
+                } else if (g3.includes(unit)) {
+                    selectedArray = g3;
+                } else {
+                    selectedArray = [];
+                }
+
+                var select = $('#unitMinus');
+                select.empty();
+                $.each(selectedArray, function(key, value) {
+                    select.append($('<option>', {
+                        value: value,
+                        text: value
+                    }));
+                });
+                select.val(unit);
+
+
                 $('#minSlug').val(slug);
                 $('#minUnit').html(unit);
                 $('#minName').html(name);
