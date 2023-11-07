@@ -1,23 +1,23 @@
-<div class="flex justify-between bg-white h-12 shadow">
+<div class="flex justify-between h-12 bg-white shadow">
     <div class="flex items-center">
-        <button class="text-gray-800 hover:bg-gray-100 flex items-center justify-center w-12 h-12" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
-            <i class="uil uil-bars text-3xl"></i>
+        <button class="flex items-center justify-center w-12 h-12 text-gray-800 hover:bg-gray-100" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
+            <i class="text-3xl uil uil-bars"></i>
         </button>
-        <h2 class="font-semibold text-base text-gray-600 leading-tight">
+        <h2 class="text-base font-semibold leading-tight text-gray-600">
             @yield('page_title')
         </h2>
     </div>
-    <form method="POST" action="{{ route('logout') }}" class="h-12 w-12 flex bg-red-600 hover:bg-red-700">
+    <form method="POST" action="{{ route('logout') }}" class="flex w-12 h-12 bg-red-600 hover:bg-red-700">
         @csrf
-        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="h-full w-full flex items-center justify-center">
-            <i class="uis uil-sign-out-alt text-3xl text-white"></i>
+        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center justify-center w-full h-full">
+            <i class="text-3xl text-white uis uil-sign-out-alt"></i>
         </a>
     </form>
 </div>
 
 
 <!-- drawer component -->
-<div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto overflow-x-hidden transition-transform -translate-x-full bg-white" tabindex="-1" aria-labelledby="drawer-navigation-label">
+<div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-x-hidden overflow-y-auto transition-transform -translate-x-full bg-white" tabindex="-1" aria-labelledby="drawer-navigation-label">
     <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase">Menu</h5>
     <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center" >
         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -27,13 +27,13 @@
       <ul class="space-y-2 font-medium">
          <li>
             <a href="{{ route('pos.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
-               <i class="uil uil-monitor text-2xl text-gray-500"></i>
+               <i class="text-2xl text-gray-500 uil uil-monitor"></i>
                <span class="ml-3">Orders</span>
             </a>
          </li>
          <li>
             <a href="{{ route('orders.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
-               <i class="uil uil-utensils-alt text-2xl text-gray-500"></i>
+               <i class="text-2xl text-gray-500 uil uil-utensils-alt"></i>
                <span class="ml-3">Tables</span>
             </a>
          </li>
@@ -51,13 +51,13 @@
          </li>
          <li>
             <a href="{{ route('kitchen.display') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
-               <i class="uil uil-monitor text-2xl text-gray-500"></i>
+               <i class="text-2xl text-gray-500 uil uil-monitor"></i>
                <span class="ml-3">Kitchen Display</span>
             </a>
          </li>
          <li>
             <a href="{{ route('menu.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
-               <i class="uil uil-utensils-alt text-2xl text-gray-500"></i>
+               <i class="text-2xl text-gray-500 uil uil-utensils-alt"></i>
                <span class="ml-3">Menu Preparation</span>
             </a>
          </li>
@@ -90,7 +90,7 @@
          </li>
          <li>
             <a href="{{ route('expenses.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
-               {{-- <i class="uil uil-monitor text-2xl text-gray-500"></i> --}}
+               {{-- <i class="text-2xl text-gray-500 uil uil-monitor"></i> --}}
                   <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 -960 960 960">
                      <path xmlns="http://www.w3.org/2000/svg" d="M540-420q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM220-280q-24.75 0-42.375-17.625T160-340v-400q0-24.75 17.625-42.375T220-800h640q24.75 0 42.375 17.625T920-740v400q0 24.75-17.625 42.375T860-280H220Zm100-60h440q0-42 29-71t71-29v-200q-42 0-71-29t-29-71H320q0 42-29 71t-71 29v200q42 0 71 29t29 71Zm480 180H100q-24.75 0-42.375-17.625T40-220v-460h60v460h700v60ZM220-340v-400 400Z"/>
                   </svg>
@@ -99,7 +99,7 @@
          </li>
          <li>
             <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-lr" data-collapse-toggle="dropdown-lr">
-                  <i class="uil uil-newspaper text-2xl text-gray-500"></i>
+                  <i class="text-2xl text-gray-500 uil uil-newspaper"></i>
                   <span class="flex-1 ml-3 text-left whitespace-nowrap">Low Stock Report</span>
                   <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
@@ -114,13 +114,22 @@
                   </li>
             </ul>
          </li>
+         <li>
+            <a href="{{ route('financialReport') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+               {{-- <i class="text-2xl text-gray-500 uil uil-monitor"></i> --}}
+                  <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 -960 960 960">
+                     <path xmlns="http://www.w3.org/2000/svg" d="M540-420q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM220-280q-24.75 0-42.375-17.625T160-340v-400q0-24.75 17.625-42.375T220-800h640q24.75 0 42.375 17.625T920-740v400q0 24.75-17.625 42.375T860-280H220Zm100-60h440q0-42 29-71t71-29v-200q-42 0-71-29t-29-71H320q0 42-29 71t-71 29v200q42 0 71 29t29 71Zm480 180H100q-24.75 0-42.375-17.625T40-220v-460h60v460h700v60ZM220-340v-400 400Z"/>
+                  </svg>
+               <span class="ml-3">Financial Report</span>
+            </a>
+         </li>
          {{-- <li>
             <a href="{{ route('report.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
-               <i class="uil uil-newspaper text-2xl text-gray-500"></i>
+               <i class="text-2xl text-gray-500 uil uil-newspaper"></i>
                <span class="ml-3">Low Stock Report</span>
             </a>
          </li> --}}
       </ul>
-      <a href="{{ route('pos.send') }}" id="sendSSButton" class="text-sm underline text-blue-600">Send Sales Summary</a>
+      <a href="{{ route('pos.send') }}" id="sendSSButton" class="text-sm text-blue-600 underline">Send Sales Summary</a>
    </div>
 </div>

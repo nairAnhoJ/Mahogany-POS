@@ -402,16 +402,19 @@ class LogManager implements LoggerInterface
             $config['handler_with'] ?? []
         );
 
+        $handler = $this->prepareHandler(
+            $this->app->make($config['handler'], $with), $config
+        );
+
+        $processors = collect($config['processors'] ?? [])
+            ->map(fn ($processor) => $this->app->make($processor['processor'] ?? $processor, $processor['with'] ?? []))
+            ->toArray();
+
         return new Monolog(
             $this->parseChannel($config),
-            [
-                $this->prepareHandler(
-                    $this->app->make($config['handler'], $with), $config
-                ),
-            ],
-            collect($config['processors'] ?? [])
-                ->map(fn ($processor) => $this->app->make($processor['processor'] ?? $processor, $processor['with'] ?? [])
-        )->toArray());
+            [$handler],
+            $processors,
+        );
     }
 
     /**
@@ -468,9 +471,7 @@ class LogManager implements LoggerInterface
      */
     protected function formatter()
     {
-        return tap(new LineFormatter(null, $this->dateFormat, true, true), function ($formatter) {
-            $formatter->includeStacktraces();
-        });
+        return new LineFormatter(null, $this->dateFormat, true, true, true);
     }
 
     /**

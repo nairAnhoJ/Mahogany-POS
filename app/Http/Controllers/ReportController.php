@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActualMoney;
 use App\Models\Inventory;
 use App\Models\InventoryTransaction;
 use App\Models\Menu;
@@ -570,5 +571,27 @@ class ReportController extends Controller {
         Transaction::where('id', $request->id)->delete();
 
         echo 'Delete Successful';
+    }
+
+
+
+
+
+
+    public function financialReport(){
+        $results = '';
+
+        return view('admin.reports.financial-report', compact('results'));
+    }
+    
+    public function dateChanged(Request $request){
+        $exist = ActualMoney::where('date', $request->date)->first();
+        if($exist != null){
+            $result = "1";
+        }else{
+            $result = "0";
+        }
+
+        echo $result;
     }
 }
