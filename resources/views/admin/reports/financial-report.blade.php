@@ -2,31 +2,28 @@
     @section('page_title', 'REPORTS')
 
 
-    {{-- ADD MODAL --}}
+    {{-- EDIT MODAL --}}
         <!-- Main modal -->
-        <div id="addModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+        <div id="editModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div class="relative w-full h-full max-w-2xl md:h-auto">
                 <!-- Modal content -->
                 <div class="absolute w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
                         <h3 class="flex items-center font-semibold text-gray-900">
-                            <span class="text-base text-blue-700 md:text-lg lg:text-xl">Add</span>
+                            <span class="text-base text-blue-700 md:text-lg lg:text-xl">Edit</span>
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="addModal">
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="editModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
                     </div>
                     <!-- Modal body -->
                     <div class="px-6 py-6">
                         @csrf
-                        <p class="text-xs leading-relaxed text-gray-500 md:text-base">
+                        <div class="text-xs leading-relaxed text-gray-500 md:text-base">
                             <div class="mb-6">
                                 <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
-                                <div class="flex items-center">
-                                    <input type="date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required autocomplete="off">
-                                </div>
-                                <p id="dateExist" class="hidden text-xs text-red-500">The date you selected already has existing data.</p>
+                                <h1 id="editDate"></h1>
                             </div>
                             <div class="mb-6">
                                 <label for="liquid_cash" class="block mb-2 text-sm font-medium text-gray-900">Liquid Cash</label>
@@ -58,56 +55,7 @@
                                     <input type="text" id="pending_remit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 numbersOnly" required autocomplete="off">
                                 </div>
                             </div>
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="button" data-modal-hide="addModal" class="addSubmit w-24 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Add</button>
-                        <button data-modal-hide="addModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{-- ADD MODAL END --}}
-
-    {{-- EDIT MODAL --}}
-        <!-- Main modal -->
-        <div id="editModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
-                <!-- Modal content -->
-                <div class="absolute w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
-                        <h3 class="flex items-center font-semibold text-gray-900">
-                            <span class="text-base text-blue-700 md:text-lg lg:text-xl">Edit</span>
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="editModal">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="px-6 py-6">
-                        @csrf
-                        <p class="text-xs leading-relaxed text-gray-500 md:text-base">
-                            <h1 class="pb-5 text-xl font-bold editName"></h1>
-                            <div class="mb-6 nameDiv">
-                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Item Name</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="name" class="editName bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
-                                <input type="datetime-local" id="editDate" value="{{ date('Y-m-d\TH:i') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-
-                                {{-- <div class="relative max-w-sm">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                      <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
-                                    </div>
-                                    <input datepicker type="text" id="editDate" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date">
-                                </div> --}}
-                            </div>
-                        </p>
+                        </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
@@ -157,8 +105,33 @@
                 {{-- CONTROLS --}}
                     <div class="mb-3">
                         <div class="flex justify-between">
-                            <div class="w-32">
-                                <button data-modal-show="addModal" data-modal-target="addModal" class="hidden md:block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"></i>ADD</button>
+                            <div></div>
+                            <button data-modal-show="editModal" data-modal-target="editModal" class="hidden text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center openEditModal"></i>ADD</button>
+                            <div class="flex gap-x-4">
+                                <div>
+                                    <label for="month">Month:</label>
+                                    <select id="month" name="month" class="pl-2 pr-5 rounded-lg">
+                                        <option {{ ($month == '01') ? 'selected' : '' }} value="01">January</option>
+                                        <option {{ ($month == '02') ? 'selected' : '' }} value="02">February</option>
+                                        <option {{ ($month == '03') ? 'selected' : '' }} value="03">March</option>
+                                        <option {{ ($month == '04') ? 'selected' : '' }} value="04">April</option>
+                                        <option {{ ($month == '05') ? 'selected' : '' }} value="05">May</option>
+                                        <option {{ ($month == '06') ? 'selected' : '' }} value="06">June</option>
+                                        <option {{ ($month == '07') ? 'selected' : '' }} value="07">July</option>
+                                        <option {{ ($month == '08') ? 'selected' : '' }} value="08">August</option>
+                                        <option {{ ($month == '09') ? 'selected' : '' }} value="09">September</option>
+                                        <option {{ ($month == '10') ? 'selected' : '' }} value="10">October</option>
+                                        <option {{ ($month == '11') ? 'selected' : '' }} value="11">November</option>
+                                        <option {{ ($month == '12') ? 'selected' : '' }} value="12">December</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="year">Year:</label>
+                                    <input type="number" id="year" name="year" min="1900" max="2999" step="1" value="{{ $year }}" class="px-2 rounded-lg">
+                                </div>
+                                <div>
+                                    <button data-modal-show="addModal" data-modal-target="addModal" class="hidden md:block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"></i>Generate</button>
+                                </div>
                             </div>
                             {{-- <div class="w-32">
                                 <a href="{{ url('/report/print/'.$startDate.'/'.$endDate.'/'.$category.'/'.$report) }}" target="_blank" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"><i class="mr-1 uil uil-print"></i>PRINT</a>
@@ -178,6 +151,9 @@
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr class="border-b">
+                                            <th class="px-6 text-center">
+                                                Action
+                                            </th>
                                             <th class="px-6 text-center">
                                                 Date
                                             </th>
@@ -206,7 +182,7 @@
                                                 Pending Remit
                                             </th>
                                             <th class="px-6 text-center">
-                                                Acct Payable
+                                                Account Payable
                                             </th>
                                             <th class="px-6 text-center">
                                                 Variance
@@ -214,25 +190,114 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($results as $result)
+                                        @for ($i = 1; $i <= $lastDay; $i++)
+                                            @php
+                                                $textColor = "";
+                                                $totalSales = 0;
+                                                $totalExpenses = 0;
+                                                
+                                                $liquid_cash = 0;
+                                                $cash_on_hand = 0;
+                                                $gcash = 0;
+                                                $bank = 0;
+                                                $pending_remit = 0;
+                                                $account_payable = 0;
+                                                $variance = 0;
+
+                                                foreach ($sales as $sale) {
+                                                    if($sale->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
+                                                        $totalSales = $sale->total_per_day;
+                                                        break;
+                                                    }
+                                                }
+
+                                                foreach ($expenses as $expense) {
+                                                    if($expense->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
+                                                        $totalExpenses = $expense->total_per_day;
+                                                        break;
+                                                    }
+                                                }
+
+                                                $profitLoss = $totalSales - $totalExpenses;
+                                                if($profitLoss > 0){
+                                                    $textColor = "text-emerald-500";
+                                                }elseif($profitLoss < 0){
+                                                    $textColor = "text-red-500";
+                                                }
+                                                
+
+
+
+                                                foreach ($actuals as $actual) {
+                                                    if($actual->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
+                                                        $liquid_cash = $actual->liquid_cash;
+                                                        $cash_on_hand = $actual->cash_on_hand;
+                                                        $gcash = $actual->gcash;
+                                                        $bank = $actual->bank;
+                                                        $pending_remit = $actual->pending_remit;
+                                                        
+                                                        foreach ($account_payables as $account_payable_row) {
+                                                            if($account_payable_row->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
+                                                                $account_payable = $account_payable_row->total_per_day;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        $variance = $liquid_cash - ($cash_on_hand + $gcash + $bank + $pending_remit) - $account_payable;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
                                             <tr class="border-b">
+                                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                    <button data-date="{{ date('Y-m-d', strtotime($year.'-'.$month.'-'.$i)) }}" data-sdate="{{ date('F j, Y', strtotime($year.'-'.$month.'-'.$i)) }}" class="flex items-center text-blue-500 hover:underline editButton">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="w-5 h-5" fill="currentColor">
+                                                            <path d="M180-180h44l472-471-44-44-472 471v44Zm-60 60v-128l575-574q8-8 19-12.5t23-4.5q11 0 22 4.5t20 12.5l44 44q9 9 13 20t4 22q0 11-4.5 22.5T823-694L248-120H120Zm659-617-41-41 41 41Zm-105 64-22-22 44 44-22-22Z"/>
+                                                        </svg>
+                                                        Edit
+                                                    </button>
+                                                </td>
                                                 <th class="px-6 py-1 font-medium text-center text-gray-900 whitespace-nowrap">
-                                                    {{ date('F j, Y h:i A', strtotime($result->created_at)) }}
+                                                    {{ date('F j, Y', strtotime($year.'-'.$month.'-'.$i)) }}
                                                 </th>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    {{ $result->number }}
+                                                    ₱ {{ number_format($totalSales, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($result->total, 2, '.', ',') }}
+                                                    ₱ {{ number_format($totalExpenses, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center whitespace-nowrap {{ $textColor }}">
+                                                    ₱ {{ number_format($profitLoss, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    {{ $result->mode_of_payment }}
+                                                    ₱ {{ number_format($liquid_cash, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    {{ $result->thisCashier->name }}
+                                                    ₱ {{ number_format($cash_on_hand, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                    ₱ {{ number_format($gcash, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                    ₱ {{ number_format($bank, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                    ₱ {{ number_format($pending_remit, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                    ₱ {{ number_format($account_payable, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center whitespace-nowrap">
+                                                    ₱ {{ number_format($variance, 2, '.', ',') }}
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+
+                                            @php
+                                                if($i == date('d') && $month == date('m')){
+                                                    break;
+                                                }
+                                            @endphp
+                                        @endfor
                                     </tbody>
                                 </table>
                                 {{-- @if($category == 'waste')
@@ -290,29 +355,29 @@
             });
 
             
+            jQuery(document).on( "click", ".editButton", function(){
+                var date = $(this).data('date');
+                var sdate = $(this).data('sdate');
+                $('#editDate').html(sdate);
 
-
-            jQuery(document).on( "change", "#date", function(){
-                var date = $(this).val();
-
-                $.ajax({
-                    url: "{{ route('dateChanged') }}",
-                    method:"POST",
-                    data:{
-                        date: date,
-                        _token: _token
-                    },
-                    success:function(result){
-                        if(result == 1){
-                            $('#dateExist').removeClass('hidden');
-                        }else{
-                            $('#dateExist').addClass('hidden');
-                        }
-                    }
-                })
+                // $.ajax({
+                //     url: "{{ route('getActual') }}",
+                //     method:"POST",
+                //     data:{
+                //         date: date,
+                //         liquid_cash: liquid_cash,
+                //         cash_on_hand: cash_on_hand,
+                //         gcash: gcash,
+                //         bank: bank,
+                //         pending_remit: pending_remit,
+                //         _token: _token
+                //     },
+                //     success:function(result){
+                //         alert(result);
+                //         location.reload();
+                //     }
+                // })
             });
-
-            
 
 
             jQuery(document).on( "click", ".addSubmit", function(){

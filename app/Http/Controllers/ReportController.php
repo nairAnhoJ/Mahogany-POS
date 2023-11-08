@@ -579,9 +579,41 @@ class ReportController extends Controller {
 
 
     public function financialReport(){
-        $results = '';
+        $lastDay = date('t');
+        $month = date('m');
+        $year = date('Y');
+        $startDate = $year.'-'.$month.'-01 00:00:01';
+        $endDate = $year.'-'.$month.'-31 23:59:59';
 
-        return view('admin.reports.financial-report', compact('results'));
+        $sales = Transaction::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(total) as total_per_day'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<', $endDate)
+            ->where('status', 'PAID')
+            ->where('order_status', '!=', 'CANCELLED')
+            ->groupBy('date')
+            ->get();
+
+        $expenses = InventoryTransaction::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total_per_day'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<', $endDate)
+            ->where('type', 'INCOMING')
+            ->where('is_paid', 1)
+            ->groupBy('date')
+            ->get();
+
+        $actuals = ActualMoney::where('date', '>=', $startDate)
+            ->where('date', '<', $endDate)
+            ->get();
+
+        $account_payables = InventoryTransaction::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total_per_day'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<', $endDate)
+            ->where('type', 'INCOMING')
+            ->where('is_paid', 0)
+            ->groupBy('date')
+            ->get();
+
+        return view('admin.reports.financial-report', compact('sales', 'expenses', 'actuals', 'account_payables', 'month', 'year', 'lastDay'));
     }
     
     public function dateChanged(Request $request){
