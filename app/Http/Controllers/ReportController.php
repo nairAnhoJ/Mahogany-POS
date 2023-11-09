@@ -615,15 +615,71 @@ class ReportController extends Controller {
 
         return view('admin.reports.financial-report', compact('sales', 'expenses', 'actuals', 'account_payables', 'month', 'year', 'lastDay'));
     }
-    
-    public function dateChanged(Request $request){
-        $exist = ActualMoney::where('date', $request->date)->first();
-        if($exist != null){
-            $result = "1";
-        }else{
-            $result = "0";
-        }
 
-        echo $result;
+    public function generateFinancialReport(Request $request){
+        $lastDay = date('t');
+        $month = $request->month;
+        $year = $request->year;
+        $startDate = $year.'-'.$month.'-01 00:00:01';
+        $endDate = $year.'-'.$month.'-31 23:59:59';
+
+        $sales = Transaction::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(total) as total_per_day'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<', $endDate)
+            ->where('status', 'PAID')
+            ->where('order_status', '!=', 'CANCELLED')
+            ->groupBy('date')
+            ->get();
+
+        $expenses = InventoryTransaction::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total_per_day'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<', $endDate)
+            ->where('type', 'INCOMING')
+            ->where('is_paid', 1)
+            ->groupBy('date')
+            ->get();
+
+        $actuals = ActualMoney::where('date', '>=', $startDate)
+            ->where('date', '<', $endDate)
+            ->get();
+
+        $account_payables = InventoryTransaction::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total_per_day'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<', $endDate)
+            ->where('type', 'INCOMING')
+            ->where('is_paid', 0)
+            ->groupBy('date')
+            ->get();
+
+        return view('admin.reports.financial-report', compact('sales', 'expenses', 'actuals', 'account_payables', 'month', 'year', 'lastDay'));
+    }
+    
+    public function getActual(Request $request){
+        $actual = ActualMoney::where('date', $request->date)->first();
+
+        echo json_encode($actual);
+    }
+    
+    public function updateActual(Request $request){
+        $date = $request->date;
+        $liquid_cash = $request->liquid_cash;
+        $cash_on_hand = $request->cash_on_hand;
+        $gcash = $request->gcash;
+        $bank = $request->bank;
+        $pending_remit = $request->pending_remit;
+
+        $actual = ActualMoney::where('date', $date)->first();
+        if($actual == null){
+            $actual = new ActualMoney;
+            $actual->date = $date;
+        }
+        $actual->liquid_cash = $liquid_cash;
+        $actual->cash_on_hand = $cash_on_hand;
+        $actual->gcash = $gcash;
+        $actual->bank = $bank;
+        $actual->pending_remit = $pending_remit;
+        $actual->save();
+
+        echo 'Financial Report has been updated successfully.';
     }
 }

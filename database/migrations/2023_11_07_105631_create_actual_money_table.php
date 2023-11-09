@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('gcash');
             $table->string('bank');
             $table->string('pending_remit');
-            $table->string('account_payable');
-            $table->string('variance');
             $table->timestamps();
         });
     }

@@ -69,8 +69,8 @@ Route::middleware("role:1,2")->group(function(){
     
     Route::get('/financial-report', [ReportController::class, 'financialReport'])->name('financialReport');
     Route::post('/financial-report', [ReportController::class, 'generateFinancialReport'])->name('generateFinancialReport');
-    Route::post('/financial-report/add', [ReportController::class, 'financialReportAdd'])->name('financialReportAdd');
     Route::post('/get-actual', [ReportController::class, 'getActual'])->name('getActual');
+    Route::post('/update-actual', [ReportController::class, 'updateActual'])->name('updateActual');
 
     // USERS
     Route::get('/system-management/user', [UserController::class, 'index'])->name('user.index');
