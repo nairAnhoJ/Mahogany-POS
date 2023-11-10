@@ -67,6 +67,8 @@ Route::middleware("role:1,2")->group(function(){
     Route::post('/report/generate/delete-sales', [ReportController::class, 'deleteSales'])->name('deleteSales');
     Route::get('/report/print/{start}/{end}/{category}/{report}', [ReportController::class, 'print']);
     
+    Route::get('/pricing-report', [ReportController::class, 'pricingReport'])->name('pricingReport');
+    
     Route::get('/financial-report', [ReportController::class, 'financialReport'])->name('financialReport');
     Route::post('/financial-report', [ReportController::class, 'generateFinancialReport'])->name('generateFinancialReport');
     Route::post('/get-actual', [ReportController::class, 'getActual'])->name('getActual');

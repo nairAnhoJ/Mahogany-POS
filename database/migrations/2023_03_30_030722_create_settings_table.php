@@ -19,7 +19,13 @@ return new class extends Migration
             $table->string('logo');
             $table->string('footer');
             $table->string('email');
-            // $table->integer('notification');
+            
+            $table->string('buffer_margin')->default(0);
+            $table->string('markup')->default(0);
+            $table->string('price_adjustment')->default(0);
+            $table->string('staff_incentives')->default(0);
+            $table->string('manager_incentives')->default(0);
+            $table->string('vat');
             $table->timestamps();
         });
     }

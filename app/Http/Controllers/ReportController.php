@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActualMoney;
+use App\Models\Ingredient;
 use App\Models\Inventory;
 use App\Models\InventoryTransaction;
 use App\Models\Menu;
+use App\Models\MenuIndex;
 use App\Models\Ordered;
+use App\Models\PricingReport;
+use App\Models\Setting;
 use App\Models\Transaction;
 use App\Models\Waste;
 use Illuminate\Http\Request;
@@ -681,5 +685,103 @@ class ReportController extends Controller {
         $actual->save();
 
         echo 'Financial Report has been updated successfully.';
+    }
+
+
+
+
+
+
+
+
+
+    public function pricingReport(){
+        $setting = Setting::where('id', 1)->first();
+        $menus = Menu::where('is_combo', 0)->where('is_deleted', 0)->where('is_hidden', 0)->get();
+
+        if (date('j') == 1) {
+            PricingReport::query()->update(['previous_price_per_serving_2' => DB::raw('previous_price_per_serving_1')]);
+            PricingReport::query()->update(['previous_price_per_serving_1' => DB::raw('price_per_servings')]);
+        }
+
+        foreach($menus as $menu){
+            $ingredient_expense = 0;
+            $ingredients = Ingredient::where('menu_id', $menu->id)->where('is_deleted', 0)->get();
+
+            foreach($ingredients as $ing){
+                $inv_tran = InventoryTransaction::where('inv_id', $ing->inventory_id)->where('type', 'INCOMING')->orderBy('id','desc')->first();
+                $price_per_unit = $inv_tran->amount / $inv_tran->quantity;
+                $price = $ing->quantity * $price_per_unit;
+                $ingredient_expense += $price;
+            }
+
+            $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
+
+            $after_buffer_margin = $ingredient_expense + ($ingredient_expense * (float)$setting->buffer_margin);
+            $after_markup = $after_buffer_margin + ($after_buffer_margin * (float)$setting->markup);
+            $after_price_adjustment = $after_markup + ($after_markup * (float)$setting->price_adjustment);
+            $after_staff_incentives = $after_price_adjustment + (float)$setting->staff_incentives;
+            $after_manager_incentives = $after_staff_incentives + ($after_staff_incentives * (float)$setting->manager_incentives);
+            $after_vat = $after_manager_incentives + ($after_manager_incentives * (float)$setting->vat);
+
+            $total_expense = $after_vat;
+            $price_per_serving = $total_expense / $menu->servings;
+
+            $menuPricingReport = PricingReport::where('menu_id', $menu->id)->first();
+
+            if($menuPricingReport == null){
+                $menuPricingReport = new PricingReport();
+            }
+            $menuPricingReport->menu_id = $menu->id;
+            $menuPricingReport->menu = $menu->name;
+            $menuPricingReport->ingredient_expense = $ingredient_expense_per_serving;
+            $menuPricingReport->number_of_servings = $menu->servings;
+            $menuPricingReport->price_per_servings = $price_per_serving;
+            $menuPricingReport->selling_price = $menu->price;
+            $menuPricingReport->additional_income = $menu->price - $price_per_serving;
+            $menuPricingReport->save();
+        }
+
+        
+        $menus = Menu::where('is_combo', 1)->where('is_deleted', 0)->where('is_hidden', 0)->where('id', 6)->get();
+
+        foreach($menus as $menu){
+            $ingredient_expense = 0;
+            $ingredients = Ingredient::where('menu_id', $menu->id)->where('is_deleted', 0)->get();
+
+            foreach($ingredients as $ing){
+                $price = PricingReport::where('menu_id', $ing->inventory_id)->first()->ingredient_expense;
+                $totalPrice = $price * $ing->quantity;
+                $ingredient_expense += $totalPrice;
+            }
+
+            $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
+
+            $after_buffer_margin = $ingredient_expense + ($ingredient_expense * (float)$setting->buffer_margin);
+            $after_markup = $after_buffer_margin + ($after_buffer_margin * (float)$setting->markup);
+            $after_price_adjustment = $after_markup + ($after_markup * (float)$setting->price_adjustment);
+            $after_staff_incentives = $after_price_adjustment + (float)$setting->staff_incentives;
+            $after_manager_incentives = $after_staff_incentives + ($after_staff_incentives * (float)$setting->manager_incentives);
+            $after_vat = $after_manager_incentives + ($after_manager_incentives * (float)$setting->vat);
+
+            $total_expense = $after_vat;
+            $price_per_serving = $total_expense / $menu->servings;
+
+            $menuPricingReport = PricingReport::where('menu_id', $menu->id)->first();
+
+            if($menuPricingReport == null){
+                $menuPricingReport = new PricingReport();
+            }
+            $menuPricingReport->menu_id = $menu->id;
+            $menuPricingReport->menu = $menu->name;
+            $menuPricingReport->ingredient_expense = $ingredient_expense_per_serving;
+            $menuPricingReport->number_of_servings = $menu->servings;
+            $menuPricingReport->price_per_servings = $price_per_serving;
+            $menuPricingReport->selling_price = $menu->price;
+            $menuPricingReport->additional_income = $menu->price - $price_per_serving;
+            $menuPricingReport->save();
+        }
+
+        return view('admin.reports.menu-index-report');
     }
 }

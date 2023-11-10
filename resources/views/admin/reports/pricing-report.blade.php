@@ -134,22 +134,19 @@
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr class="border-b">
                                             <th class="px-6 text-center">
-                                                Action
+                                                Menu
                                             </th>
                                             <th class="px-6 text-center">
-                                                Date
+                                                Ingredient Cost
                                             </th>
                                             <th class="px-6 text-center">
-                                                Sales
+                                                Number of Servings
                                             </th>
                                             <th class="px-6 text-center">
-                                                Expenses
-                                            </th>
-                                            <th class="px-6 text-center">
-                                                Profit/Loss
+                                                Price per Servings
                                             </th>
                                             <th class="px-6 text-center bg-yellow-300">
-                                                Liquid Cash
+                                                Selling Price
                                             </th>
                                             <th class="px-6 text-center bg-yellow-300">
                                                 Cash on Hand
@@ -157,107 +154,10 @@
                                             <th class="px-6 text-center bg-yellow-300">
                                                 GCash
                                             </th>
-                                            <th class="px-6 text-center bg-yellow-300">
-                                                Bank
-                                            </th>
-                                            <th class="px-6 text-center bg-yellow-300">
-                                                Pending Remit
-                                            </th>
-                                            <th class="px-6 text-center">
-                                                Account Payable
-                                            </th>
-                                            <th class="px-6 text-center">
-                                                Variance
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php
-                                            $monthlySales = 0;
-                                            $monthlyExpenses = 0;
-                                            $days = 0;
-                                            $withData = 1;
-                                        @endphp
-                                        @for ($i = 1; $i <= $lastDay; $i++)
-                                            @php
-                                                if($month > (int)date('m')){
-                                                    if($year >= (int)date('Y')){
-                                                        $withData = 0;
-                                                        break;
-                                                    }
-                                                }elseif ($year > (int)date('Y')) {
-                                                    $withData = 0;
-                                                    break;
-                                                }
-
-                                                $textColor = "";
-                                                $totalSales = 0;
-                                                $totalExpenses = 0;
-                                                
-                                                $liquid_cash = 0;
-                                                $cash_on_hand = 0;
-                                                $gcash = 0;
-                                                $bank = 0;
-                                                $pending_remit = 0;
-                                                $account_payable = 0;
-                                                $variance = 0;
-
-                                                foreach ($sales as $sale) {
-                                                    if($sale->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
-                                                        $totalSales = $sale->total_per_day;
-                                                        $monthlySales = $monthlySales + $sale->total_per_day;
-                                                        break;
-                                                    }
-                                                }
-
-                                                foreach ($expenses as $expense) {
-                                                    if($expense->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
-                                                        $totalExpenses = $expense->total_per_day;
-                                                        $monthlyExpenses = $monthlyExpenses + (int)$expense->total_per_day;
-                                                        break;
-                                                    }
-                                                }
-
-                                                $profitLoss = $totalSales - $totalExpenses;
-                                                if($profitLoss > 0){
-                                                    $textColor = "text-emerald-500";
-                                                }elseif($profitLoss < 0){
-                                                    $textColor = "text-red-500";
-                                                }
-                                                
-
-
-
-                                                foreach ($actuals as $actual) {
-                                                    if($actual->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
-                                                        $liquid_cash = $actual->liquid_cash;
-                                                        $cash_on_hand = $actual->cash_on_hand;
-                                                        $gcash = $actual->gcash;
-                                                        $bank = $actual->bank;
-                                                        $pending_remit = $actual->pending_remit;
-                                                        
-                                                        foreach ($account_payables as $account_payable_row) {
-                                                            if($account_payable_row->date == date('Y-m-d', strtotime($year.'-'.$month.'-'.$i))){
-                                                                $account_payable = $account_payable_row->total_per_day;
-                                                                break;
-                                                            }
-                                                        }
-                                                        
-                                                        $variance = $liquid_cash - ($cash_on_hand + $gcash + $bank + $pending_remit) - $account_payable;
-                                                        break;
-                                                    }
-                                                }
-                                            @endphp
-                                            
                                             <tr class="border-b text-neutral-800">
-                                                <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    <button data-date="{{ date('Y-m-d', strtotime($year.'-'.$month.'-'.$i)) }}" data-sdate="{{ date('F j, Y', strtotime($year.'-'.$month.'-'.$i)) }}" class="flex items-center text-blue-500 hover:underline editButton">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="w-5 h-5" fill="currentColor">
-                                                            <path d="M180-180h44l472-471-44-44-472 471v44Zm-60 60v-128l575-574q8-8 19-12.5t23-4.5q11 0 22 4.5t20 12.5l44 44q9 9 13 20t4 22q0 11-4.5 22.5T823-694L248-120H120Zm659-617-41-41 41 41Zm-105 64-22-22 44 44-22-22Z"/>
-                                                        </svg>
-                                                        Edit
-                                                    </button>
-                                                </td>
                                                 <th class="px-6 py-1 font-medium text-center text-gray-900 whitespace-nowrap">
                                                     {{ date('F j, Y', strtotime($year.'-'.$month.'-'.$i)) }}
                                                 </th>
@@ -292,60 +192,7 @@
                                                     ₱ {{ number_format($variance, 2, '.', ',') }}
                                                 </td>
                                             </tr>
-
-                                            @php
-                                                if($i == date('d') && $month == date('m') && $year == date('Y')){
-                                                    $days = $i;
-                                                    break;
-                                                }
-                                            @endphp
                                         @endfor
-                                        @if ($withData == 1)
-                                                <tr class="bg-red-300 border-b text-neutral-800">
-                                                    <th class="px-6 py-1 text-lg font-bold text-left text-gray-900 whitespace-nowrap">
-                                                        Total
-                                                    </th>
-                                                    <td></td>
-                                                    <td class="px-6 py-1 font-bold text-center whitespace-nowrap">
-                                                        ₱ {{ number_format($monthlySales, 2, '.', ',') }}
-                                                    </td>
-                                                    <td class="px-6 py-1 font-bold text-center whitespace-nowrap">
-                                                        ₱ {{ number_format($monthlyExpenses, 2, '.', ',') }}
-                                                    </td>
-                                                    <td class="px-6 py-1 font-bold text-center whitespace-nowrap">
-                                                        ₱ {{ number_format($monthlySales - $monthlyExpenses, 2, '.', ',') }}
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr class="font-bold bg-red-300 border-b text-neutral-800">
-                                                    <th class="px-6 py-1 text-lg font-medium text-left text-gray-900 whitespace-nowrap">
-                                                        Average
-                                                    </th>
-                                                    <td></td>
-                                                    <td class="px-6 py-1 font-bold text-center whitespace-nowrap">
-                                                        ₱ {{ number_format($monthlySales / $days, 2, '.', ',') }}
-                                                    </td>
-                                                    <td class="px-6 py-1 font-bold text-center whitespace-nowrap">
-                                                        ₱ {{ number_format($monthlyExpenses / $days, 2, '.', ',') }}
-                                                    </td>
-                                                    <td class="px-6 py-1 font-bold text-center whitespace-nowrap">
-                                                        ₱ {{ number_format(($monthlySales - $monthlyExpenses) / $days, 2, '.', ',') }}
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -416,58 +263,58 @@
             });
 
             
-            jQuery(document).on( "click", ".editButton", function(){
-                $('#loading').toggleClass('hidden');
-                date = $(this).data('date');
-                var sdate = $(this).data('sdate');
-                $('#editDate').html(sdate);
+            // jQuery(document).on( "click", ".editButton", function(){
+            //     $('#loading').toggleClass('hidden');
+            //     date = $(this).data('date');
+            //     var sdate = $(this).data('sdate');
+            //     $('#editDate').html(sdate);
 
-                $.ajax({
-                    url: "{{ route('getActual') }}",
-                    method:"POST",
-                    dataType: 'json',
-                    data:{
-                        date: date,
-                        _token: _token
-                    },
-                    success:function(result){
-                        $('#liquid_cash').val(result.liquid_cash);
-                        $('#cash_on_hand').val(result.cash_on_hand);
-                        $('#gcash').val(result.gcash);
-                        $('#bank').val(result.bank);
-                        $('#pending_remit').val(result.pending_remit);
-                        $('#openEditModal').click();
-                        $('#loading').toggleClass('hidden');
-                    }
-                })
-            });
+            //     $.ajax({
+            //         url: "{{ route('getActual') }}",
+            //         method:"POST",
+            //         dataType: 'json',
+            //         data:{
+            //             date: date,
+            //             _token: _token
+            //         },
+            //         success:function(result){
+            //             $('#liquid_cash').val(result.liquid_cash);
+            //             $('#cash_on_hand').val(result.cash_on_hand);
+            //             $('#gcash').val(result.gcash);
+            //             $('#bank').val(result.bank);
+            //             $('#pending_remit').val(result.pending_remit);
+            //             $('#openEditModal').click();
+            //             $('#loading').toggleClass('hidden');
+            //         }
+            //     })
+            // });
 
 
-            jQuery(document).on( "click", "#editSubmit", function(){
-                var liquid_cash = $('#liquid_cash').val();
-                var cash_on_hand = $('#cash_on_hand').val();
-                var gcash = $('#gcash').val();
-                var bank = $('#bank').val();
-                var pending_remit = $('#pending_remit').val();
+            // jQuery(document).on( "click", "#editSubmit", function(){
+            //     var liquid_cash = $('#liquid_cash').val();
+            //     var cash_on_hand = $('#cash_on_hand').val();
+            //     var gcash = $('#gcash').val();
+            //     var bank = $('#bank').val();
+            //     var pending_remit = $('#pending_remit').val();
 
-                $.ajax({
-                    url: "{{ route('updateActual') }}",
-                    method:"POST",
-                    data:{
-                        date: date,
-                        liquid_cash: liquid_cash,
-                        cash_on_hand: cash_on_hand,
-                        gcash: gcash,
-                        bank: bank,
-                        pending_remit: pending_remit,
-                        _token: _token
-                    },
-                    success:function(result){
-                        location.reload();
-                        alert(result);
-                    }
-                })
-            });
+            //     $.ajax({
+            //         url: "{{ route('updateActual') }}",
+            //         method:"POST",
+            //         data:{
+            //             date: date,
+            //             liquid_cash: liquid_cash,
+            //             cash_on_hand: cash_on_hand,
+            //             gcash: gcash,
+            //             bank: bank,
+            //             pending_remit: pending_remit,
+            //             _token: _token
+            //         },
+            //         success:function(result){
+            //             location.reload();
+            //             alert(result);
+            //         }
+            //     })
+            // });
         });
     </script>
 </x-app-layout>
