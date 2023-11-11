@@ -68,6 +68,7 @@ Route::middleware("role:1,2")->group(function(){
     Route::get('/report/print/{start}/{end}/{category}/{report}', [ReportController::class, 'print']);
     
     Route::get('/pricing-report', [ReportController::class, 'pricingReport'])->name('pricingReport');
+    Route::post('/view-pricing-report', [ReportController::class, 'viewPricingReport'])->name('viewPricingReport');
     
     Route::get('/financial-report', [ReportController::class, 'financialReport'])->name('financialReport');
     Route::post('/financial-report', [ReportController::class, 'generateFinancialReport'])->name('generateFinancialReport');

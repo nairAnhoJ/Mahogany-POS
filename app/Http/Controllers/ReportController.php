@@ -750,7 +750,8 @@ class ReportController extends Controller {
             $ingredients = Ingredient::where('menu_id', $menu->id)->where('is_deleted', 0)->get();
 
             foreach($ingredients as $ing){
-                $price = PricingReport::where('menu_id', $ing->inventory_id)->first()->ingredient_expense;
+                $pr = PricingReport::where('menu_id', $ing->inventory_id)->first();
+                $price = $pr->ingredient_expense / $pr->number_of_servings;
                 $totalPrice = $price * $ing->quantity;
                 $ingredient_expense += $totalPrice;
             }
@@ -782,6 +783,295 @@ class ReportController extends Controller {
             $menuPricingReport->save();
         }
 
-        return view('admin.reports.menu-index-report');
+        $pricingReports = PricingReport::get();
+
+        return view('admin.reports.pricing-report', compact('pricingReports'));
+    }
+
+    public function viewPricingReport(Request $request){
+        $pricingReport = PricingReport::where('id', $request->id)->first();
+        $menu = Menu::where('id', $pricingReport->menu_id)->first();
+        $setting = Setting::where('id', 1)->first();
+        $result = '';
+        $ingrow = '';
+        
+        $buffer_percent = (float)$setting->buffer_margin * 100;
+        $markup_percent = (float)$setting->markup * 100;
+        $adjustment_percent = (float)$setting->price_adjustment * 100;
+        $staff_incentive = (float)$setting->staff_incentives;
+        $incentive_percent = (float)$setting->manager_incentives * 100;
+        $vat_percent = (float)$setting->vat * 100;
+
+        $ingredient_expense = 0;
+        $ingredients = Ingredient::where('menu_id', $menu->id)->where('is_deleted', 0)->get();
+
+        if($menu->is_combo == 1){
+            foreach($ingredients as $ing){
+                $inv = Menu::where('id', $ing->inventory_id)->first();
+                $pr = PricingReport::where('menu_id', $ing->inventory_id)->first();
+                $price = $pr->ingredient_expense / $pr->number_of_servings;
+                $totalPrice = $price * $ing->quantity;
+                $ingredient_expense += $totalPrice;
+
+                $ingrow .= '
+                    <tr class="border-b">
+                        <td class="px-4 py-1 text-left border-r">
+                            '.$inv->name.'
+                        </td>
+                        <td class="px-4 text-right border-r">
+                            '.number_format($ing->quantity, 2, '.', ',').'
+                        </td>
+                        <td class="px-4 text-right border-r">
+                            ₱ '.number_format($price, 2, '.', ',').'
+                        </td>
+                        <td class="px-4 text-right">
+                            ₱ '.number_format($totalPrice, 2, '.', ',').'
+                        </td>
+                    </tr>
+                ';
+            }
+
+            $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
+            
+            $buffer_margin = $ingredient_expense * (float)$setting->buffer_margin;
+            $after_buffer_margin = $ingredient_expense + $buffer_margin;
+
+            $markup = $after_buffer_margin * (float)$setting->markup;
+            $after_markup = $after_buffer_margin + $markup;
+
+            $price_adjustment = $after_markup * (float)$setting->price_adjustment;
+            $after_price_adjustment = $after_markup + $price_adjustment;
+
+            $staff_incentives = (float)$setting->staff_incentives;
+            $after_staff_incentives = $after_price_adjustment + $staff_incentives;
+
+            $manager_incentives = $after_staff_incentives * (float)$setting->manager_incentives;
+            $after_manager_incentives = $after_staff_incentives + $manager_incentives;
+
+            $vat = $after_manager_incentives * (float)$setting->vat;
+            $after_vat = $after_manager_incentives + $vat;
+
+            $total_expense = $after_vat;
+            $price_per_serving = $total_expense / $menu->servings;
+        }else{
+            foreach($ingredients as $ing){
+                $inv = Inventory::where('id', $ing->inventory_id)->first();
+                $inv_tran = InventoryTransaction::where('inv_id', $ing->inventory_id)->where('type', 'INCOMING')->orderBy('id','desc')->first();
+                $price_per_unit = $inv_tran->amount / $inv_tran->quantity;
+                $price = $ing->quantity * $price_per_unit;
+                $ingredient_expense += $price;
+
+                $ingrow .= '
+                    <tr class="border-b">
+                        <td class="px-4 py-1 text-left border-r">
+                            '.$inv->name.'
+                        </td>
+                        <td class="px-4 text-right border-r">
+                            '.number_format($ing->quantity, 2, '.', ',').'
+                        </td>
+                        <td class="px-4 text-right border-r">
+                            ₱ '.number_format($price_per_unit, 2, '.', ',').'
+                        </td>
+                        <td class="px-4 text-right">
+                            ₱ '.number_format($price, 2, '.', ',').'
+                        </td>
+                    </tr>
+                ';
+            }
+    
+            $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
+            
+            $buffer_margin = $ingredient_expense * (float)$setting->buffer_margin;
+            $after_buffer_margin = $ingredient_expense + $buffer_margin;
+
+            $markup = $after_buffer_margin * (float)$setting->markup;
+            $after_markup = $after_buffer_margin + $markup;
+
+            $price_adjustment = $after_markup * (float)$setting->price_adjustment;
+            $after_price_adjustment = $after_markup + $price_adjustment;
+
+            $staff_incentives = (float)$setting->staff_incentives;
+            $after_staff_incentives = $after_price_adjustment + $staff_incentives;
+
+            $manager_incentives = $after_staff_incentives * (float)$setting->manager_incentives;
+            $after_manager_incentives = $after_staff_incentives + $manager_incentives;
+
+            $vat = $after_manager_incentives * (float)$setting->vat;
+            $after_vat = $after_manager_incentives + $vat;
+    
+            $total_expense = $after_vat;
+            $price_per_serving = $total_expense / $menu->servings;
+        }
+
+        $result .= '
+            <div class="flex items-center mb-4">
+                <p class="text-sm">Yield (# of pax):</p>
+                <p class="ml-2 font-medium">'.$menu->servings.'</p>
+            </div>
+            <div class="w-full border">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="py-1 border-r">
+                                Ingredients
+                            </th>
+                            <th class="border-r">
+                                Quantity of Recipe Unit
+                            </th>
+                            <th class="border-r">
+                                Price per Unit
+                            </th>
+                            <th>
+                                Total Cost per Serving
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        '.$ingrow.'
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Ingredients Expense
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($ingredient_expense, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+
+
+
+
+
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                '.$buffer_percent.'% Buffer Margin
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($buffer_margin, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Total After Buffer Margin
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($after_buffer_margin, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                '.$markup_percent.'% Markup
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($markup, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Total After Markup
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($after_markup, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                '.$adjustment_percent.'% Price Adjustment for Uncontrollable
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($price_adjustment, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Total After Price Adjustment
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($after_price_adjustment, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Staff Incentives
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($staff_incentive, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                '.$incentive_percent.'% Manager Incentives
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($manager_incentives, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Total After Staff Incen
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($after_manager_incentives, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                '.$vat_percent.'% VAT 12%
+                            </td>
+                            <td class="px-4 text-right">
+                                ₱ '.number_format($vat, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Total After VAT
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($after_vat, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                # of Servings
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                '.$menu->servings.'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Price Per Serving
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($price_per_serving, 2, '.', ',').'
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td colspan="3" class="px-4 py-1 text-right border-r">
+                                Final Selling Price
+                            </td>
+                            <td class="px-4 font-bold text-right">
+                                ₱ '.number_format($pricingReport->selling_price, 2, '.', ',').'
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        ';
+
+        echo $result;
     }
 }

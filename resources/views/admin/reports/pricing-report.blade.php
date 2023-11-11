@@ -13,113 +13,41 @@
         </div>
     {{-- LOADING END --}}
 
-    {{-- EDIT MODAL --}}
+    {{-- VIEW MODAL --}}
         <!-- Main modal -->
-        <div id="editModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
+        <div id="viewModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full h-full p-8 overflow-x-hidden overflow-y-auto md:inset-0">
+            <div class="relative w-full h-full">
                 <!-- Modal content -->
-                <div class="absolute w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
+                <div class="absolute w-full h-full -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
                         <h3 class="flex items-center font-semibold text-gray-900">
-                            <span class="text-base text-blue-700 md:text-lg lg:text-xl">Edit</span>
+                            <span id="menuName" class="text-base text-blue-700 md:text-lg lg:text-xl"></span>
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="editModal">
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="viewModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="px-6 py-6">
-                        @csrf
-                        <div class="text-xs leading-relaxed text-gray-500 md:text-base">
-                            <div class="mb-6">
-                                <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
-                                <h1 id="editDate"></h1>
-                            </div>
-                            <div class="mb-6">
-                                <label for="liquid_cash" class="block mb-2 text-sm font-medium text-gray-900">Liquid Cash</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="liquid_cash" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 numbersOnly defaultZero" required autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="cash_on_hand" class="block mb-2 text-sm font-medium text-gray-900">Cash on Hand</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="cash_on_hand" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 numbersOnly defaultZero" required autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="gcash" class="block mb-2 text-sm font-medium text-gray-900">GCash</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="gcash" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 numbersOnly defaultZero" required autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="bank" class="block mb-2 text-sm font-medium text-gray-900">Bank</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="bank" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 numbersOnly defaultZero" required autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="pending_remit" class="block mb-2 text-sm font-medium text-gray-900">Pending Remit</label>
-                                <div class="flex items-center">
-                                    <input type="text" id="pending_remit" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 numbersOnly defaultZero" required autocomplete="off">
-                                </div>
-                            </div>
+                    <div class="p-4 h-[calc(100%-116px)] w-full">
+                        <div id="reportBody" class="w-full h-full">
+
                         </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center px-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="button" id="editSubmit" data-modal-hide="editModal" class="w-24 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>
-                        <button data-modal-hide="editModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                        <button data-modal-hide="viewModal" type="button" class="w-24 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-    {{-- EDIT MODAL END --}}
+    {{-- VIEW MODAL END --}}
     
     <div class="p-3 lg:pt-3 {{ (Auth::user()->role == 2) ? '' : ' lg:ml-64' }}">
         <div id="contentDiv" class="w-full p-2">
             <div class="p-4 overflow-hidden bg-white rounded-lg shadow-md">
                 {{-- CONTROLS --}}
-                    <div class="mb-3">
-                        <div class="flex justify-between">
-                            <div></div>
-                            
-                            <button type="button" id="openEditModal" data-modal-show="editModal" data-modal-target="editModal" class="hidden text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"></button>
-                            
-                            <form method="POST" action="{{ route('generateFinancialReport') }}" class="flex gap-x-4">
-                                @csrf
-                                <div>
-                                    <label for="month">Month:</label>
-                                    <select id="month" name="month" class="pl-2 pr-5 rounded-lg">
-                                        <option {{ ($month == '01') ? 'selected' : '' }} value="01">January</option>
-                                        <option {{ ($month == '02') ? 'selected' : '' }} value="02">February</option>
-                                        <option {{ ($month == '03') ? 'selected' : '' }} value="03">March</option>
-                                        <option {{ ($month == '04') ? 'selected' : '' }} value="04">April</option>
-                                        <option {{ ($month == '05') ? 'selected' : '' }} value="05">May</option>
-                                        <option {{ ($month == '06') ? 'selected' : '' }} value="06">June</option>
-                                        <option {{ ($month == '07') ? 'selected' : '' }} value="07">July</option>
-                                        <option {{ ($month == '08') ? 'selected' : '' }} value="08">August</option>
-                                        <option {{ ($month == '09') ? 'selected' : '' }} value="09">September</option>
-                                        <option {{ ($month == '10') ? 'selected' : '' }} value="10">October</option>
-                                        <option {{ ($month == '11') ? 'selected' : '' }} value="11">November</option>
-                                        <option {{ ($month == '12') ? 'selected' : '' }} value="12">December</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="year">Year:</label>
-                                    <input type="number" id="year" name="year" min="1900" max="2999" step="1" value="{{ $year }}" class="px-2 rounded-lg">
-                                </div>
-                                <div>
-                                    <button type="submit" class="hidden md:block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"></i>Generate</button>
-                                </div>
-                            </form>
-                            {{-- <div class="w-32">
-                                <a href="{{ url('/report/print/'.$startDate.'/'.$endDate.'/'.$category.'/'.$report) }}" target="_blank" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"><i class="mr-1 uil uil-print"></i>PRINT</a>
-                            </div> --}}
-                        </div>
-                    </div>
+                    <button type="button" id="openViewModal" data-modal-show="viewModal" data-modal-target="viewModal" class="hidden text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px text-center"></button>
                 {{-- CONTROLS END --}}
 
                 <div>
@@ -129,7 +57,7 @@
                     </div>
                     {{-- TABLE --}}
                         <div class="block">
-                            <div id="inventoryTable" class="w-full overflow-auto shadow-md sm:rounded-lg">
+                            <div class="w-full overflow-auto shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr class="border-b">
@@ -145,54 +73,49 @@
                                             <th class="px-6 text-center">
                                                 Price per Servings
                                             </th>
-                                            <th class="px-6 text-center bg-yellow-300">
+                                            <th class="px-6 text-center bg-green-400">
                                                 Selling Price
                                             </th>
-                                            <th class="px-6 text-center bg-yellow-300">
-                                                Cash on Hand
+                                            <th class="px-6 text-center">
+                                                Additional Income
                                             </th>
                                             <th class="px-6 text-center bg-yellow-300">
-                                                GCash
+                                                Price per Servings as of {{ date('F', strtotime('-1 month')) }}
+                                            </th>
+                                            <th class="px-6 text-center bg-yellow-300">
+                                                Price per Servings as of {{ date('F', strtotime('-2 month')) }}
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <tr class="border-b text-neutral-800">
+                                        @foreach ($pricingReports as $pricingReport)
+                                            <tr data-id="{{ $pricingReport->id }}" data-name="{{ $pricingReport->menu }}" class="border-b cursor-pointer text-neutral-800 hover:bg-neutral-200 viewReport">
                                                 <th class="px-6 py-1 font-medium text-center text-gray-900 whitespace-nowrap">
-                                                    {{ date('F j, Y', strtotime($year.'-'.$month.'-'.$i)) }}
+                                                    {{ $pricingReport->menu }}
                                                 </th>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($totalSales, 2, '.', ',') }}
+                                                    ₱ {{ number_format($pricingReport->ingredient_expense, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($totalExpenses, 2, '.', ',') }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center whitespace-nowrap {{ $textColor }}">
-                                                    ₱ {{ number_format($profitLoss, 2, '.', ',') }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
-                                                    ₱ {{ number_format($liquid_cash, 2, '.', ',') }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
-                                                    ₱ {{ number_format($cash_on_hand, 2, '.', ',') }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
-                                                    ₱ {{ number_format($gcash, 2, '.', ',') }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
-                                                    ₱ {{ number_format($bank, 2, '.', ',') }}
-                                                </td>
-                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
-                                                    ₱ {{ number_format($pending_remit, 2, '.', ',') }}
+                                                    {{ $pricingReport->number_of_servings }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($account_payable, 2, '.', ',') }}
+                                                    ₱ {{ number_format($pricingReport->price_per_servings, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center bg-green-400 whitespace-nowrap">
+                                                    ₱ {{ number_format($pricingReport->selling_price, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($variance, 2, '.', ',') }}
+                                                    ₱ {{ number_format($pricingReport->additional_income, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
+                                                    ₱ {{ number_format($pricingReport->previous_price_per_serving_1, 2, '.', ',') }}
+                                                </td>
+                                                <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
+                                                    ₱ {{ number_format($pricingReport->previous_price_per_serving_2, 2, '.', ',') }}
                                                 </td>
                                             </tr>
-                                        @endfor
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -263,31 +186,26 @@
             });
 
             
-            // jQuery(document).on( "click", ".editButton", function(){
-            //     $('#loading').toggleClass('hidden');
-            //     date = $(this).data('date');
-            //     var sdate = $(this).data('sdate');
-            //     $('#editDate').html(sdate);
+            jQuery(document).on( "click", ".viewReport", function(){
+                $('#loading').toggleClass('hidden');
+                id = $(this).data('id');
+                var name = $(this).data('name');
+                $('#menuName').html(name);
 
-            //     $.ajax({
-            //         url: "{{ route('getActual') }}",
-            //         method:"POST",
-            //         dataType: 'json',
-            //         data:{
-            //             date: date,
-            //             _token: _token
-            //         },
-            //         success:function(result){
-            //             $('#liquid_cash').val(result.liquid_cash);
-            //             $('#cash_on_hand').val(result.cash_on_hand);
-            //             $('#gcash').val(result.gcash);
-            //             $('#bank').val(result.bank);
-            //             $('#pending_remit').val(result.pending_remit);
-            //             $('#openEditModal').click();
-            //             $('#loading').toggleClass('hidden');
-            //         }
-            //     })
-            // });
+                $.ajax({
+                    url: "{{ route('viewPricingReport') }}",
+                    method:"POST",
+                    data:{
+                        id: id,
+                        _token: _token
+                    },
+                    success:function(result){
+                        $('#reportBody').html(result);
+                        $('#openViewModal').click();
+                        $('#loading').toggleClass('hidden');
+                    }
+                });
+            });
 
 
             // jQuery(document).on( "click", "#editSubmit", function(){
