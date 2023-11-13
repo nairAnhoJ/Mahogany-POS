@@ -18,7 +18,7 @@
         <div id="viewModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full h-full p-8 overflow-x-hidden overflow-y-auto md:inset-0">
             <div class="relative w-full h-full">
                 <!-- Modal content -->
-                <div class="absolute w-full h-full -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow top-1/2 left-1/2">
+                <div class="absolute w-full h-full -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-400 rounded-lg shadow top-1/2 left-1/2">
                     <!-- Modal header -->
                     <div class="flex items-center justify-between px-4 py-2 border-b rounded-t">
                         <h3 class="flex items-center font-semibold text-gray-900">
@@ -52,7 +52,7 @@
 
                 <div>
                     <div class="flex justify-between mt-4">
-                        <h1 class="text-xl lg:text-3xl">Financial Report</h1>
+                        <h1 class="text-xl lg:text-3xl">Pricing Report</h1>
                         {{-- <h1 class="flex items-center">{{ date('M j, Y h:i A', strtotime($startDate)).' - '.date('M j, Y h:i A', strtotime($endDate)) }}</h1> --}}
                     </div>
                     {{-- TABLE --}}

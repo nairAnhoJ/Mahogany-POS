@@ -431,11 +431,13 @@
                         _token: _token
                     },
                     success:function(result){
-                        $('#liquid_cash').val(result.liquid_cash);
-                        $('#cash_on_hand').val(result.cash_on_hand);
-                        $('#gcash').val(result.gcash);
-                        $('#bank').val(result.bank);
-                        $('#pending_remit').val(result.pending_remit);
+                        if(result != null){
+                            $('#liquid_cash').val(result.liquid_cash);
+                            $('#cash_on_hand').val(result.cash_on_hand);
+                            $('#gcash').val(result.gcash);
+                            $('#bank').val(result.bank);
+                            $('#pending_remit').val(result.pending_remit);
+                        }
                         $('#openEditModal').click();
                         $('#loading').toggleClass('hidden');
                     }
