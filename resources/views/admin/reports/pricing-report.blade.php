@@ -94,19 +94,31 @@
                                                     {{ $pricingReport->menu }}
                                                 </th>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($pricingReport->ingredient_expense, 2, '.', ',') }}
+                                                    @if ($pricingReport->ingredient_expense != "N/A")
+                                                        ₱ {{ number_format($pricingReport->ingredient_expense, 2, '.', ',') }}
+                                                    @else
+                                                        {{ $pricingReport->ingredient_expense }}
+                                                    @endif
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
                                                     {{ $pricingReport->number_of_servings }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($pricingReport->price_per_servings, 2, '.', ',') }}
+                                                    @if ($pricingReport->price_per_servings != "N/A")
+                                                        ₱ {{ number_format($pricingReport->price_per_servings, 2, '.', ',') }}
+                                                    @else
+                                                        {{ $pricingReport->price_per_servings }}
+                                                    @endif
                                                 </td>
                                                 <td class="px-6 py-1 text-center bg-green-400 whitespace-nowrap">
                                                     ₱ {{ number_format($pricingReport->selling_price, 2, '.', ',') }}
                                                 </td>
                                                 <td class="px-6 py-1 text-center whitespace-nowrap">
-                                                    ₱ {{ number_format($pricingReport->additional_income, 2, '.', ',') }}
+                                                    @if ($pricingReport->additional_income != "N/A")
+                                                        ₱ {{ number_format($pricingReport->additional_income, 2, '.', ',') }}
+                                                    @else
+                                                        {{ $pricingReport->additional_income }}
+                                                    @endif
                                                 </td>
                                                 <td class="px-6 py-1 text-center bg-yellow-300 whitespace-nowrap">
                                                     ₱ {{ number_format($pricingReport->previous_price_per_serving_1, 2, '.', ',') }}

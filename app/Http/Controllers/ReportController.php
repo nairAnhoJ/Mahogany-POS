@@ -710,12 +710,12 @@ class ReportController extends Controller {
 
             foreach($ingredients as $ing){
                 $inv_tran = InventoryTransaction::where('inv_id', $ing->inventory_id)->where('type', 'INCOMING')->orderBy('id','desc')->first();
-                $price_per_unit = $inv_tran->amount / $inv_tran->quantity;
-                $price = $ing->quantity * $price_per_unit;
-                $ingredient_expense += $price;
+                if($inv_tran != null){
+                    $price_per_unit = $inv_tran->amount / $inv_tran->quantity;
+                    $price = $ing->quantity * $price_per_unit;
+                    $ingredient_expense += $price;
+                }
             }
-
-            $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
 
             $after_buffer_margin = $ingredient_expense + ($ingredient_expense * (float)$setting->buffer_margin);
             $after_markup = $after_buffer_margin + ($after_buffer_margin * (float)$setting->markup);
@@ -725,7 +725,13 @@ class ReportController extends Controller {
             $after_vat = $after_manager_incentives + ($after_manager_incentives * (float)$setting->vat);
 
             $total_expense = $after_vat;
-            $price_per_serving = $total_expense / $menu->servings;
+            if($menu->servings != 0){
+                $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
+                $price_per_serving = $total_expense / $menu->servings;
+            }else{
+                $ingredient_expense_per_serving = "N/A";
+                $price_per_serving = "N/A";
+            }
 
             $menuPricingReport = PricingReport::where('menu_id', $menu->id)->first();
 
@@ -738,7 +744,12 @@ class ReportController extends Controller {
             $menuPricingReport->number_of_servings = $menu->servings;
             $menuPricingReport->price_per_servings = $price_per_serving;
             $menuPricingReport->selling_price = $menu->price;
-            $menuPricingReport->additional_income = $menu->price - $price_per_serving;
+            
+            if($menu->servings != 0){
+                $menuPricingReport->additional_income = $menu->price - $price_per_serving;
+            }else{
+                $menuPricingReport->additional_income = "N/A";
+            }
             $menuPricingReport->save();
         }
 
@@ -751,12 +762,15 @@ class ReportController extends Controller {
 
             foreach($ingredients as $ing){
                 $pr = PricingReport::where('menu_id', $ing->inventory_id)->first();
-                $price = $pr->ingredient_expense / $pr->number_of_servings;
-                $totalPrice = $price * $ing->quantity;
-                $ingredient_expense += $totalPrice;
+                if($pr->ingredient_expense != "N/A"){
+                    $price = $pr->ingredient_expense / $pr->number_of_servings;
+                    $totalPrice = $price * $ing->quantity;
+                    $ingredient_expense += $totalPrice;
+                }else{
+                    $ingredient_expense = 0;
+                    break;
+                }
             }
-
-            $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
 
             $after_buffer_margin = $ingredient_expense + ($ingredient_expense * (float)$setting->buffer_margin);
             $after_markup = $after_buffer_margin + ($after_buffer_margin * (float)$setting->markup);
@@ -766,7 +780,15 @@ class ReportController extends Controller {
             $after_vat = $after_manager_incentives + ($after_manager_incentives * (float)$setting->vat);
 
             $total_expense = $after_vat;
-            $price_per_serving = $total_expense / $menu->servings;
+
+            if($menu->servings != 0){
+                $ingredient_expense_per_serving = $ingredient_expense / $menu->servings;
+                $price_per_serving = $total_expense / $menu->servings;
+            }else{
+                $ingredient_expense_per_serving = "N/A";
+                $price_per_serving = "N/A";
+            }
+
 
             $menuPricingReport = PricingReport::where('menu_id', $menu->id)->first();
 
@@ -779,6 +801,13 @@ class ReportController extends Controller {
             $menuPricingReport->number_of_servings = $menu->servings;
             $menuPricingReport->price_per_servings = $price_per_serving;
             $menuPricingReport->selling_price = $menu->price;
+            
+            if($menu->servings != 0 || $price_per_serving != "N/A"){
+                $menuPricingReport->additional_income = $menu->price - $price_per_serving;
+            }else{
+                $menuPricingReport->additional_income = "N/A";
+            }
+            
             $menuPricingReport->additional_income = $menu->price - $price_per_serving;
             $menuPricingReport->save();
         }
