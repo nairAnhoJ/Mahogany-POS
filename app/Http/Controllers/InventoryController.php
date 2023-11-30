@@ -197,6 +197,7 @@ class InventoryController extends Controller {
         $inv = DB::table('inventories')->where('slug', $request->disposeSlug)->first();
         $quantity = $request->quantity;
         $date = date('Y-m-d H:i:s', strtotime($request->disposeDate . ' ' . date('H:i:s')));
+        $waste_remarks = $request->waste_remarks;
 
         if ($inv->quantity < $quantity) {
             return redirect()->route('inventory.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
@@ -221,6 +222,7 @@ class InventoryController extends Controller {
         $waste->quantity = $quantity;
         $waste->created_at = $date;
         $waste->cost = $cost;
+        $waste->waste_remarks = $waste_remarks;
         $waste->save();
 
         DB::table('inventories')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);

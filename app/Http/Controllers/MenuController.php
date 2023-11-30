@@ -674,6 +674,7 @@ class MenuController extends Controller {
         $menu = DB::table('menus')->where('slug', $request->disposeSlug)->first();
         $quantity = $request->quantity;
         $date = date('Y-m-d H:i:s', strtotime($request->disposeDate . ' ' . date('H:i:s')));
+        $waste_remarks = $request->waste_remarks;
 
         if ($menu->current_quantity < $quantity) {
             return redirect()->route('menu.index')->withInput()->with('error', 'Please Enter a valid Quantity.');
@@ -692,6 +693,7 @@ class MenuController extends Controller {
         $waste->quantity = $quantity;
         $waste->cost = $cost;
         $waste->created_at = $date;
+        $waste->waste_remarks = $waste_remarks;
         $waste->save();
 
         DB::table('menus')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);

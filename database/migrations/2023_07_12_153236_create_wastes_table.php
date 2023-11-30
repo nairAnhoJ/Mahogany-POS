@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('iid');
             $table->string('quantity');
             $table->string('cost');
+            $table->string('remarks');
             $table->timestamps();
         });
     }
