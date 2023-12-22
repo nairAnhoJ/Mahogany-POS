@@ -38,7 +38,7 @@
             <h2 class="text-3xl">{{ $settings->name }}</h2>
             <p class="text-2xl">{{ $settings->address }}</p>
             <p class="text-2xl">{{ $settings->number }}</p>
-            <div class="flex justify-between flex-row-reverse w-full mt-8">
+            <div class="flex flex-row-reverse justify-between w-full mt-8">
                 <p class="text-2xl font-bold">{{$trans->table_name}}</p>
                 <p class="text-2xl font-bold">CASHIER: {{ Auth::user()->name }}</p>
             </div>
@@ -54,35 +54,39 @@
                     $subtotal = 0;
                 @endphp
                 @foreach ($orders as $order)
-                    <div class="w-full flex justify-between">
-                        <p class="text-3xl">{{$order->quantity}}<i class="uil uil-times mr-1"></i>{{$order->name}}</p>
-                        <p class="whitespace-nowrap pl-3 text-3xl">₱ {{number_format($order->amount, 2, '.', ',')}}</p>
+                    <div class="flex justify-between w-full">
+                        <p class="text-3xl">{{$order->quantity}}<i class="mr-1 uil uil-times"></i>{{$order->name}}</p>
+                        <p class="pl-3 text-3xl whitespace-nowrap">₱ {{number_format($order->amount, 2, '.', ',')}}</p>
                     </div>
                     @php
                         $subtotal = $subtotal + $order->amount;
                     @endphp
                 @endforeach
-                @php
-                    $discount = $subtotal - $trans->total;
+                @php 
+                    $discount = $subtotal - ($trans->total - $trans->service_charge);
                 @endphp
             </div>
             <div class="w-full mt-5 mb-3">
-                <div class="w-full flex justify-between text-2xl font-bold">
+                <div class="flex justify-between w-full text-2xl font-bold">
                     <p>Subtotal</p>
-                    <p class="whitespace-nowrap pl-3">₱ {{number_format($subtotal, 2, '.', ',')}}</p>
+                    <p class="pl-3 whitespace-nowrap">₱ {{number_format($subtotal, 2, '.', ',')}}</p>
                 </div>
-                <div class="w-full flex justify-between text-2xl font-bold">
+                <div class="flex justify-between w-full text-2xl font-bold">
+                    <p>Service Charge</p>
+                    <p class="pl-3 whitespace-nowrap">₱ {{number_format($trans->service_charge, 2, '.', ',')}}</p>
+                </div>
+                <div class="flex justify-between w-full text-2xl font-bold">
                     <p>Discount</p>
-                    <p class="whitespace-nowrap pl-3">₱ {{number_format($discount, 2, '.', ',')}}</p>
+                    <p class="pl-3 whitespace-nowrap">₱ {{number_format($discount, 2, '.', ',')}}</p>
                 </div>
-                <div class="w-full flex justify-between text-3xl font-bold">
+                <div class="flex justify-between w-full text-3xl font-bold">
                     <p>TOTAL</p>
-                    <p class="whitespace-nowrap pl-3">₱ {{number_format($trans->total, 2, '.', ',')}}</p>
+                    <p class="pl-3 whitespace-nowrap">₱ {{number_format($trans->total, 2, '.', ',')}}</p>
                 </div>
             </div>
         </div>
 
-        <div class="font-semibold text-3xl mt-10">{{ $settings->footer }}</div>
+        <div class="mt-10 text-3xl font-semibold">{{ $settings->footer }}</div>
     </div>
     
 

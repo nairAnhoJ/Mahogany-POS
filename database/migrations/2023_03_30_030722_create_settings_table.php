@@ -25,7 +25,9 @@ return new class extends Migration
             $table->string('price_adjustment')->default(0);
             $table->string('staff_incentives')->default(0);
             $table->string('manager_incentives')->default(0);
-            $table->string('vat');
+            $table->string('vat')->default(0);
+
+            $table->string('service_charge')->default(0);
             $table->timestamps();
         });
     }

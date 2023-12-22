@@ -693,7 +693,7 @@ class MenuController extends Controller {
         $waste->quantity = $quantity;
         $waste->cost = $cost;
         $waste->created_at = $date;
-        $waste->waste_remarks = $waste_remarks;
+        $waste->remarks = $waste_remarks;
         $waste->save();
 
         DB::table('menus')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);

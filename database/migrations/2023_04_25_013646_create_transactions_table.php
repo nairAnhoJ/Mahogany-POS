@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('number');
+            $table->string('service_charge');
             $table->string('total');
             $table->string('mode_of_payment')->nullable();
             $table->string('amount')->nullable();

@@ -109,7 +109,7 @@
                             <div class="mb-6">
                                 <label for="waste_remarks" class="block mb-2 text-sm font-medium text-gray-900">Remarks</label>
                                 <div class="flex items-center">
-                                    <input type="text" id="waste_remarks" name="waste_remarks" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
+                                    <input type="text" id="waste_remarks" name="waste_remarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
                                     <span id="disposeUnit" class="px-3 text-base font-bold text-gray-600"></span>
                                 </div>
                             </div>

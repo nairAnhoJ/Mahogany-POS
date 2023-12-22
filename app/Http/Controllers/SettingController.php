@@ -21,6 +21,15 @@ class SettingController extends Controller
         $logo = $request->logo;
         $footer = $request->footer;
         $email = $request->email;
+        
+        $buffer_margin = ($request->buffer_margin / 100);
+        $markup = ($request->markup / 100);
+        $price_adjustment = ($request->price_adjustment / 100);
+        $staff_incentives = $request->staff_incentives;
+        $manager_incentives = ($request->manager_incentives / 100);
+        $vat = ($request->vat / 100);
+        
+        $service_charge = $request->service_charge;
 
         $imagePath = null;
         if($logo != null){
@@ -36,7 +45,16 @@ class SettingController extends Controller
                 'number' => $number,
                 'logo' => $imagePath,
                 'footer' => $footer,
-                'email' => $email
+                'email' => $email,
+                
+                'buffer_margin' => $buffer_margin,
+                'markup' => $markup,
+                'price_adjustment' => $price_adjustment,
+                'staff_incentives' => $staff_incentives,
+                'manager_incentives' => $manager_incentives,
+                'vat' => $vat,
+                
+                'service_charge' => $service_charge,
             ]);
         }else{
             DB::table('settings')->where('id', 1)->update([
@@ -44,7 +62,16 @@ class SettingController extends Controller
                 'address' => $address,
                 'number' => $number,
                 'footer' => $footer,
-                'email' => $email
+                'email' => $email,
+                
+                'buffer_margin' => $buffer_margin,
+                'markup' => $markup,
+                'price_adjustment' => $price_adjustment,
+                'staff_incentives' => $staff_incentives,
+                'manager_incentives' => $manager_incentives,
+                'vat' => $vat,
+                
+                'service_charge' => $service_charge,
             ]);
         }
 

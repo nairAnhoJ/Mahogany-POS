@@ -507,6 +507,7 @@ class POSController extends Controller {
         $mop = $request->mop;
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
+        $settings = DB::table('settings')->where('id', 1)->first();
 
         if ($table == 1) {
             $type = 'TAKE OUT';
@@ -535,7 +536,8 @@ class POSController extends Controller {
 
         $tran = new Transaction();
         $tran->number = $number;
-        $tran->total = $amount;
+        $tran->total = $amount + $settings->service_charge;
+        $tran->service_charge = $settings->service_charge;
         $tran->mode_of_payment = $mop;
         $tran->amount = $amountInput;
         $tran->payor_name = ucfirst($payor_name);

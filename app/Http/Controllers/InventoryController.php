@@ -222,7 +222,7 @@ class InventoryController extends Controller {
         $waste->quantity = $quantity;
         $waste->created_at = $date;
         $waste->cost = $cost;
-        $waste->waste_remarks = $waste_remarks;
+        $waste->remarks = $waste_remarks;
         $waste->save();
 
         DB::table('inventories')->where('slug', $request->disposeSlug)->decrement('quantity', $quantity);

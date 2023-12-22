@@ -28,20 +28,20 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
-            <h2 class="text-center text-white text-xl font-semibold">Processing...</h2>
+            <h2 class="text-xl font-semibold text-center text-white">Processing...</h2>
             <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
         </div>
     {{-- LOADING END --}}
 
     {{-- NOTIFICATION --}}
         @if (session('message'))
-            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 lg:ml-32 bg-emerald-200 rounded-lg z-50 shadow-md shadow-emerald-800 flex flex-row justify-between px-2">
+            <div class="absolute z-50 flex flex-row justify-between h-12 px-2 -translate-x-1/2 rounded-lg shadow-md notif left-1/2 top-14 w-96 lg:ml-32 bg-emerald-200 shadow-emerald-800">
                 <div class="flex">
-                    <i class="self-center uil uil-cloud-check text-emerald-800 text-2xl"></i>
-                    <h1 class="self-center text-emerald-800 font-semibold ml-1">{{ session('message') }}</h1>
+                    <i class="self-center text-2xl uil uil-cloud-check text-emerald-800"></i>
+                    <h1 class="self-center ml-1 font-semibold text-emerald-800">{{ session('message') }}</h1>
                 </div>
-                <button class="notifButton self-center">
-                    <i class="uil uil-times text-2xl text-emerald-800"></i>
+                <button class="self-center notifButton">
+                    <i class="text-2xl uil uil-times text-emerald-800"></i>
                 </button>
             </div>
         @endif
@@ -49,28 +49,28 @@
 
     {{-- ERROR NOTIFICATION --}}
         @if (session('error'))
-            <div class="notif absolute left-1/2 top-14 -translate-x-1/2 w-96 h-12 bg-red-200 rounded-lg z-50 shadow-md shadow-red-800 flex flex-row justify-between px-2">
+            <div class="absolute z-50 flex flex-row justify-between h-12 px-2 -translate-x-1/2 bg-red-200 rounded-lg shadow-md notif left-1/2 top-14 w-96 shadow-red-800">
                 <div class="flex">
-                    <i class="self-center uil uil-cloud-check text-red-800 text-2xl"></i>
-                    <h1 class="self-center text-red-800 font-semibold ml-1">{{ session('error') }}</h1>
+                    <i class="self-center text-2xl text-red-800 uil uil-cloud-check"></i>
+                    <h1 class="self-center ml-1 font-semibold text-red-800">{{ session('error') }}</h1>
                 </div>
-                <button class="notifButton self-center">
-                    <i class="uil uil-times text-2xl text-red-800"></i>
+                <button class="self-center notifButton">
+                    <i class="text-2xl text-red-800 uil uil-times"></i>
                 </button>
             </div>
         @endif
     {{-- ERROR NOTIFICATION END --}}
 
     <div class="p-3 {{ (Auth::user()->role == 1) ? 'lg:ml-64' : '' }} lg:pt-3">
-        <div id="contentDiv" class="p-2 w-full">
-            <div class="bg-white overflow-hidden shadow-md rounded-lg p-4">
+        <div id="contentDiv" class="w-full p-2">
+            <div class="p-4 overflow-hidden bg-white rounded-lg shadow-md">
                 {{-- CONTROLS --}}
                     <div class="mb-3">
                         <div class="md:grid md:grid-cols-2">
-                            <div class=" w-24">
-                                {{-- <a href="{{ route('inventory.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="uil uil-plus mr-1"></i>ADD</a> --}}
+                            <div class="w-24 ">
+                                {{-- <a href="{{ route('inventory.add') }}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 focus:outline-none my-px"><i class="mr-1 uil uil-plus"></i>ADD</a> --}}
                             </div>
-                            <div class="justify-self-end w-full xl:w-4/5">
+                            <div class="w-full justify-self-end xl:w-4/5">
                                 <form method="GET" action="" id="searchForm" class="w-full">
                                     <label for="searchInput" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
                                     <div class="relative">
@@ -78,8 +78,8 @@
                                             <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                         </div>
                                         <input type="search" id="searchInput" class="block w-full px-4 py-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="SEARCH" value="{{ $search }}" autocomplete="off">
-                                        <button id="clearButton" type="button" class=" absolute right-20 bottom-1">
-                                            <i class="uil uil-times text-2xl"></i>
+                                        <button id="clearButton" type="button" class="absolute right-20 bottom-1">
+                                            <i class="text-2xl uil uil-times"></i>
                                         </button>
                                         <button id="searchButton" type="button" style="bottom: 5px; right: 5px;" type="submit" class="text-white absolute bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2.5 py-1.5">Search</button>
                                     </div>
@@ -92,7 +92,7 @@
                 <div>
                     {{-- TABLE --}}
                         <div class="hidden md:block">
-                            <div id="inventoryTable" class="overflow-auto w-full shadow-md sm:rounded-lg">
+                            <div id="inventoryTable" class="w-full overflow-auto shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr>
@@ -107,6 +107,9 @@
                                             </th> --}}
                                             <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
                                                 Quantity
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
+                                                Remarks
                                             </th>
                                             @if (Auth::user()->role == 1)
                                                 <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">
@@ -130,9 +133,12 @@
                                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                                     {{ $inventory->quantity }}
                                                 </td>
+                                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                    {{ $inventory->remarks }}
+                                                </td>
                                                 @if (Auth::user()->role == 1)
                                                     <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                        <a href="{{ url('/waste/inventory/restore/'.$inventory->id) }}" class="text-green-600 hover:underline font-semibold text-sm">Restore</a>
+                                                        <a href="{{ url('/waste/inventory/restore/'.$inventory->id) }}" class="text-sm font-semibold text-green-600 hover:underline">Restore</a>
                                                     </td>
                                                 @endif
                                             </tr>
@@ -161,14 +167,14 @@
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
+                                                            <div class="col-span-2 text-sm font-semibold">
                                                                 '.$inventory->quantity.'
                                                             </div>
                                                         </div>
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Action</div>
                                                             <div class="col-span-2">
-                                                                <a href="'.url('/inventory/edit/'.$inventory->id).'" class="text-green-600 hover:underline font-semibold text-sm">Restore</a>
+                                                                <a href="'.url('/inventory/edit/'.$inventory->id).'" class="text-sm font-semibold text-green-600 hover:underline">Restore</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -186,7 +192,7 @@
                                                     <div class="px-3 py-1.5 font-light border border-b-0 border-gray-200">
                                                         <div class="grid grid-cols-3">
                                                             <div class="text-xs leading-5">Quantity</div>
-                                                            <div class="col-span-2 font-semibold text-sm">
+                                                            <div class="col-span-2 text-sm font-semibold">
                                                                 '.$inventory->quantity.'
                                                             </div>
                                                         </div>
@@ -203,7 +209,7 @@
                 </div>
 
                 {{-- PAGINATION --}}
-                    <div class="grid md:grid-cols-2 mt-3 px-3">
+                    <div class="grid px-3 mt-3 md:grid-cols-2">
                         @php
                             $prev = $page - 1;
                             $next = $page + 1;
@@ -215,7 +221,7 @@
                                 $from = 0;
                             }
                         @endphp
-                        <div class="justify-self-center md:justify-self-start self-center">
+                        <div class="self-center justify-self-center md:justify-self-start">
                             <span class="text-sm text-gray-700">
                                 Showing <span class="font-semibold text-gray-900">{{ $from }}</span> to <span class="font-semibold text-gray-900">{{ $to }}</span> of <span class="font-semibold text-gray-900">{{ $invCount }}</span> Items
                             </span>
@@ -231,7 +237,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <p class="block w-9 h-9 leading-9 text-center z-10 text-gray-500 border border-gray-300 bg-white font-semibold">{{ $page }}</p>
+                                        <p class="z-10 block font-semibold leading-9 text-center text-gray-500 bg-white border border-gray-300 w-9 h-9">{{ $page }}</p>
                                     </li>
                                     <li>
                                         <a href="{{ ($search == '') ? url('/menu/'.$next) : url('/menu/'.$next.'/'.$search); }}" class="{{ ($to == $invCount) ? 'pointer-events-none' : ''; }} block w-9 h-9 leading-9 text-center text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">

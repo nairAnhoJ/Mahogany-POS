@@ -23,7 +23,7 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
-            <h2 class="text-center text-white text-xl font-semibold">Processing...</h2>
+            <h2 class="text-xl font-semibold text-center text-white">Processing...</h2>
             <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
         </div>
     {{-- LOADING END --}}
@@ -45,7 +45,7 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                         <h3 class="text-2xl font-semibold text-gray-900">
-                            <i class="uil uil-exclamation-triangle text-red-500 text-3xl mr-3"></i>Remove Order
+                            <i class="mr-3 text-3xl text-red-500 uil uil-exclamation-triangle"></i>Remove Order
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="removeModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -56,12 +56,12 @@
                         <p class="text-base leading-relaxed text-gray-500">
                             Are you sure you want to remove this order?
                         </p>
-                        <p id="removeMenuName" class="text-base leading-relaxed text-gray-500 font-semibold"></p>
+                        <p id="removeMenuName" class="text-base font-semibold leading-relaxed text-gray-500"></p>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="acceptRemoveButton" data-modal-hide="removeModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Remove</button>
-                        <button data-modal-hide="removeModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="acceptRemoveButton" data-modal-hide="removeModal" data-slug="" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Remove</button>
+                        <button data-modal-hide="removeModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -91,20 +91,20 @@
                         <input type="hidden" name="mop" id="mop">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <button type="button" data-mop="CASH" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="mopButton text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
-                                    <i class="uil uil-money-bill text-6xl mr-3"></i>
+                                <button type="button" data-mop="CASH" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="inline-flex items-center w-full px-5 py-5 mb-2 mr-2 text-sm font-medium text-center text-white rounded-lg mopButton bg-emerald-500 hover:bg-emerald-600">
+                                    <i class="mr-3 text-6xl uil uil-money-bill"></i>
                                     <span class="text-3xl font-bold">CASH</span>
                                 </button>
                             </div>
                             <div>
                                 <button type="button" data-mop="DEBIT / CREDIT CARD" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
-                                    <i class="uil uil-transaction text-6xl mr-3"></i>
+                                    <i class="mr-3 text-6xl uil uil-transaction"></i>
                                     <span class="text-3xl font-bold">DEBIT / CREDIT CARD</span>
                                 </button>
                             </div>
                             <div>
                                 <button type="button" data-mop="GCASH / MAYA" data-modal-hide="MOPModal" data-modal-target="detailsModal" data-modal-toggle="detailsModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center  mr-2 mb-2 w-full">
-                                    <i class="uil uil-bolt text-6xl mr-3"></i>
+                                    <i class="mr-3 text-6xl uil uil-bolt"></i>
                                     <span class="text-3xl font-bold">GCASH / MAYA</span>
                                 </button>
                             </div>
@@ -112,7 +112,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button data-modal-hide="MOPModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                        <button data-modal-hide="MOPModal" type="button" class="w-full px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
@@ -149,8 +149,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button id="submitDiscountButton" data-modal-hide="discountModal" type="submit" class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none rounded-lg border border-blue-300 text-lg font-bold px-5 py-5 focus:z-10 w-1/2">SUBMIT</button>
-                        <button data-modal-hide="discountModal" type="button" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none rounded-lg border border-gray-300 text-lg font-bold px-5 py-5 focus:z-10 w-1/2">CANCEL</button>
+                        <button id="submitDiscountButton" data-modal-hide="discountModal" type="submit" class="w-1/2 px-5 py-5 text-lg font-bold text-white bg-blue-500 border border-blue-300 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:z-10">SUBMIT</button>
+                        <button data-modal-hide="discountModal" type="button" class="w-1/2 px-5 py-5 text-lg font-bold text-white bg-gray-500 border border-gray-300 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:z-10">CANCEL</button>
                     </div>
                 </form>
             </div>
@@ -189,7 +189,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button id="detailsContButton" data-modal-hide="detailsModal" type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none rounded-lg border border-emerald-300 text-lg font-bold px-5 py-5 focus:z-10 w-full">CONTINUE</button>
+                        <button id="detailsContButton" data-modal-hide="detailsModal" type="button" class="w-full px-5 py-5 text-lg font-bold text-white border rounded-lg bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none border-emerald-300 focus:z-10">CONTINUE</button>
                     </div>
                 </div>
             </div>
@@ -217,39 +217,39 @@
                     <!-- Modal body -->
                     <div class="p-6 space-y-4">
                         <div class="mb-2">
-                            <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span>
+                            <span class="ml-1 text-base font-medium"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span>
                         </div>
                         <div class="mb-2">
                             <label for="amount" class="block mb-2 text-base font-medium text-gray-900">Amount Received</label>
                             <input type="text" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                            <p id="amountError" class="hidden text-sm text-red-500 italic">Invalid amount. Please enter an amount more than or equal to <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span></p>
+                            <p id="amountError" class="hidden text-sm italic text-red-500">Invalid amount. Please enter an amount more than or equal to <span class="ml-1 text-base font-medium"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span></p>
                         </div>
-                        <div class="w-full h-auto rounded-lg flex flex-col justify-between px-32">
+                        <div class="flex flex-col justify-between w-full h-auto px-32 rounded-lg">
                             <div class="grid grid-cols-4 gap-4">
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="7">7</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="8">8</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="9">9</button>
-                                <button type="button" class="numpad-button row-span-2 border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="bs"><i class="uil uil-arrow-left"></i></button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="7">7</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="8">8</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="9">9</button>
+                                <button type="button" class="row-span-2 text-xl font-bold border shadow numpad-button bg-gray-50 focus:scale-95" data-value="bs"><i class="uil uil-arrow-left"></i></button>
 
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="4">4</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="5">5</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="6">6</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="4">4</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="5">5</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="6">6</button>
 
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="1">1</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="2">2</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="3">3</button>
-                                <button type="button" class="numpad-button row-span-2 border shadow bg-gray-50 focus:scale-95 font-bold" data-value="clr">CLEAR</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="1">1</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="2">2</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="3">3</button>
+                                <button type="button" class="row-span-2 font-bold border shadow numpad-button bg-gray-50 focus:scale-95" data-value="clr">CLEAR</button>
 
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="0">0</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="00">00</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value=".">.</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="0">0</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="00">00</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value=".">.</button>
                             </div>
                         </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="payNowButton" data-amount="{{ $total }}" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Mark as Paid</button>
-                        <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="payNowButton" data-amount="{{ $total }}" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Mark as Paid</button>
+                        <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -275,12 +275,12 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="p-6 space-y-4 flex text-4xl leading-relaxed text-gray-500 font-semibold justify-center items-center">
+                    <div class="flex items-center justify-center p-6 space-y-4 text-4xl font-semibold leading-relaxed text-gray-500">
                         ₱<p id="changeP" class="ml-2"></p>.00
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button data-modal-hide="changeModal" id="closeChangeButton" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                        <button data-modal-hide="changeModal" id="closeChangeButton" type="button" class="w-full px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
@@ -311,8 +311,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button data-modal-hide="plConModal" id="plConfirmButton" type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none rounded-lg border border-emerald-300 text-sm font-medium px-5 py-5 w-full">Confirm</button>
-                        <button data-modal-hide="plConModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                        <button data-modal-hide="plConModal" id="plConfirmButton" type="button" class="w-full px-5 py-5 text-sm font-medium text-white border rounded-lg bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none border-emerald-300">Confirm</button>
+                        <button data-modal-hide="plConModal" type="button" class="w-full px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
@@ -357,16 +357,16 @@
                                     @foreach ($tables as $table)
                                         @if ($table->id == 1)
                                             <div class="bg-emerald-500 aspect-square rounded-xl">
-                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                    <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                    <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                    <i class="absolute text-6xl -translate-x-1/2 uil uil-shopping-bag bottom-8 left-1/2"></i>
                                                 </button>
                                             </div>
                                         @else
                                             <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
-                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                    <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="absolute bottom-0 w-4/5 -translate-x-1/2 left-1/2">
                                                 </button>
                                             </div>
                                         @endif
@@ -379,23 +379,23 @@
                                         @if ($table->status == 0)
                                             @if ($table->id == 1)
                                                 <div class="bg-emerald-500 aspect-square rounded-xl">
-                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                        <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                        <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                        <i class="absolute text-6xl -translate-x-1/2 uil uil-shopping-bag bottom-8 left-1/2"></i>
                                                     </button>
                                                 </div>
                                             @else
                                                 <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
-                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                        <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="absolute bottom-0 w-4/5 -translate-x-1/2 left-1/2">
                                                     </button>
                                                 </div>
                                             @endif
                                             {{-- <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
-                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                    <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="absolute bottom-0 w-4/5 -translate-x-1/2 left-1/2">
                                                 </button>
                                             </div> --}}
                                         @endif
@@ -408,23 +408,23 @@
                                         @if ($table->status == 1)
                                             @if ($table->id == 1)
                                                 <div class="bg-emerald-500 aspect-square rounded-xl">
-                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                        <i class="uil uil-shopping-bag text-6xl absolute bottom-8 left-1/2 -translate-x-1/2"></i>
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                        <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                        <i class="absolute text-6xl -translate-x-1/2 uil uil-shopping-bag bottom-8 left-1/2"></i>
                                                     </button>
                                                 </div>
                                             @else
                                                 <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
-                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                        <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="absolute bottom-0 w-4/5 -translate-x-1/2 left-1/2">
                                                     </button>
                                                 </div>
                                             @endif
                                             {{-- <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} aspect-square rounded-xl">
-                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="w-full h-full relative tableButton rounded-xl">
-                                                    <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                                                <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" class="relative w-full h-full tableButton rounded-xl">
+                                                    <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                                                    <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="absolute bottom-0 w-4/5 -translate-x-1/2 left-1/2">
                                                 </button>
                                             </div> --}}
                                         @endif
@@ -446,12 +446,12 @@
         </div>
     {{-- SELECT TABLE MODAL END --}}
 
-    <div style="height: calc(100vh - 48px)" class="p-4 w-screen gap-4">
+    <div style="height: calc(100vh - 48px)" class="w-screen gap-4 p-4">
 
         {{-- LEFT CONTENT --}}
-            <div class="h-full w-full xl:w-auto xl:col-span-2 bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+            <div class="w-full h-full overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg xl:w-auto xl:col-span-2">
                 <div>
-                    <div class="p-2 flex items-center justify-between">
+                    <div class="flex items-center justify-between p-2">
                         @csrf   
                         <div class="relative w-1/2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -468,29 +468,29 @@
                     <div class="p-2 border-b border-neutral-300">
                         <div class="flex justify-between w-full">
                             <div class="p-px">
-                                <button class="w-9 aspect-square border border-neutral-300 rounded-lg scroll-left">
-                                    <i class="uil uil-arrow-left text-2xl"></i>
+                                <button class="border rounded-lg w-9 aspect-square border-neutral-300 scroll-left">
+                                    <i class="text-2xl uil uil-arrow-left"></i>
                                 </button>
                             </div>
                             <div id="categoryTabsC" class="py-0.5 px-4 overflow-x-hidden w-[calc(100vw-920)]">
-                                <div id="menuTabs" data-tabs-toggle="#categoryTabContent" role="tablist" class="overflow-x-auto flex gap-x-2">
-                                    <button id="all-menu-tab" data-tabs-target="#all-menu" type="button" role="tab" aria-controls="all-menu" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                <div id="menuTabs" data-tabs-toggle="#categoryTabContent" role="tablist" class="flex overflow-x-auto gap-x-2">
+                                    <button id="all-menu-tab" data-tabs-target="#all-menu" type="button" role="tab" aria-controls="all-menu" aria-selected="false" class="px-4 font-semibold leading-8 border rounded-lg whitespace-nowrap">
                                         All
                                     </button>
                                     @foreach ($categories as $category)
-                                        <button id="{{$category->slug}}-tab" data-tabs-target="#{{$category->slug}}-menu" type="button" role="tab" aria-controls="{{$category->slug}}-menu" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                        <button id="{{$category->slug}}-tab" data-tabs-target="#{{$category->slug}}-menu" type="button" role="tab" aria-controls="{{$category->slug}}-menu" aria-selected="false" class="px-4 font-semibold leading-8 border rounded-lg whitespace-nowrap">
                                             {{$category->name}}
                                         </button>
 
-                                        {{-- <button id="{{$category->name}}-tab" data-tabs-target="#{{$category->slug}}" type="button" role="tab" aria-controls="{{$category->slug}}" aria-selected="false" class="leading-8 px-4 font-semibold border rounded-lg whitespace-nowrap">
+                                        {{-- <button id="{{$category->name}}-tab" data-tabs-target="#{{$category->slug}}" type="button" role="tab" aria-controls="{{$category->slug}}" aria-selected="false" class="px-4 font-semibold leading-8 border rounded-lg whitespace-nowrap">
                                             {{$category->name}}
                                         </button> --}}
                                     @endforeach
                                 </div>
                             </div>
                             <div class="p-px">
-                                <button class="w-9 aspect-square border border-neutral-300 rounded-lg scroll-right">
-                                    <i class="uil uil-arrow-right text-2xl"></i>
+                                <button class="border rounded-lg w-9 aspect-square border-neutral-300 scroll-right">
+                                    <i class="text-2xl uil uil-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
@@ -502,16 +502,16 @@
                                     @foreach ($menus as $menu)
                                         @if ($menu->is_hidden != 1)
                                             <a data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > $menu->reorder_point) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }}  rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
-                                                <div class="w-full aspect-square overflow-hidden">
-                                                    <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
+                                                <div class="w-full overflow-hidden aspect-square">
+                                                    <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="w-auto h-full mx-auto rounded-xl">
                                                 </div>
                                                 <div class="h-[calc(100%-184px)] text-center">
-                                                    <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                    <div class="flex items-center border-b h-2/3 border-neutral-400">
                                                         <p class="text-lg font-medium">
                                                             {{$menu->name}}
                                                         </p>
                                                     </div>
-                                                    <div class="h-1/3 flex justify-center items-center">
+                                                    <div class="flex items-center justify-center h-1/3">
                                                         <p class="text-xl font-bold">
                                                             ₱ {{number_format($menu->price, 2, '.', ',')}}
                                                         </p>
@@ -528,16 +528,16 @@
                                         @foreach ($menus as $menu)
                                             @if ($menu->category_id == $category->id)
                                                 <div data-slug="{{$menu->slug}}" class="w-52 h-80 p-3 bg-white border {{ ($menu->current_quantity > $menu->reorder_point) ? 'border-neutral-200' : 'border-red-500 shadow-red-300' }} rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-all menu">
-                                                    <div class="w-full aspect-square overflow-hidden">
-                                                        <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="rounded-xl h-full w-auto mx-auto">
+                                                    <div class="w-full overflow-hidden aspect-square">
+                                                        <img src="{{ asset('storage/'.$menu->image) }}" alt="" class="w-auto h-full mx-auto rounded-xl">
                                                     </div>
                                                     <div class="h-[calc(100%-184px)] text-center">
-                                                        <div class="h-2/3 border-b border-neutral-400 flex items-center">
+                                                        <div class="flex items-center border-b h-2/3 border-neutral-400">
                                                             <p class="text-lg font-medium">
                                                                 {{$menu->name}}
                                                             </p>
                                                         </div>
-                                                        <div class="h-1/3 flex justify-center items-center">
+                                                        <div class="flex items-center justify-center h-1/3">
                                                             <p class="text-xl font-bold">
                                                                 ₱ {{number_format($menu->price, 2, '.', ',')}}
                                                             </p>
@@ -556,17 +556,17 @@
         {{-- LEFT CONTENT --}}
 
         {{-- RIGHT CONTENT --}}
-            <aside id="default-sidebar" class="fixed top-0 left-1/2 z-40 w-1/2 h-screen transition-transform translate-x-full" aria-label="Sidebar">
+            <aside id="default-sidebar" class="fixed top-0 z-40 w-1/2 h-screen transition-transform translate-x-full left-1/2" aria-label="Sidebar">
                 <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-                    <div class="h-full w-full xl:w-auto bg-white shadow-lg rounded-lg border border-gray-200">
-                        <div class="border border-neutral-300 rounded-lg m-2">
-                            <div class="flex justify-between p-2 items-center">
+                    <div class="w-full h-full bg-white border border-gray-200 rounded-lg shadow-lg xl:w-auto">
+                        <div class="m-2 border rounded-lg border-neutral-300">
+                            <div class="flex items-center justify-between p-2">
                                 <input type="hidden" id="table" name="table">
-                                <h1 id="tableName" class="text-2xl font-black tracking-wide pl-2">
+                                <h1 id="tableName" class="pl-2 text-2xl font-black tracking-wide">
                                     - - -
                                 </h1>
-                                <button type="button" id="openTableModal" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 rounded-lg shadow border border-gray-100">
-                                    <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="w-9 rounded-full">
+                                <button type="button" id="openTableModal" data-modal-target="tableModal" data-modal-show="tableModal" class="p-1 border border-gray-100 rounded-lg shadow">
+                                    <img src="{{ asset('storage/images/ico/table2.png') }}" alt="" class="rounded-full w-9">
                                 </button>
                             </div>
                         </div>
@@ -574,62 +574,62 @@
                             <div class="flex flex-col">
                                 <div id="ordersDiv" class="h-[calc(100vh-320px)] overflow-y-auto">
                                     @foreach ($orders as $order)
-                                        <div class="grid grid-cols-12 content-center h-14 w-full text-center px-4">
-                                            <div class="col-span-5 text-xs font-semibold text-left flex items-center pr-2">
+                                        <div class="grid content-center w-full grid-cols-12 px-4 text-center h-14">
+                                            <div class="flex items-center col-span-5 pr-2 text-xs font-semibold text-left">
                                                 {{ $order->name }}
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="uil uil-minus text-xl text-red-900"></i></button>
+                                                <button data-slug="{{ $order->slug }}" class="descQty aspect-square w-full max-w-[50px] bg-red-200 rounded-lg"><i class="text-xl text-red-900 uil uil-minus"></i></button>
                                             </div>
-                                            <div class="col-span-1 flex items-center justify-center px-1">
-                                                {{-- <p class="w-full text-center text-sm font-semibold border-0 h-7 leading-7">{{ $order->quantity }}</p> --}}
-                                                <input type="text" class="w-full text-center text-sm font-semibold border-0 h-7 leading-7 focus:border-gray-500" value="{{ $order->quantity }}">
+                                            <div class="flex items-center justify-center col-span-1 px-1">
+                                                {{-- <p class="w-full text-sm font-semibold leading-7 text-center border-0 h-7">{{ $order->quantity }}</p> --}}
+                                                <input type="text" class="w-full text-sm font-semibold leading-7 text-center border-0 h-7 focus:border-gray-500" value="{{ $order->quantity }}">
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="uil uil-plus text-xl text-emerald-900"></i></button>
+                                                <button data-slug="{{ $order->slug }}" class="incQty aspect-square w-full max-w-[50px] bg-emerald-200 rounded-lg"><i class="text-xl uil uil-plus text-emerald-900"></i></button>
                                             </div>
-                                            <div class="col-span-3 flex items-center text-sm font-semibold justify-center">
+                                            <div class="flex items-center justify-center col-span-3 text-sm font-semibold">
                                                 {{ number_format($order->total_price, 2, '.', ',') }}
                                             </div>
                                             <div class="flex items-center justify-center">
-                                                <button data-slug="{{ $order->slug }}" data-name="{{ $order->name }}" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="uil uil-times text-xl text-red-200"></i></button>
+                                                <button data-slug="{{ $order->slug }}" data-name="{{ $order->name }}" class="removeButton aspect-square w-full max-w-[50px] bg-red-600 rounded-lg"><i class="text-xl text-red-200 uil uil-times"></i></button>
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
                                 <div>
                                     <div class="p-4">
-                                        <div class="pt-2 grid w-full">
+                                        <div class="grid w-full pt-2">
                                             <div class="row-span-2">
                                                 <div class="grid grid-cols-2">
                                                     <div class="justify-self-start ">
-                                                        <strong class="text-slate-600 text-xl font-medium ">Subtotal</strong>
+                                                        <strong class="text-xl font-medium text-slate-600 ">Subtotal</strong>
                                                     </div>
                                                     <div class="justify-self-end ">
-                                                        <strong class="text-slate-600 text-xl font-medium "><span class="text-2xl">₱ </span><span id="subTotal">{{ number_format($subTotal, 2, '.', ',') }}</span></strong>
+                                                        <strong class="text-xl font-medium text-slate-600 "><span class="text-2xl">₱ </span><span id="subTotal">{{ number_format($subTotal, 2, '.', ',') }}</span></strong>
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
-                                                    <div class="justify-self-start flex gap-x-2 items-center">
-                                                        <strong class="text-slate-600 text-base font-medium w-full">Discount</strong>
+                                                    <div class="flex items-center justify-self-start gap-x-2">
+                                                        <strong class="w-full text-base font-medium text-slate-600">Discount</strong>
                                                         <button data-modal-target="discountModal" data-modal-toggle="discountModal" type="button" class="text-blue-600"><span><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg></span></button>
                                                         <a href="{{ route('pos.deleteDiscount') }}" id="deleteDiscountButton" class="text-red-600"><span><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"/></svg></span></a>
                                                         
                                                     </div>
                                                     <div class="justify-self-end ">
-                                                        <strong class="text-slate-600 text-base font-medium "><span class="text-xl">₱ </span><span id="discountTotal">{{ number_format($discount, 2, '.', ',') }}</span></strong>
+                                                        <strong class="text-base font-medium text-slate-600 "><span class="text-xl">₱ </span><span id="discountTotal">{{ number_format($discount, 2, '.', ',') }}</span></strong>
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="justify-self-start">
-                                                        <strong class="text-slate-600 text-2xl font-medium ">TOTAL</strong>
+                                                        <strong class="text-2xl font-medium text-slate-600 ">TOTAL</strong>
                                                     </div>
                                                     <div class="justify-self-end">
-                                                        <strong class="text-slate-600 text-2xl font-medium"><span class="text-3xl">₱ </span><span id="total">{{ number_format($total, 2, '.', ',') }}</span></strong>
+                                                        <strong class="text-2xl font-medium text-slate-600"><span class="text-3xl">₱ </span><span id="total">{{ number_format($total, 2, '.', ',') }}</span></strong>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="p-auto row-span-1 flex items-center ">
+                                            <div class="flex items-center row-span-1 p-auto ">
                                                 <button disabled id="payButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none m-2 w-full text-gray-50 bg-gradient-to-r from-green-600 to-teal-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay</button>
                                                 <button disabled id="payLaterButton" type="button" class="disabled:opacity-50 disabled:pointer-events-none w-full m-auto text-gray-50 bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Pay Later</button>
                                             </div>
