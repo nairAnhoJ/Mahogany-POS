@@ -77,8 +77,8 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="service_charge" class="block text-sm font-medium text-gray-900">Service Charge (₱)</label>
-                        <input type="text" name="service_charge" value="{{ $settings->service_charge }}" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" autocomplete="off" required>
+                        <label for="service_charge" class="block text-sm font-medium text-gray-900">Service Charge (%)</label>
+                        <input type="text" name="service_charge" value="{{ ($settings->service_charge * 100) }}" class="inputNumber bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" autocomplete="off" required>
                     </div>
                     
                     <div class="mb-3">

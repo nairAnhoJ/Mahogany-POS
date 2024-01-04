@@ -46,27 +46,27 @@ class OrderedController extends Controller
                 if($order->quantity > 1){
                     if($order->status != 'SERVED'){
                         $m .= '
-                            <div class="grid grid-cols-5 items-center mb-5">
+                            <div class="grid items-center grid-cols-5 mb-5">
                                 <div class="col-span-2">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                                 <div class="justify-self-center">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">₱ '.$order->amount.'.00</h1>
                                 </div>
-                                <div style="margin-right: 20px;" class="justify-self-end col-span-2">
-                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="reduceButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50 mr-4"><i class="uil uil-minus text-xl text-red-500 hover:text-red-600 mr-2"></i>Reduce</button>
-                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
+                                <div style="margin-right: 20px;" class="col-span-2 justify-self-end">
+                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 mr-4 border border-gray-300 rounded-lg shadow reduceButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-minus hover:text-red-600"></i>Reduce</button>
+                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 border border-gray-300 rounded-lg shadow removeButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-multiply hover:text-red-600"></i>Remove</button>
                                 </div>
                             </div>
                         ';
                     }else{
                         $m .= '
-                            <div class="grid grid-cols-5 mb-5 items-center">
+                            <div class="grid items-center grid-cols-5 mb-5">
                                 <div class="col-span-2">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                                 <div class="justify-self-center">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">₱ '.$order->amount.'.00</h1>
                                 </div>
                             </div>
                         ';
@@ -75,26 +75,26 @@ class OrderedController extends Controller
                 }else{
                     if($order->status != 'SERVED'){
                         $m .= '
-                            <div class="grid grid-cols-5 mb-5 items-center">
+                            <div class="grid items-center grid-cols-5 mb-5">
                                 <div class="col-span-2">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                                 <div class="justify-self-center">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">₱ '.$order->amount.'.00</h1>
                                 </div>
-                                <div style="margin-right: 20px;" class="justify-self-end col-span-2">
-                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
+                                <div style="margin-right: 20px;" class="col-span-2 justify-self-end">
+                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 border border-gray-300 rounded-lg shadow removeButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-multiply hover:text-red-600"></i>Remove</button>
                                 </div>
                             </div>
                         ';
                     }else{
                         $m .= '
-                            <div class="grid grid-cols-5 mb-5 items-center">
+                            <div class="grid items-center grid-cols-5 mb-5">
                                 <div class="col-span-2 mb-5">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                                 <div class="justify-self-center">
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">₱ '.$order->amount.'.00</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">₱ '.$order->amount.'.00</h1>
                                 </div>
                             </div>
                         ';
@@ -105,8 +105,8 @@ class OrderedController extends Controller
 
             $res .= '
                 <div class="relative h-auto mb-5">
-                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
-                    <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative border border-gray-500 z-10 w-full pt-6 pl-2 text-xl font-semibold text-gray-500 tracking-wide rounded-lg">'.$m.'</div>
+                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative z-50 w-auto px-4 py-2 text-xl font-bold text-gray-500 bg-white border rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
+                    <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative z-10 w-full pt-6 pl-2 text-xl font-semibold tracking-wide text-gray-500 border border-gray-500 rounded-lg">'.$m.'</div>
                 </div>
             ';
         }
@@ -146,21 +146,21 @@ class OrderedController extends Controller
                 if($order->quantity > 1){
                     if($order->status != 'SERVED'){
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
+                            <div class="flex items-center justify-between mb-5">
                                 <div>
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                                 <div style="margin-right: 20px;" class="">
-                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="reduceButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50 mr-4"><i class="uil uil-minus text-xl text-red-500 hover:text-red-600 mr-2"></i>Reduce</button>
-                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
+                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 mr-4 border border-gray-300 rounded-lg shadow reduceButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-minus hover:text-red-600"></i>Reduce</button>
+                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 border border-gray-300 rounded-lg shadow removeButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-multiply hover:text-red-600"></i>Remove</button>
                                 </div>
                             </div>
                         ';
                     }else{
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
+                            <div class="flex items-center justify-between mb-5">
                                 <div>
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                             </div>
                         ';
@@ -169,20 +169,20 @@ class OrderedController extends Controller
                 }else{
                     if($order->status != 'SERVED'){
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
+                            <div class="flex items-center justify-between mb-5">
                                 <div>
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                                 <div style="margin-right: 20px;" class="">
-                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
+                                    <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 border border-gray-300 rounded-lg shadow removeButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-multiply hover:text-red-600"></i>Remove</button>
                                 </div>
                             </div>
                         ';
                     }else{
                         $m .= '
-                            <div class="flex justify-between items-center mb-5">
+                            <div class="flex items-center justify-between mb-5">
                                 <div>
-                                    <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                    <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                 </div>
                             </div>
                         ';
@@ -199,8 +199,8 @@ class OrderedController extends Controller
 
             $res .= '
                 <div class="relative h-auto mb-5">
-                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
-                    <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative border border-gray-500 z-10 w-full pt-6 pl-2 text-xl font-semibold text-gray-500 tracking-wide rounded-lg">'.$m.'</div>
+                    <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative z-50 w-auto px-4 py-2 text-xl font-bold text-gray-500 bg-white border rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
+                    <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative z-10 w-full pt-6 pl-2 text-xl font-semibold tracking-wide text-gray-500 border border-gray-500 rounded-lg">'.$m.'</div>
                 </div>
             ';
         }
@@ -242,21 +242,21 @@ class OrderedController extends Controller
                     if($order->quantity > 1){
                         if($order->status != 'SERVED'){
                             $m .= '
-                                <div class="flex justify-between items-center mb-5">
+                                <div class="flex items-center justify-between mb-5">
                                     <div>
-                                        <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                        <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                     </div>
                                     <div style="margin-right: 20px;" class="">
-                                        <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="reduceButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50 mr-4"><i class="uil uil-minus text-xl text-red-500 hover:text-red-600 mr-2"></i>Reduce</button>
-                                        <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
+                                        <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 mr-4 border border-gray-300 rounded-lg shadow reduceButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-minus hover:text-red-600"></i>Reduce</button>
+                                        <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 border border-gray-300 rounded-lg shadow removeButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-multiply hover:text-red-600"></i>Remove</button>
                                     </div>
                                 </div>
                             ';
                         }else{
                             $m .= '
-                                <div class="flex justify-between items-center mb-5">
+                                <div class="flex items-center justify-between mb-5">
                                     <div>
-                                        <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                        <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                     </div>
                                 </div>
                             ';
@@ -265,20 +265,20 @@ class OrderedController extends Controller
                     }else{
                         if($order->status != 'SERVED'){
                             $m .= '
-                                <div class="flex justify-between items-center mb-5">
+                                <div class="flex items-center justify-between mb-5">
                                     <div>
-                                        <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                        <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                     </div>
                                     <div style="margin-right: 20px;" class="">
-                                        <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="removeButton border border-gray-300 shadow py-2 px-4 rounded-lg hover:bg-gray-50"><i class="uil uil-multiply text-xl text-red-500 hover:text-red-600 mr-2"></i>Remove</button>
+                                        <button data-slug="'.$order->slug.'" data-table="'.$id.'" class="px-4 py-2 border border-gray-300 rounded-lg shadow removeButton hover:bg-gray-50"><i class="mr-2 text-xl text-red-500 uil uil-multiply hover:text-red-600"></i>Remove</button>
                                     </div>
                                 </div>
                             ';
                         }else{
                             $m .= '
-                                <div class="flex justify-between items-center mb-5">
+                                <div class="flex items-center justify-between mb-5">
                                     <div>
-                                        <h1 class="whitespace-nowrap max-w-xs overflow-hidden">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
+                                        <h1 class="max-w-xs overflow-hidden whitespace-nowrap">&nbsp;&nbsp;'.$order->quantity.'x&nbsp;&nbsp;&nbsp;<span>'.$order->name.'</span>&nbsp;&nbsp;</h1>
                                     </div>
                                 </div>
                             ';
@@ -295,8 +295,8 @@ class OrderedController extends Controller
     
                 $res .= '
                     <div class="relative h-auto mb-5">
-                        <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative text-gray-500 font-bold text-xl border px-4 py-2 w-auto bg-white z-50 rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
-                        <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative border border-gray-500 z-10 w-full pt-6 pl-2 text-xl font-semibold text-gray-500 tracking-wide rounded-lg">'.$m.'</div>
+                        <span style="border-color: rgb(209 213 219 / var(--tw-border-opacity)); margin-left: 20px;" class="relative z-50 w-auto px-4 py-2 text-xl font-bold text-gray-500 bg-white border rounded-lg">'.$tran->number.' - <span style="color: '.$sColor.';"> '.$tran->status.'</span></span>
+                        <div style="top: -13px; border-color: rgb(209 213 219 / var(--tw-border-opacity));" class="relative z-10 w-full pt-6 pl-2 text-xl font-semibold tracking-wide text-gray-500 border border-gray-500 rounded-lg">'.$m.'</div>
                     </div>
                 ';
             }

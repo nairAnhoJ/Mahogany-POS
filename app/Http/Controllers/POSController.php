@@ -19,6 +19,7 @@ class POSController extends Controller {
     public function index() {
 
         $this->updateCurrentQuantity();
+        $settings = DB::table('settings')->where('id', 1)->first();
         $tables = DB::table('tables')->orderBy('id', 'asc')->where('is_deleted', 0)->get();
         $orders = DB::table('orders')->where('cashier', auth()->id())->orderBy('id', 'desc')->get();
         $menus = DB::table('menus')->where('current_quantity', '>=', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
@@ -28,6 +29,7 @@ class POSController extends Controller {
         $total = 0;
         $discountRow = DB::table('discounts')->where('id', 1)->first();
         $discount = 0;
+        $service_charge = 0;
         if ($orders->count() > 0) {
             foreach ($orders as $order) {
                 $subTotal = $subTotal + $order->total_price;
@@ -37,15 +39,18 @@ class POSController extends Controller {
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
             }
-            $total = round($subTotal - $discount);
+            $service_charge = $subTotal * $settings->service_charge;
+            $total = $subTotal - $discount + $service_charge;
         }
+        $amount = $total - $service_charge;
 
-        return view('user.cashier.pos', compact('tables', 'orders', 'discountRow', 'menus', 'categories', 'subTotal', 'total', 'discount'));
+        return view('user.cashier.pos', compact('tables', 'orders', 'discountRow', 'menus', 'categories', 'subTotal', 'total', 'discount', 'service_charge', 'amount'));
     }
 
     public function add(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
+        $settings = DB::table('settings')->where('id', 1)->first();
         $menu = DB::table('menus')->where('slug', $slug)->first();
         $ord = DB::table('orders')->where('menu_id', $menu->id)->where('cashier', auth()->id())->first();
         $notif = '';
@@ -194,15 +199,17 @@ class POSController extends Controller {
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
             }
-            $total = round($subTotal - $discount);
+            $service_charge = $subTotal * $settings->service_charge;
+            $total = $subTotal - $discount + $service_charge;
         }
 
-        $amount = $total;
+        $amount = $total - $service_charge;
         $this->updateCurrentQuantity();
 
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
+            'service_charge' => number_format($service_charge, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
             'thisNotif' => $notif,
             'amount' => $amount,
@@ -216,6 +223,7 @@ class POSController extends Controller {
     public function inc(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
+        $settings = DB::table('settings')->where('id', 1)->first();
         $corder = DB::table('orders')->where('slug', $slug)->first();
 
         $menu = DB::table('menus')->where('id', $corder->menu_id)->first();
@@ -299,10 +307,11 @@ class POSController extends Controller {
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
             }
-            $total = round($subTotal - $discount);
+            $service_charge = $subTotal * $settings->service_charge;
+            $total = $subTotal - $discount + $service_charge;
         }
 
-        $amount = $total;
+        $amount = $total - $service_charge;
 
         $this->updateCurrentQuantity();
 
@@ -310,6 +319,7 @@ class POSController extends Controller {
             'thisNotif' => $notif,
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
+            'service_charge' => number_format($service_charge, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
             'amount' => $amount,
             'discount' => number_format($discount, 2, '.', ','),
@@ -322,6 +332,7 @@ class POSController extends Controller {
     public function desc(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
+        $settings = DB::table('settings')->where('id', 1)->first();
         $corder = DB::table('orders')->where('slug', $slug)->first();
         $menu = DB::table('menus')->where('id', $corder->menu_id)->first();
 
@@ -391,16 +402,18 @@ class POSController extends Controller {
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
             }
-            $total = round($subTotal - $discount);
+            $service_charge = $subTotal * $settings->service_charge;
+            $total = $subTotal - $discount + $service_charge;
         }
 
-        $amount = $total;
+        $amount = $total - $service_charge;
 
         $this->updateCurrentQuantity();
 
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
+            'service_charge' => number_format($service_charge, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
             'amount' => $amount,
             'discount' => number_format($discount, 2, '.', ','),
@@ -413,6 +426,7 @@ class POSController extends Controller {
     public function remove(Request $request) {
         $this->updateCurrentQuantity();
         $slug = $request->slug;
+        $settings = DB::table('settings')->where('id', 1)->first();
         $ord = DB::table('orders')->where('slug', $slug)->first();
         $mid = $ord->menu_id;
         $menu = DB::table('menus')->where('id', $mid)->first();
@@ -482,15 +496,17 @@ class POSController extends Controller {
                 $y = 0.2 * $discountRow->customer_with_discount;
                 $discount = $x * $y;
             }
-            $total = round($subTotal - $discount);
+            $service_charge = $subTotal * $settings->service_charge;
+            $total = $subTotal - $discount + $service_charge;
         }
 
-        $amount = $total;
+        $amount = $total - $service_charge;
         $this->updateCurrentQuantity();
 
         $response = array(
             'orders' => $orderResult,
             'subTotal' => number_format($subTotal, 2, '.', ','),
+            'service_charge' => number_format($service_charge, 2, '.', ','),
             'total' => number_format($total, 2, '.', ','),
             'amount' => $amount,
             'discount' => number_format($discount, 2, '.', ','),
@@ -508,6 +524,7 @@ class POSController extends Controller {
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
         $settings = DB::table('settings')->where('id', 1)->first();
+        $service_charge = $amount * $settings->service_charge;
 
         if ($table == 1) {
             $type = 'TAKE OUT';
@@ -536,8 +553,8 @@ class POSController extends Controller {
 
         $tran = new Transaction();
         $tran->number = $number;
-        $tran->total = $amount + $settings->service_charge;
-        $tran->service_charge = $settings->service_charge;
+        $tran->total = $amount + $service_charge;
+        $tran->service_charge = $service_charge;
         $tran->mode_of_payment = $mop;
         $tran->amount = $amountInput;
         $tran->payor_name = ucfirst($payor_name);
@@ -659,6 +676,8 @@ class POSController extends Controller {
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
         $type = 'DINE-IN';
+        $settings = DB::table('settings')->where('id', 1)->first();
+        $service_charge = $amount * $settings->service_charge;
 
 
         $this_tran = DB::table('transactions')->where('table', $table)->where('status', 'UNPAID')->where('order_status', '!=', 'CANCELLED')->where('order_status', '!=', 'COMPLETED')->first();
@@ -689,7 +708,8 @@ class POSController extends Controller {
 
             $tran = new Transaction();
             $tran->number = $number;
-            $tran->total = $amount;
+            $tran->total = $amount + $service_charge;
+            $tran->service_charge = $service_charge;
             $tran->payor_name = ucfirst($payor_name);
             $tran->payor_number = $payor_number;
             $tran->type = $type;

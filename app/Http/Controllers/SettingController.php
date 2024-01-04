@@ -29,7 +29,7 @@ class SettingController extends Controller
         $manager_incentives = ($request->manager_incentives / 100);
         $vat = ($request->vat / 100);
         
-        $service_charge = $request->service_charge;
+        $service_charge = ($request->service_charge / 100);
 
         $imagePath = null;
         if($logo != null){

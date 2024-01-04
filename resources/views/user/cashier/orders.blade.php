@@ -15,7 +15,7 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
-            <h2 class="text-center text-white text-xl font-semibold">Processing...</h2>
+            <h2 class="text-xl font-semibold text-center text-white">Processing...</h2>
             <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
         </div>
     {{-- LOADING END --}}
@@ -36,7 +36,7 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                         <h3 class="text-2xl font-semibold text-gray-900">
-                            <i class="uil uil-exclamation-triangle text-red-500 text-3xl mr-3"></i>Remove Order
+                            <i class="mr-3 text-3xl text-red-500 uil uil-exclamation-triangle"></i>Remove Order
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="removeModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -50,8 +50,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="acceptRemoveButton" data-modal-hide="removeModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Remove</button>
-                        <button data-modal-hide="removeModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="acceptRemoveButton" data-modal-hide="removeModal" data-slug="" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Remove</button>
+                        <button data-modal-hide="removeModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                         <h3 class="text-2xl font-semibold text-gray-900">
-                            <i class="uil uil-exclamation-triangle text-red-500 text-3xl mr-3"></i>Reduce Quantity
+                            <i class="mr-3 text-3xl text-red-500 uil uil-exclamation-triangle"></i>Reduce Quantity
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="reduceModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -84,8 +84,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="acceptReduceButton" data-modal-hide="reduceModal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
-                        <button data-modal-hide="reduceModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="acceptReduceButton" data-modal-hide="reduceModal" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Confirm</button>
+                        <button data-modal-hide="reduceModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                         <h3 class="text-2xl font-semibold text-gray-900">
-                            <i class="uil uil-exclamation-triangle text-red-500 text-3xl mr-3"></i>Cancel All Orders
+                            <i class="mr-3 text-3xl text-red-500 uil uil-exclamation-triangle"></i>Cancel All Orders
                         </h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="cancelModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
@@ -118,8 +118,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="acceptCancelButton" data-modal-hide="cancelModal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
-                        <button data-modal-hide="cancelModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="acceptCancelButton" data-modal-hide="cancelModal" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Confirm</button>
+                        <button data-modal-hide="cancelModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -152,8 +152,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="acceptOpenButton" data-modal-hide="openModal" type="button" class="text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
-                        <button data-modal-hide="openModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="acceptOpenButton" data-modal-hide="openModal" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white rounded-lg bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300">Confirm</button>
+                        <button data-modal-hide="openModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -186,8 +186,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="acceptOccupyButton" data-modal-hide="occupyModal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Confirm</button>
-                        <button data-modal-hide="occupyModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="acceptOccupyButton" data-modal-hide="occupyModal" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Confirm</button>
+                        <button data-modal-hide="occupyModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -218,20 +218,20 @@
                         <input type="hidden" name="mop" id="mop">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <button type="button" data-mop="CASH" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="mopButton text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
-                                    <i class="uil uil-money-bill text-6xl mr-3"></i>
+                                <button type="button" data-mop="CASH" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="inline-flex items-center w-full px-5 py-5 mb-2 mr-2 text-sm font-medium text-center text-white rounded-lg mopButton bg-emerald-500 hover:bg-emerald-600">
+                                    <i class="mr-3 text-6xl uil uil-money-bill"></i>
                                     <span class="text-3xl font-bold">CASH</span>
                                 </button>
                             </div>
                             <div>
                                 <button type="button" data-mop="DEBIT / CREDIT CARD" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center mr-2 mb-2 w-full">
-                                    <i class="uil uil-transaction text-6xl mr-3"></i>
+                                    <i class="mr-3 text-6xl uil uil-transaction"></i>
                                     <span class="text-3xl font-bold">DEBIT / CREDIT CARD</span>
                                 </button>
                             </div>
                             <div>
                                 <button type="button" data-mop="GCASH / MAYA" data-modal-hide="MOPModal" data-modal-target="amountReceivedModal" data-modal-toggle="amountReceivedModal" class="mopButton text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-5 text-center inline-flex items-center  mr-2 mb-2 w-full">
-                                    <i class="uil uil-bolt text-6xl mr-3"></i>
+                                    <i class="mr-3 text-6xl uil uil-bolt"></i>
                                     <span class="text-3xl font-bold">GCASH / MAYA</span>
                                 </button>
                             </div>
@@ -239,7 +239,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button data-modal-hide="MOPModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                        <button data-modal-hide="MOPModal" type="button" class="w-full px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
@@ -269,34 +269,34 @@
                         <div class="mb-2">
                             <label for="amount" class="block mb-2 text-base font-medium text-gray-900">Amount Received</label>
                             <input type="text" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                            <p id="amountError" class="text-sm text-gray-600 italic">Enter an amount more than or equal to <span class="text-base font-medium ml-1"> ₱ </span><span id="actualAmount" class="text-base font-bold"></span></p>
+                            <p id="amountError" class="text-sm italic text-gray-600">Enter an amount more than or equal to <span class="ml-1 text-base font-medium"> ₱ </span><span id="actualAmount" class="text-base font-bold"></span></p>
                         </div>
-                        <div class="w-full h-auto rounded-lg flex flex-col justify-between px-32">
+                        <div class="flex flex-col justify-between w-full h-auto px-32 rounded-lg">
                             <div class="grid grid-cols-4 gap-4">
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="7">7</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="8">8</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="9">9</button>
-                                <button type="button" class="numpad-button row-span-2 border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="bs"><i class="uil uil-arrow-left"></i></button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="7">7</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="8">8</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="9">9</button>
+                                <button type="button" class="row-span-2 text-xl font-bold border shadow numpad-button bg-gray-50 focus:scale-95" data-value="bs"><i class="uil uil-arrow-left"></i></button>
 
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="4">4</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="5">5</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="6">6</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="4">4</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="5">5</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="6">6</button>
 
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="1">1</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="2">2</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="3">3</button>
-                                <button type="button" class="numpad-button row-span-2 border shadow bg-gray-50 focus:scale-95 font-bold" data-value="clr">CLEAR</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="1">1</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="2">2</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="3">3</button>
+                                <button type="button" class="row-span-2 font-bold border shadow numpad-button bg-gray-50 focus:scale-95" data-value="clr">CLEAR</button>
 
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="0">0</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value="00">00</button>
-                                <button type="button" class="numpad-button aspect-square border shadow bg-gray-50 focus:scale-95 text-xl font-bold" data-value=".">.</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="0">0</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value="00">00</button>
+                                <button type="button" class="text-xl font-bold border shadow numpad-button aspect-square bg-gray-50 focus:scale-95" data-value=".">.</button>
                             </div>
                         </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="payNowButton" data-amount="" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-5 text-center w-1/2">Mark as Paid</button>
-                        <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-1/2">Cancel</button>
+                        <button id="payNowButton" data-amount="" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Mark as Paid</button>
+                        <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -322,12 +322,12 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="p-6 space-y-4 flex text-4xl leading-relaxed text-gray-500 font-semibold justify-center items-center">
-                        ₱<p id="changeP" class="ml-2"></p>.00
+                    <div class="flex items-center justify-center p-6 space-y-4 text-4xl font-semibold leading-relaxed text-gray-500">
+                        ₱<p id="changeP" class="ml-2"></p>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
-                        <button id="changeCloseModal" data-modal-hide="changeModal" type="button" onclick="window.location.reload()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-300 text-sm font-medium px-5 py-5 hover:text-gray-900 focus:z-10 w-full">Close</button>
+                        <button id="changeCloseModal" data-modal-hide="changeModal" type="button" onclick="window.location.reload()" class="w-full px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
@@ -360,7 +360,7 @@
                     <!-- Modal body -->
                     <div class="px-4 py-2 space-y-4 h-[500px] overflow-y-auto">
                         <input type="hidden" name="table" id="table">
-                        <p class="text-xl leading-relaxed text-gray-500 font-semibold">
+                        <p class="text-xl font-semibold leading-relaxed text-gray-500">
                             <div id="allOrders" class="relative h-auto"></div>
                         </p>
                     </div>
@@ -368,7 +368,7 @@
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
                         <div id="completeOrderDiv" class="w-1/3"></div>
                         <div id="cancelOrderDiv" class="w-1/3"></div>
-                        <button data-modal-hide="selectedTableModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-bold px-5 py-5 hover:text-gray-900 focus:z-10 w-1/3">Close</button>
+                        <button data-modal-hide="selectedTableModal" type="button" class="w-1/3 px-5 py-5 text-base font-bold text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Close</button>
                     </div>
                 </div>
             </div>
@@ -377,12 +377,12 @@
 
     <div class="p-6 h-[calc(100vh-48px)] w-screen">
         @csrf
-        <div class="w-full grid grid-cols-5 gap-6">
+        <div class="grid w-full grid-cols-5 gap-6">
             @foreach ($tables as $table)
                 <div class="{{ ($table->status == 0) ? 'bg-emerald-500' : 'bg-red-500'; }} w-full aspect-square h-auto rounded-xl">
-                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" data-status="{{ $table->status }}" class="w-full h-full relative tableButton rounded-xl">
-                        <p class="absolute top-1/3 -translate-y-1/2 w-full text-center text-2xl font-bold">{{ $table->name }}</p>
-                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="w-4/5 absolute bottom-0 left-1/2 -translate-x-1/2">
+                    <button type="button" data-table="{{ $table->id }}" data-tablename="{{ $table->name }}" data-status="{{ $table->status }}" class="relative w-full h-full tableButton rounded-xl">
+                        <p class="absolute w-full text-2xl font-bold text-center -translate-y-1/2 top-1/3">{{ $table->name }}</p>
+                        <img src="{{ asset('storage/images/ico/table-noBG.png') }}" alt="" class="absolute bottom-0 w-4/5 -translate-x-1/2 left-1/2">
                     </button>
                 </div>
             @endforeach
@@ -420,22 +420,22 @@
                             $('#printDiv').html(``);
                             }else{
                                 $('#paidDiv').html('<button id="paidButton" class="flex items-center px-4 py-2 rounded-lg bg-emerald-400"><span class="font-semibold">Mark as PAID</span></button>');
-                                $('#printDiv').html(`<a href="{{ url('/orders/print/${id}') }}" target="_blank" class="flex items-center border border-gray-400 px-4 py-1 rounded-lg"><i class="uil uil-print text-xl mr-1"></i><span class="font-semibold">Print Bill</span></a>`);
+                                $('#printDiv').html(`<a href="{{ url('/orders/print/${id}') }}" target="_blank" class="flex items-center px-4 py-1 border border-gray-400 rounded-lg"><i class="mr-1 text-xl uil uil-print"></i><span class="font-semibold">Print Bill</span></a>`);
                             }
 
                             if(result.co == '1'){
-                                $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
+                                $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="w-full py-5 text-base font-bold text-center text-white rounded-lg bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300">Open Table</button>');
                                 $('#cancelOrderDiv').html('');
                             }else{
                                 $('#completeOrderDiv').html('');
-                                $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+                                $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="w-full py-5 text-base font-bold text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Cancel Order</button>');
                             }
                             $('#table').val(id);
                             $('#openSelectedTableModal').click();
                         }
                     })
                 }else{
-                    $('#completeOrderDiv').html('<button id="occupyButton" data-modal-hide="selectedTableModal" type="button" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Occupy Table</button>');
+                    $('#completeOrderDiv').html('<button id="occupyButton" data-modal-hide="selectedTableModal" type="button" class="w-full py-5 text-base font-bold text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300">Occupy Table</button>');
                     $('#cancelOrderDiv').html('');
                     $('#printDiv').html('');
                     $('#paidDiv').html('');
@@ -469,13 +469,13 @@
                         $('#allOrders').html(result.allOrders);
                         console.log(result.co);
                         if(result.co == '1'){
-                            $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
+                            $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="w-full py-5 text-base font-bold text-center text-white rounded-lg bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300">Open Table</button>');
 
                             $('#cancelOrderDiv').html('');
                         }else{
                             $('#completeOrderDiv').html('');
 
-                            $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+                            $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="w-full py-5 text-base font-bold text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Cancel Order</button>');
                         }
                         $('#loadingScreen').addClass('hidden');
                     }
@@ -507,13 +507,13 @@
                             $('#allOrders').html(result.allOrders);
                             console.log(result.co);
                             if(result.co == '1'){
-                                $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-bold rounded-lg text-base py-5 text-center w-full">Open Table</button>');
+                                $('#completeOrderDiv').html('<button id="completeOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="w-full py-5 text-base font-bold text-center text-white rounded-lg bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300">Open Table</button>');
 
                                 $('#cancelOrderDiv').html('');
                             }else{
                                 $('#completeOrderDiv').html('');
 
-                                $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-base py-5 text-center w-full">Cancel Order</button>');
+                                $('#cancelOrderDiv').html('<button id="cancelOrderButton" data-modal-hide="selectedTableModal" data-slug="" type="button" class="w-full py-5 text-base font-bold text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">Cancel Order</button>');
                             }
                         }else{
                             location.reload();
@@ -618,11 +618,11 @@
                 var namountInput = parseInt(amountInput);
                 var mop = $('#mop').val();
 
-                if(namountInput >= amount){
+                if(parseFloat(namountInput) >= parseFloat(amount)){
                     $('#loadingScreen').removeClass('hidden');
                     var change = amountInput - amount;
                     $('#payNowCancelButton').click();
-                    $('#changeP').html(change);
+                    $('#changeP').html((change.toFixed(2)));
 
                     $.ajax({
                         url:"{{ route('orders.paid') }}",

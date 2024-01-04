@@ -217,12 +217,12 @@
                     <!-- Modal body -->
                     <div class="p-6 space-y-4">
                         <div class="mb-2">
-                            <span class="ml-1 text-base font-medium"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span>
+                            <span class="ml-1 text-base font-medium"> ₱ </span><span class="text-base font-bold actualAmount">{{ number_format($total, 2, '.', ',') }}</span>
                         </div>
                         <div class="mb-2">
                             <label for="amount" class="block mb-2 text-base font-medium text-gray-900">Amount Received</label>
                             <input type="text" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required autocomplete="off">
-                            <p id="amountError" class="hidden text-sm italic text-red-500">Invalid amount. Please enter an amount more than or equal to <span class="ml-1 text-base font-medium"> ₱ </span><span id="actualAmount" class="text-base font-bold">{{ number_format($total, 2, '.', ',') }}</span></p>
+                            <p id="amountError" class="hidden text-sm italic text-red-500">Invalid amount. Please enter an amount more than or equal to <span class="ml-1 text-base font-medium"> ₱ </span><span class="text-base font-bold actualAmount">{{ number_format($total, 2, '.', ',') }}</span></p>
                         </div>
                         <div class="flex flex-col justify-between w-full h-auto px-32 rounded-lg">
                             <div class="grid grid-cols-4 gap-4">
@@ -248,7 +248,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="payNowButton" data-amount="{{ $total }}" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Mark as Paid</button>
+                        <button id="payNowButton" data-amount="{{ $amount }}" data-total="{{ $total }}" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Mark as Paid</button>
                         <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
                     </div>
                     <!-- Modal body -->
                     <div class="flex items-center justify-center p-6 space-y-4 text-4xl font-semibold leading-relaxed text-gray-500">
-                        ₱<p id="changeP" class="ml-2"></p>.00
+                        ₱<p id="changeP" class="ml-2"></p>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-300 rounded-b">
@@ -610,6 +610,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
+                                                    <div class="justify-self-start ">
+                                                        <strong class="text-lg font-medium text-slate-600 ">Service Charge</strong>
+                                                    </div>
+                                                    <div class="justify-self-end ">
+                                                        <strong class="text-lg font-medium text-slate-600 "><span class="text-2xl">₱ </span><span id="serviceCharge">{{ number_format(($service_charge), 2, '.', ',') }}</span></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="grid grid-cols-2">
                                                     <div class="flex items-center justify-self-start gap-x-2">
                                                         <strong class="w-full text-base font-medium text-slate-600">Discount</strong>
                                                         <button data-modal-target="discountModal" data-modal-toggle="discountModal" type="button" class="text-blue-600"><span><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg></span></button>
@@ -694,11 +702,12 @@
                         $('#ordersCount').html(result.ordersCount);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#serviceCharge').html(result.service_charge);
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
-                        $('#actualAmount').html(result.amount);
-                        $('#actualAmount2').html(result.amount);
+                        $('.actualAmount').html(result.total);
                         $('#payNowButton').data('amount', result.amount);
+                        $('#payNowButton').data('total', result.total);
                         $('#notifDiv').html(result.thisNotif);
                     }
                 })
@@ -722,11 +731,12 @@
                         $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#serviceCharge').html((result.service_charge));
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
-                        $('#actualAmount').html(result.amount);
-                        $('#actualAmount2').html(result.amount);
+                        $('.actualAmount').html(result.total);
                         $('#payNowButton').data('amount', result.amount);
+                        $('#payNowButton').data('total', result.total);
                         $('#notifDiv').html(result.thisNotif);
                     }
                 })
@@ -749,11 +759,12 @@
                         $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#serviceCharge').html((result.service_charge));
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
-                        $('#actualAmount').html(result.amount);
-                        $('#actualAmount2').html(result.amount);
+                        $('.actualAmount').html(result.total);
                         $('#payNowButton').data('amount', result.amount);
+                        $('#payNowButton').data('total', result.total);
                     }
                 })
             });
@@ -787,11 +798,12 @@
                         $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#serviceCharge').html((result.service_charge));
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
-                        $('#actualAmount').html(result.amount);
-                        $('#actualAmount2').html(result.amount);
+                        $('.actualAmount').html(result.total);
                         $('#payNowButton').data('amount', result.amount);
+                        $('#payNowButton').data('total', result.total);
                         location.reload();
                     }
                 })
@@ -850,6 +862,7 @@
 
             $('#payNowButton').click(function(){
                 var amount = $(this).data('amount');
+                var total = $(this).data('total');
                 var amountInput = $('#amount').val();
                 var table = $('#table').val();
                 var mop = $('#mop').val();
@@ -857,14 +870,14 @@
                 var payor_number = $('#payor_number').val();
                 var _token = $('input[name="_token"]').val();
 
-                if(amountInput < amount){
+                if(parseFloat(amountInput) < parseFloat(total)){
                     $('#amountError').removeClass('hidden');
                 }else{
                     $('#loadingScreen').removeClass('hidden');
-                    var change = amountInput - amount;
+                    var change = amountInput - total;
                     $('#payNowCancelButton').click();
                     $('#openChangeModal').click();
-                    $('#changeP').html(change);
+                    $('#changeP').html((change.toFixed(2)));
 
                     $.ajax({
                         url:"{{ route('pos.pay') }}",
@@ -884,11 +897,12 @@
                         $('#ordersCount').html(result.orders.length);
                             $('#ordersDiv').html(result.orders);
                             $('#subTotal').html(result.subTotal);
+                        $('#serviceCharge').html((result.service_charge));
                         $('#discountTotal').html(result.discount);
                             $('#total').html(result.total);
-                            $('#actualAmount').html(result.amount);
-                        $('#actualAmount2').html(result.amount);
+                            $('.actualAmount').html(result.total);
                             $('#payNowButton').data('amount', result.amount);
+                        $('#payNowButton').data('total', result.total);
                             $('#loadingScreen').addClass('hidden');
                         }
                     })
@@ -937,10 +951,10 @@
                         $('#ordersCount').html(result.orders.length);
                         $('#ordersDiv').html(result.orders);
                         $('#subTotal').html(result.subTotal);
+                        $('#serviceCharge').html((result.service_charge));
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
-                        $('#actualAmount').html(result.amount);
-                        $('#actualAmount2').html(result.amount);
+                        $('.actualAmount').html(result.total);
                         $('#payNowButton').data('amount', result.amount);
                         $('#loadingScreen').addClass('hidden');
                         location.reload();
