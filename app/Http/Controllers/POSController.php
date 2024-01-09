@@ -42,7 +42,7 @@ class POSController extends Controller {
             $service_charge = $subTotal * $settings->service_charge;
             $total = $subTotal - $discount + $service_charge;
         }
-        $amount = $total - $service_charge;
+        $amount = $total + $service_charge;
 
         return view('user.cashier.pos', compact('tables', 'orders', 'discountRow', 'menus', 'categories', 'subTotal', 'total', 'discount', 'service_charge', 'amount'));
     }
@@ -518,6 +518,7 @@ class POSController extends Controller {
 
     public function pay(Request $request) {
         $amount = $request->amount;
+        $discount = $request->discount;
         $table = $request->table;
         $amountInput = $request->amountInput;
         $mop = $request->mop;
@@ -553,8 +554,9 @@ class POSController extends Controller {
 
         $tran = new Transaction();
         $tran->number = $number;
-        $tran->total = $amount + $service_charge;
+        $tran->total = $amount + $service_charge - $discount;
         $tran->service_charge = $service_charge;
+        $tran->discount = $discount;
         $tran->mode_of_payment = $mop;
         $tran->amount = $amountInput;
         $tran->payor_name = ucfirst($payor_name);
@@ -672,6 +674,7 @@ class POSController extends Controller {
 
     public function paylater(Request $request) {
         $amount = $request->amount;
+        $discount = $request->discount;
         $table = $request->table;
         $payor_name = $request->payor_name;
         $payor_number = $request->payor_number;
@@ -708,8 +711,9 @@ class POSController extends Controller {
 
             $tran = new Transaction();
             $tran->number = $number;
-            $tran->total = $amount + $service_charge;
+            $tran->total = $amount + $service_charge - $discount;
             $tran->service_charge = $service_charge;
+            $tran->discount = $discount;
             $tran->payor_name = ucfirst($payor_name);
             $tran->payor_number = $payor_number;
             $tran->type = $type;

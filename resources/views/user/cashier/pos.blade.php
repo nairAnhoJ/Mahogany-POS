@@ -248,7 +248,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-6 space-x-6 border-t border-gray-200 rounded-b">
-                        <button id="payNowButton" data-amount="{{ $amount }}" data-total="{{ $total }}" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Mark as Paid</button>
+                        <button id="payNowButton" data-amount="{{ $amount }}" data-discount="{{ $discount }}" data-total="{{ $total }}" type="button" class="w-1/2 py-5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Mark as Paid</button>
                         <button id="payNowCancelButton" data-modal-hide="amountReceivedModal" type="button" class="w-1/2 px-5 py-5 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
                 </div>
@@ -706,6 +706,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('.actualAmount').html(result.total);
+                        $('#payNowButton').data('discount', result.discount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#payNowButton').data('total', result.total);
                         $('#notifDiv').html(result.thisNotif);
@@ -735,6 +736,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('.actualAmount').html(result.total);
+                        $('#payNowButton').data('discount', result.discount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#payNowButton').data('total', result.total);
                         $('#notifDiv').html(result.thisNotif);
@@ -763,6 +765,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('.actualAmount').html(result.total);
+                        $('#payNowButton').data('discount', result.discount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#payNowButton').data('total', result.total);
                     }
@@ -802,6 +805,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('.actualAmount').html(result.total);
+                        $('#payNowButton').data('discount', result.discount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#payNowButton').data('total', result.total);
                         location.reload();
@@ -863,6 +867,7 @@
             $('#payNowButton').click(function(){
                 var amount = $(this).data('amount');
                 var total = $(this).data('total');
+                var discount = $(this).data('discount');
                 var amountInput = $('#amount').val();
                 var table = $('#table').val();
                 var mop = $('#mop').val();
@@ -885,6 +890,7 @@
                         dataType: 'json',
                         data:{
                             amount: amount,
+                            discount: discount,
                             table: table,
                             amountInput: amountInput,
                             mop: mop,
@@ -901,6 +907,7 @@
                         $('#discountTotal').html(result.discount);
                             $('#total').html(result.total);
                             $('.actualAmount').html(result.total);
+                        $('#payNowButton').data('discount', result.discount);
                             $('#payNowButton').data('amount', result.amount);
                         $('#payNowButton').data('total', result.total);
                             $('#loadingScreen').addClass('hidden');
@@ -928,6 +935,7 @@
 
             $('#plConfirmButton').click(function(){
                 var amount = $('#payNowButton').data('amount');
+                var discount = $('#payNowButton').data('discount');
                 var table = $('#table').val();
                 var payor_name = $('#payor_name').val();
                 var payor_number = $('#payor_number').val();
@@ -941,6 +949,7 @@
                     dataType: 'json',
                     data:{
                         amount: amount,
+                        discount: discount,
                         table: table,
                         payor_name: payor_name,
                         payor_number: payor_number,
@@ -955,6 +964,7 @@
                         $('#discountTotal').html(result.discount);
                         $('#total').html(result.total);
                         $('.actualAmount').html(result.total);
+                        $('#payNowButton').data('discount', result.discount);
                         $('#payNowButton').data('amount', result.amount);
                         $('#loadingScreen').addClass('hidden');
                         location.reload();
